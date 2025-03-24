@@ -202,20 +202,61 @@ function generateParenthesisEquation() {
     };
 }
 
-function generateQuadraticEquation() {
-    const root = randomNumber(15, 1); // Solution (1-15)
+function generateAdvancedLinearEquation() {
+    const x = randomNumber(20, 1);
+    const a = randomNumber(12, 2);
+    const c = randomNumber(12, 2);
+    const b = randomNumber(30, 1);
+    const d = (a - c) * x + b;
+
     return {
-        problem: `Solve for x: (x - ${root})² = 0`,
-        answer: root // Always integer
+        problem: `Solve for x: ${a}x + ${b} = ${c}x + ${d}`,
+        answer: x
+    };
+}
+
+function generateSquareEquation() {
+    const x = randomNumber(15, 1);
+    const coefficient = randomNumber(9, 2);
+    const rhs = coefficient * (x ** 2);
+    
+    return {
+        problem: `Solve for x: ${coefficient}x² = ${rhs}`,
+        answer: x
+    };
+}
+
+function generateSqrtEquation() {
+    const x = randomNumber(10, 1) ** 2; // Ensures perfect square
+    const coefficient = randomNumber(8, 2);
+    const rhs = coefficient * Math.sqrt(x);
+
+    return {
+        problem: `Solve for x: ${coefficient}√x = ${rhs}`,
+        answer: x
+    };
+}
+
+function generateFractionEquation() {
+    const x = randomNumber(20, 1);
+    const denominator = randomNumber(10, 2);
+    const numerator = randomNumber(40, 10);
+    const rhs = numerator / denominator;
+    
+    return {
+        problem: `Solve for x: (${numerator} + x)/${denominator} = ${rhs}`,
+        answer: (rhs * denominator) - numerator
     };
 }
 
 // ================== UPDATED EQUATION HANDLER ==================
 function generateEquationProblem() {
     const generators = [
-        generateLinearEquation,
-        generateParenthesisEquation,
-        generateQuadraticEquation
+        generateAdvancedLinearEquation,
+        generateSquareEquation,
+        generateSqrtEquation,
+        generateFractionEquation,
+        generateParenthesisEquation
     ];
     
     let safeAttempts = 0;
@@ -334,19 +375,11 @@ function generateSafeNumbers(pattern, params) {
     return numbers;
 }
 
-/* /*  ---Remove later-- 
-function validateProblem(answer) {
-    return Number.isInteger(answer) && 
-           answer > 0 && 
-           answer <= 1000 && 
-           !isNaN(answer);
-}*/
-
 function generateFallbackProblem(params) {
     console.log('Using fallback problem');
     // Simple guaranteed problem
     const a = randomNumber(99, 19);
-    const b = randomNumber(10, 2);
+    const b = randomNumber(11, 19);
     return {
         problemText: `${a} × ${b} = ?`,
         correctAnswer: a * b
