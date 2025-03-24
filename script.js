@@ -19,7 +19,7 @@ const config = {
         wrongPenalty: 2,
         equationChance: 0
     },
-    kid: {
+    kiddo: {
         operations: ['BODMAS'],
         maxNumber: 50,
         time: 90,
@@ -116,7 +116,7 @@ function startGame() {
 function generateProblem() {
     const params = config[currentLevel];
     
-    if(currentLevel === 'kid') {
+    if(currentLevel === 'kiddo') {
         generateBodmasProblem(params);
     } else if(currentLevel === 'genius') {
         Math.random() < params.equationChance ? 
@@ -233,7 +233,7 @@ function generateEquationProblem() {
     currentProblem = generateFallbackProblem();
 }
 
-// ================== BODMAS PROBLEMS (Kid Level) ==================
+// ================== BODMAS PROBLEMS (kiddo Level) ==================
 function generateBodmasProblem(params) {
     let safeAttempts = 0;
     let valid = false;
@@ -345,7 +345,7 @@ function validateProblem(answer) {
 function generateFallbackProblem(params) {
     console.log('Using fallback problem');
     // Simple guaranteed problem
-    const a = randomNumber(10, 2);
+    const a = randomNumber(99, 19);
     const b = randomNumber(10, 2);
     return {
         problemText: `${a} × ${b} = ?`,
@@ -535,15 +535,6 @@ function generateSafeNumbers(pattern) {
 
 function validateAnswer(answer) {
     return Number.isInteger(answer) && answer > 0 && answer <= 1000;
-}
-
-function generateFallbackProblem() {
-    const a = randomNumber(10, 2);
-    const b = randomNumber(10, 2);
-    return {
-        problemText: `${a} × ${b} = ?`,
-        correctAnswer: a * b
-    };
 }
 
 function randomNumber(max, min = 1) {
