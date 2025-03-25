@@ -64,6 +64,7 @@ let correctAnswers = 0;
 let isMuted = false;
 let isPaused = false;
 let remainingTime = 0;
+let problemHistory = [];
 
 const elements = {
     startBtn: document.getElementById('startBtn'),
@@ -85,6 +86,7 @@ const elements = {
 };
 const muteBtn = document.getElementById('muteBtn');
 const pauseBtn = document.getElementById('pauseBtn');
+const MAX_HISTORY = 10; // Remember last 10 questions
 
 if(localStorage.getItem('muteState') === 'true') {
     toggleMute(true);
@@ -208,19 +210,36 @@ function startGame() {
 // Updated problem generation with safeguards
 function generateProblem() {
     const params = config[currentLevel];
+    let newProblem;
+    let attempts = 0;
     
-    if(currentLevel === 'kiddo') {
-        generateBodmasProblem(params);
-    } else if(currentLevel === 'genius') {
-        Math.random() < params.equationChance ? 
-            generateEquationProblem() : 
-            generateGeniusProblem();
-    } else if(Math.random() < params.complexChance) {
-        generateBasicProblem(params);
-    } else {
-        generateBasicProblem(params);
+    do {
+        attempts++;
+        if(currentLevel === 'kiddo') {
+            generateBodmasProblem(params);
+            }
+        else if(currentLevel === 'genius') {
+                Math.random() < params.equationChance ? 
+                    generateEquationProblem() : 
+                    generateGeniusProblem();
+            }        
+        else if(Math.random() < params.complexChance) {
+                generateBasicProblem(params);
+            }
+        else {
+                generateBasicProblem(params);
+            } 
+        newProblem = currentProblem.problemText;
+        // Allow duplicates after 5 attempts to prevent infinite loops
+        if(attempts > 5) break;
+    } while(problemHistory.includes(newProblem));
+    
+    problemHistory.push(newProblem);
+    
+    // Keep history buffer manageable
+    if(problemHistory.length > MAX_HISTORY) {
+        problemHistory.shift();
     }
-    
     totalQuestions++;
     showAnswers();
 }
