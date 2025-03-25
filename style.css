@@ -43,10 +43,20 @@ body {
 }
 
 h1 {
-    font-size: 2.5em;
+    margin: 0 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Added for horizontal centering */
+    gap: 15px;
+    font-size: 2.8em;
     color: #e84393;
     text-shadow: 2px 2px #fff;
-    margin-bottom: 1.5rem;
+    letter-spacing: 2px;
+}
+
+h1 img {
+    height: 60px;
+    filter: drop-shadow(2px 2px 1px rgba(0,0,0,0.2));
 }
 
 .mute-btn {
