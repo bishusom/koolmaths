@@ -170,7 +170,6 @@ function stopSound(sound) {
 }
 
 function setLevel(level) {
-    currentLevel = level;
     elements.levelBtns.forEach(btn => {
         btn.classList.toggle('active', btn.dataset.level === level);
     });
@@ -189,7 +188,6 @@ function startGame() {
     elements.startBtn.classList.add('hidden');
     elements.gameContainer.classList.remove('hidden');
     elements.gameOverScreen.classList.add('hidden');
-    document.getElementById('currentLevelEmoji').textContent = config[currentLevel].emoji;
     
     score = 0;
     correctAnswers = 0;
@@ -202,6 +200,7 @@ function startGame() {
     
     generateProblem();
     timerInterval = setInterval(updateTimer, 1000);
+    elements.feedbackElement.classList.remove('visible');
 }
 
 
@@ -553,6 +552,8 @@ function generateWrongAnswer(correct) {
 
 function checkAnswer(selected) {
     if (!gameActive || isPaused) return; // Add pause check
+
+    elements.feedbackElement.classList.add('visible');
     
     const buttons = document.querySelectorAll('.answer-btn');
     buttons.forEach(btn => {
@@ -568,10 +569,12 @@ function checkAnswer(selected) {
         playSound(elements.correctSound);
         score += config[currentLevel].correctPoints;
         correctAnswers++;
+        //elements.feedbackElement.textContent = "🎉 <strong>Correct! 🎉 answer was </strong>"+ currentProblem.correctAnswer;
         elements.feedbackElement.innerHTML = "🎉 <strong>Correct!</strong> 🎉";
     } else {
         playSound(elements.wrongSound);
         score = Math.max(0, score - config[currentLevel].wrongPenalty);
+        //elements.feedbackElement.textContent = "❌ Wrong! ❌Correct answer was "+ currentProblem.correctAnswer;
         elements.feedbackElement.innerHTML = `❌ <strong>Wrong!</strong> ❌Correct answer was ${currentProblem.correctAnswer}`;
     }
 
@@ -580,6 +583,11 @@ function checkAnswer(selected) {
     setTimeout(() => {
         if(gameActive) generateProblem();
     }, 1500);
+
+    setTimeout(() => {
+        elements.feedbackElement.classList.remove('visible');
+    }, 1500);
+
 }
 
 function updateTimer() {
