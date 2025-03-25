@@ -19,7 +19,7 @@ const config = {
         wrongPenalty: 2,
         equationChance: 0
     },
-    kiddo: {
+    kid: {
         operations: ['BODMAS'],
         maxNumber: 50,
         time: 90,
@@ -172,6 +172,7 @@ function stopSound(sound) {
 }
 
 function setLevel(level) {
+    currentLevel = level;
     elements.levelBtns.forEach(btn => {
         btn.classList.toggle('active', btn.dataset.level === level);
     });
@@ -215,7 +216,7 @@ function generateProblem() {
     
     do {
         attempts++;
-        if(currentLevel === 'kiddo') {
+        if(currentLevel === 'kid') {
             generateBodmasProblem(params);
             }
         else if(currentLevel === 'genius') {
@@ -386,7 +387,7 @@ function generateEquationProblem() {
     currentProblem = generateFallbackProblem();
 }
 
-// ================== BODMAS PROBLEMS (kiddo Level) ==================
+// ================== BODMAS PROBLEMS (kid Level) ==================
 function generateBodmasProblem(params) {
     let safeAttempts = 0;
     let valid = false;
