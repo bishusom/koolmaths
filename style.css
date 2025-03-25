@@ -515,7 +515,10 @@ h1 {
     .performance-message {
         font-size: 1.2em;
     }
-
+    
+    .mute-btn {
+        padding: 0.8rem 2rem;
+    }
     .start-btn {
         padding: 0.8rem 2rem;
         font-size: 1.2em;
