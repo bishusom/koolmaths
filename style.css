@@ -22,12 +22,15 @@ header::before {
 }
 
 body {
-    font-family: 'Comic Neue', cursive;
+    /*font-family: 'Comic Neue', cursive;*/
+    font-family: 'Bubblegum Sans';
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(135deg, #2c3e50, #3498db);
+    /*background: linear-gradient(135deg, #2c3e50, #3498db); -- orginial
+    background: linear-gradient(135deg, #2c3e50, #59d3c2); */
+    background: linear-gradient(135deg, #2c3e50, #e183e4);
     margin: 0;
     color: #2d3436;
 }
@@ -129,6 +132,17 @@ h1 {
     backdrop-filter: blur(3px);
 }
 
+#pauseBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: rgba(255,255,255,0.5) !important;
+}
+
+#pauseBtn:disabled:hover {
+    transform: none !important;
+    background: rgba(255,255,255,0.5) !important;
+}
+
 .level-selector {
     margin: 2rem 0;
 }
@@ -201,7 +215,8 @@ h1 {
 }
 
 .game-active {
-    background: linear-gradient(135deg, #2c3e50, #3498db);
+    /*background: linear-gradient(135deg, #2c3e50, #3498db);*/
+    background: linear-gradient(135deg, #2c3e50, #e483a2);
 }
 
 .current-level {

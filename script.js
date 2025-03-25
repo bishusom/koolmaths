@@ -185,6 +185,7 @@ function startGame() {
     currentProblem = null;
     isPaused = false;
     remainingTime = 0;
+    pauseBtn.disabled = false;
     pauseBtn.classList.remove('paused');
     document.querySelector('.pause-overlay')?.remove();
     document.body.classList.add('game-active');
@@ -591,12 +592,12 @@ function checkAnswer(selected) {
         score += config[currentLevel].correctPoints;
         correctAnswers++;
         //elements.feedbackElement.textContent = "🎉 <strong>Correct! 🎉 answer was </strong>"+ currentProblem.correctAnswer;
-        elements.feedbackElement.innerHTML = "🎉 <strong>Correct!</strong> 🎉";
+        elements.feedbackElement.innerHTML = "🎉 <strong>Correct !</strong> 🎉";
     } else {
         playSound(elements.wrongSound);
         score = Math.max(0, score - config[currentLevel].wrongPenalty);
         //elements.feedbackElement.textContent = "❌ Wrong! ❌Correct answer was "+ currentProblem.correctAnswer;
-        elements.feedbackElement.innerHTML = `❌ <strong>Wrong!</strong> ❌Correct answer was ${currentProblem.correctAnswer}`;
+        elements.feedbackElement.innerHTML = `❌ <strong>Wrong !</strong> ❌ Correct answer was ${currentProblem.correctAnswer}`;
     }
 
     elements.scoreElement.textContent = score;
@@ -657,7 +658,7 @@ function endGame() {
     // Update scores safely
     elements.finalScore.textContent = score;
     elements.maxScore.textContent = totalQuestions * config[currentLevel].correctPoints || 0;
-    
+    pauseBtn.disabled = true;
     // Add error handling for sound
     try {
         playSound(elements.gameOverSound);
