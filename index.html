@@ -2,14 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Funland 🎪</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Maths Funland 🎪</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="main-container">
-        <h1>Math Funland 🎪</h1>
-        
+        <h1>Maths Funland 🎪</h1>
+        <button id="muteBtn" class="mute-btn" aria-label="Toggle sound">
+            <span class="icon">🔊</span>
+        </button>
+        <button id="pauseBtn" class="control-btn" aria-label="Pause game">
+            <span class="icon">⏸️</span>
+        </button>
         <div class="level-selector">
             <button class="level-btn active" data-level="baby">👶 Baby Mode</button>
             <button class="level-btn" data-level="toddler">🚼 Toddler Time</button>
@@ -43,7 +48,11 @@
             <button onclick="location.reload()">Play Again? 🔄</button>
         </div>
     </div>
-
+    <!-- Sound Effects -->
+    <audio id="correctSound" src="sounds/correct.mp3"></audio>
+    <audio id="wrongSound" src="sounds/wrong.mp3"></audio>
+    <audio id="tickSound" src="sounds/tick.mp3"></audio>
+    <audio id="gameOverSound" src="sounds/game-over.mp3"></audio>
     <script src="script.js"></script>
 </body>
 </html>
