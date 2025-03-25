@@ -200,6 +200,7 @@ function startGame() {
     
     generateProblem();
     timerInterval = setInterval(updateTimer, 1000);
+    elements.feedbackElement.classList.add('hidden')
     elements.feedbackElement.classList.remove('visible');
 }
 
@@ -552,7 +553,7 @@ function generateWrongAnswer(correct) {
 
 function checkAnswer(selected) {
     if (!gameActive || isPaused) return; // Add pause check
-
+    elements.feedbackElement.classList.remove('hidden')
     elements.feedbackElement.classList.add('visible');
     
     const buttons = document.querySelectorAll('.answer-btn');

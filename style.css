@@ -316,7 +316,14 @@ h1 {
     margin: 15px auto;
     max-width: 90%;
     line-height: 1.4;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translateY(10px);
 }
+
+#feedback.visible {
+    transform: translateY(0);
+    opacity: 1;
+}   
 
 #feedback strong {
     color: #ffd700; /* Gold color for emphasized text */
@@ -568,4 +575,4 @@ h1 {
         font-size: 1.1rem;
         padding: 10px 15px;
     }
-}
+}   
