@@ -43,12 +43,12 @@ const config = {
     genius: {
         operations: ['eq', '²', '√', '()'],
         maxNumber: 100,
-        time: 90,
+        time: 75,
         emoji: '🧠',
         complexChance: 0.8,
         correctPoints: 25,
-        wrongPenalty: 7,
-        equationChance: 0.6,
+        wrongPenalty: 10,
+        equationChance: 0.7,
         maxAttempts: 15
     }
 };
@@ -61,6 +61,9 @@ let currentProblem = null;
 let timerInterval = null;
 let totalQuestions = 0;
 let correctAnswers = 0;
+let isMuted = false;
+let isPaused = false;
+let remainingTime = 0;
 
 const elements = {
     startBtn: document.getElementById('startBtn'),
@@ -74,8 +77,18 @@ const elements = {
     gameOverScreen: document.querySelector('.game-over'),
     finalScore: document.getElementById('finalScore'),
     maxScore: document.getElementById('maxScore'),
-    performanceMessage: document.getElementById('performanceMessage')
+    performanceMessage: document.getElementById('performanceMessage'),
+    correctSound: document.getElementById('correctSound'),
+    wrongSound: document.getElementById('wrongSound'),
+    tickSound: document.getElementById('tickSound'),
+    gameOverSound: document.getElementById('gameOverSound')
 };
+const muteBtn = document.getElementById('muteBtn');
+const pauseBtn = document.getElementById('pauseBtn');
+
+if(localStorage.getItem('muteState') === 'true') {
+    toggleMute(true);
+}
 
 // Event Listeners
 document.querySelectorAll('.level-btn').forEach(btn => {
@@ -83,6 +96,78 @@ document.querySelectorAll('.level-btn').forEach(btn => {
 });
 
 document.getElementById('startBtn').addEventListener('click', startGame);
+
+muteBtn.addEventListener('click', () => toggleMute());
+
+pauseBtn.addEventListener('click', togglePause);
+
+function toggleMute() {
+    isMuted = !isMuted;
+    localStorage.setItem('muteState', isMuted);
+    
+    // Update button appearance
+    const icon = muteBtn.querySelector('.icon');
+    icon.textContent = isMuted ? '🔇' : '🔊';
+    muteBtn.classList.toggle('muted', isMuted);
+    
+    // Force-stop all active sounds when muting
+    if(isMuted) {
+      Object.values(elements).forEach(element => {
+        if(element instanceof HTMLAudioElement) {
+          element.pause();
+          element.currentTime = 0;
+        }
+      });
+    }
+}
+
+function togglePause() {
+    isPaused = !isPaused;
+    pauseBtn.classList.toggle('paused', isPaused);
+    
+    if(isPaused) {
+      // Show pause overlay
+      const overlay = document.createElement('div');
+      overlay.className = 'pause-overlay';
+      overlay.textContent = 'PAUSED';
+      document.body.appendChild(overlay);
+      
+      // Store remaining time and clear timer
+      remainingTime = timeLeft;
+      clearInterval(timerInterval);
+      
+      // Disable answer buttons
+      document.querySelectorAll('.answer-btn').forEach(btn => {
+        btn.disabled = true;
+      });
+    } else {
+      // Remove overlay
+      document.querySelector('.pause-overlay')?.remove();
+      
+      // Restart timer
+      timeLeft = remainingTime;
+      timerInterval = setInterval(updateTimer, 1000);
+      
+      // Re-enable answers
+      document.querySelectorAll('.answer-btn').forEach(btn => {
+        btn.disabled = false;
+      });
+    }
+}
+
+function playSound(sound) {
+    if(!isMuted && sound) {
+      sound.currentTime = 0;
+      sound.play().catch(() => {});
+    }
+}
+
+function stopSound(sound) {
+    if(!isMuted && sound) {
+        sound.pause();
+        sound.currentTime = 0;
+    }
+}
 
 function setLevel(level) {
     currentLevel = level;
@@ -92,6 +177,14 @@ function setLevel(level) {
 }
 
 function startGame() {
+    // Reset critical values
+    totalQuestions = 0;
+    correctAnswers = 0;
+    currentProblem = null;
+    isPaused = false;
+    remainingTime = 0;
+    pauseBtn.classList.remove('paused');
+    document.querySelector('.pause-overlay')?.remove();
     document.body.classList.add('game-active');
     elements.startBtn.classList.add('hidden');
     elements.gameContainer.classList.remove('hidden');
@@ -459,7 +552,7 @@ function generateWrongAnswer(correct) {
 }
 
 function checkAnswer(selected) {
-    if (!gameActive) return;
+    if (!gameActive || isPaused) return; // Add pause check
     
     const buttons = document.querySelectorAll('.answer-btn');
     buttons.forEach(btn => {
@@ -472,12 +565,14 @@ function checkAnswer(selected) {
     });
 
     if(selected === currentProblem.correctAnswer) {
+        playSound(elements.correctSound);
         score += config[currentLevel].correctPoints;
         correctAnswers++;
-        elements.feedbackElement.textContent = "🎉 Correct! 🎉";
+        elements.feedbackElement.innerHTML = "🎉 <strong>Correct!</strong> 🎉";
     } else {
+        playSound(elements.wrongSound);
         score = Math.max(0, score - config[currentLevel].wrongPenalty);
-        elements.feedbackElement.textContent = `❌ Correct answer was ${currentProblem.correctAnswer}`;
+        elements.feedbackElement.innerHTML = `❌ <strong>Wrong!</strong> ❌Correct answer was ${currentProblem.correctAnswer}`;
     }
 
     elements.scoreElement.textContent = score;
@@ -488,15 +583,63 @@ function checkAnswer(selected) {
 }
 
 function updateTimer() {
-    if(timeLeft > 0) {
-        timeLeft--;
-        elements.timerElement.textContent = timeLeft;
-    } else {
-        endGame();
-    }
+    if(!isPaused) {
+        if(timeLeft > 0) {
+            timeLeft--;
+            elements.timerElement.textContent = timeLeft;
+            if(timeLeft <= 10) {
+                elements.tickSound.currentTime = 0;
+                //elements.tickSound.play();
+                playSound(elements.tickSound);  
+            }
+        } else if(timeLeft <= 0) {
+            endGame();
+        }
+    }    
 }
 
 function endGame() {
+    stopSound(elements.tickSound);
+    gameActive = false;
+    clearInterval(timerInterval);
+    
+    // Always show game over screen
+    elements.gameContainer.classList.add('hidden');
+    elements.gameOverScreen.classList.remove('hidden');
+    
+    // Handle zero-questions case
+    const safeTotal = totalQuestions || 1; // Prevent division by zero
+    const percentage = Math.round((correctAnswers / safeTotal) * 100);
+    
+    // Default message for no questions
+    const messages = {
+        90: "Math Wizard! 🧙♂️",
+        75: "Brilliant! 🤩",
+        50: "Good Effort! 😊",
+        25: "Keep Trying! 💪",
+        0: "You'll Get Better! 🐣"
+    };
+    
+    const performance = totalQuestions === 0 ? 0 : 
+        Object.keys(messages).reverse().find(threshold => percentage >= threshold);
+    
+    elements.performanceMessage.textContent = messages[performance];
+    
+    // Update scores safely
+    elements.finalScore.textContent = score;
+    elements.maxScore.textContent = totalQuestions * config[currentLevel].correctPoints || 0;
+    
+    // Add error handling for sound
+    try {
+        playSound(elements.gameOverSound);
+    } catch (e) {
+        console.log('Game over sound error:', e);
+    }
+}
+
+/* function endGame() {
+    stopSound(elements.tickSound);
+    playSound(elements.gameOverSound);
     gameActive = false;
     document.body.classList.remove('game-active');
     document.body.classList.add('game-over-visible');
@@ -520,7 +663,7 @@ function endGame() {
     elements.maxScore.textContent = totalQuestions * config[currentLevel].correctPoints;
     elements.performanceMessage.textContent = messages[performance];
     document.getElementById('currentLevelEmoji').textContent = '';
-}
+}*/
 
 // ================== HELPER FUNCTIONS ==================
 function buildExpression(pattern, numbers) {
