@@ -11,7 +11,7 @@ const config = {
     },
     toddler: {
         operations: ['+', '-'],
-        maxNumber: 10,
+        maxNumber: 20,
         time: 60,
         emoji: '🚼',
         complexChance: 0,
