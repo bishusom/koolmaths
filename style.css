@@ -81,6 +81,31 @@ h1 img {
     backdrop-filter: blur(3px);
 }
 
+.level-selector {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
+.level-btn {
+    width: 100%;
+    padding: 0.8rem;
+    margin: 0;
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    background: #ffeaa7;
+    color: #2d3436;
+}
+
+/* remove later
+
 .level-btn {
     padding: 1rem 2rem;
     margin: 0.5rem;
@@ -92,6 +117,7 @@ h1 img {
     background: #ffeaa7;
     color: #2d3436;
 }
+*/
 
 .level-btn.active {
     background: #00cec9;
@@ -292,7 +318,12 @@ h1 img {
     }
 
     h1 {
-        font-size: 2em;
+        font-size: 1.8em;
+        margin-bottom: 1rem;
+    }
+    
+    h1 img {
+        height: 40px;
     }
 
     .answers-grid {
@@ -306,8 +337,29 @@ h1 img {
 }
 
 @media (max-width: 480px) {
-    .problem {
+    h1 {
+        flex-direction: column;
         font-size: 1.5em;
+        gap: 5px;
+    }
+    
+    .game-container.active ~ h1 {
+        display: none; /* Hide header when game is active */
+    }
+
+    .level-btn {
+        font-size: 0.9rem;
+        padding: 0.6rem;
+    }
+
+    .problem {
+        font-size: 1.4em;
+        margin: 15px 0;
+        padding: 10px;
+    }
+    
+    .answers-grid {
+        margin: 1rem 0;
     }
     
     .game-container {
