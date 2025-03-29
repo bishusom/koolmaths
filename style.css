@@ -85,7 +85,7 @@ h1 img {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 1rem; /* Desktop gap */
+    gap: 1rem;
     margin: 1.5rem 0;
 }
 
@@ -345,23 +345,23 @@ h1 img {
     }
 
     .level-selector {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        display: flex;
+        flex-direction: column;
         gap: 0.8rem;
     }
     
     .level-btn {
-        width: 100% !important; /* Force full width */
+        width: 100% !important;
         min-width: auto;
         padding: 1rem;
         font-size: 1.1rem;
         margin: 0;
-        white-space: normal; /* Allow text wrapping */
+        white-space: normal;
         height: auto;
         line-height: 1.4;
     }
     
-    .level-btn::after { /* Optional: Add description text */
+    .level-btn::after {
         content: attr(data-description);
         display: block;
         font-size: 0.9rem;
@@ -387,17 +387,18 @@ h1 img {
     }
     
     .game-container.active ~ h1 {
-        display: none; /* Hide header when game is active */
+        display: none;
     }
 
     .level-selector {
+        display: flex;
+        flex-direction: column;
         gap: 0.5rem;
-        grid-template-columns: repeat(2, 1fr);
     }
 
     .level-btn {
         font-size: 0.9rem;
-        padding: 0.6rem;
+        padding: 0.8rem;
     }
 
     .problem {
@@ -419,4 +420,10 @@ h1 img {
 /* ================== UTILITY CLASSES ================== */
 .hidden {
     display: none !important;
+}
+
+@keyframes buttonBounce {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+    100% { transform: translateY(0); }
 }
