@@ -3,7 +3,7 @@ const config = {
         name: "Kindergarten Questers 🐛➡🦋",
         operations: ['+'],
         maxNumber: 5,
-        time: 120,
+        time: 90,
         emoji: '🐛',
         correctPoints: 5,
         wrongPenalty: 0,
