@@ -4,52 +4,65 @@ const config = {
         maxNumber: 5,
         time: 60,
         emoji: '👶',
-        complexChance: 0,
         correctPoints: 10,
         wrongPenalty: 0,
-        equationChance: 0
+        speedBonusThreshold: 3,
+        speedBonusMultiplier: 1.5,
+        streakBonus: 3,
+        basePoints: 10,
+        penaltyMultiplier: 1.2
     },
     toddler: {
         operations: ['+', '-'],
         maxNumber: 20,
         time: 60,
         emoji: '🚼',
-        complexChance: 0,
         correctPoints: 15,
         wrongPenalty: 2,
-        equationChance: 0
+        speedBonusThreshold: 3,
+        speedBonusMultiplier: 1.7,
+        streakBonus: 3,
+        basePoints: 15,
+        penaltyMultiplier: 1.3
     },
     kid: {
         operations: ['BODMAS'],
-        maxNumber: 50,
-        time: 90,
-        complexChance: 1,
-        correctPoints: 20,
-        wrongPenalty: 5,
+        maxNumber: 100, // Increased from 50
+        time: 90, // Reduced from 90 seconds
         emoji: '🧒',
-        maxAttempts: 10,
-        fallbackChance: 0.1,
+        correctPoints: 20,
+        wrongPenalty: 10, // Increased from 5
+        maxAttempts: 15, // Increased from 10
         patterns: [
-            '(a ± b) × c',
-            'a × (b ± c)',
-            'a + b × c',
-            'a ÷ b + c',
-            '(a + b) ÷ c',
-            'a - b × c',
-            'a × b + c × d',
-            'a ÷ (b + c)'
-        ]
+            '(a ± b) × (c ± d)', // New nested operations
+            'a × (b ± c) ÷ d', // Added division complexity
+            '(a + b) × c - d', // Multi-step operations
+            'a ÷ (b ± c)', // More challenging division
+            '(a × b) + (c × d)', // Larger multiplications
+            'a - (b × c) ÷ d', // Complex subtraction
+            '(a + b) ÷ (c - d)', // Combined operations
+            'a² ± b × c' // Introduced squares
+        ],
+        speedBonusThreshold: 5, // Increased from 4
+        speedBonusMultiplier: 2.5, // Increased from 2
+        streakBonus: 4, // Increased from 3
+        basePoints: 25, // Increased from 20
+        penaltyMultiplier: 1.6 // Increased from 1.4
     },
     genius: {
         operations: ['eq', '²', '√', '()'],
         maxNumber: 100,
         time: 75,
         emoji: '🧠',
-        complexChance: 0.8,
         correctPoints: 25,
         wrongPenalty: 10,
         equationChance: 0.7,
-        maxAttempts: 15
+        maxAttempts: 15,
+        speedBonusThreshold: 5,
+        speedBonusMultiplier: 2.5,
+        streakBonus: 3,
+        basePoints: 25,
+        penaltyMultiplier: 1.5
     }
 };
 
@@ -61,111 +74,113 @@ let currentProblem = null;
 let timerInterval = null;
 let totalQuestions = 0;
 let correctAnswers = 0;
+let currentStreak = 0;
 let isMuted = false;
 let isPaused = false;
 let remainingTime = 0;
 let problemHistory = [];
+let pendingTimeout = null;
 
 const elements = {
     startBtn: document.getElementById('startBtn'),
     gameContainer: document.querySelector('.game-container'),
     levelBtns: document.querySelectorAll('.level-btn'),
+    muteBtn: document.getElementById('muteBtn'),
+    pauseBtn: document.getElementById('pauseBtn'),
     scoreElement: document.getElementById('score'),
     timerElement: document.getElementById('timer'),
     problemElement: document.getElementById('problem'),
     answersContainer: document.getElementById('answers'),
-    feedbackElement: document.getElementById('feedback'),
+    feedbackElement: document.getElementById('answerFeedback'),
     gameOverScreen: document.querySelector('.game-over'),
     finalScore: document.getElementById('finalScore'),
-    maxScore: document.getElementById('maxScore'),
     performanceMessage: document.getElementById('performanceMessage'),
+    playAgainBtn: document.getElementById('playAgainBtn'),
     correctSound: document.getElementById('correctSound'),
     wrongSound: document.getElementById('wrongSound'),
     tickSound: document.getElementById('tickSound'),
-    gameOverSound: document.getElementById('gameOverSound')
+    gameOverSound: document.getElementById('gameOverSound'),
+    currentLevelEmoji: document.getElementById('currentLevelEmoji')
 };
-const muteBtn = document.getElementById('muteBtn');
-const pauseBtn = document.getElementById('pauseBtn');
-const MAX_HISTORY = 10; // Remember last 10 questions
 
-if(localStorage.getItem('muteState') === 'true') {
-    toggleMute(true);
-}
+const MAX_HISTORY = 10;
 
 // Event Listeners
 document.querySelectorAll('.level-btn').forEach(btn => {
     btn.addEventListener('click', () => setLevel(btn.dataset.level));
 });
 
-document.getElementById('startBtn').addEventListener('click', startGame);
+elements.startBtn.addEventListener('click', startGame);
+elements.muteBtn.addEventListener('click', () => toggleMute());
+elements.pauseBtn.addEventListener('click', togglePause);
 
-muteBtn.addEventListener('click', () => toggleMute());
+elements.playAgainBtn.addEventListener('click', () => {
+    elements.gameOverScreen.classList.add('hidden');
+    document.querySelectorAll('.level-btn').forEach(btn => btn.hidden = false);
+    elements.startBtn.classList.remove('hidden');
+    elements.gameContainer.classList.add('hidden');
+    
+    score = 0;
+    timeLeft = 0;
+    problemHistory = [];
+    elements.scoreElement.textContent = "0";
+    elements.timerElement.textContent = "0";
+    toggleMute(localStorage.getItem('muteState') === 'true');
+});
 
-pauseBtn.addEventListener('click', togglePause);
-
-function toggleMute() {
-    isMuted = !isMuted;
+function toggleMute(forceState) {
+    if(typeof forceState === 'boolean') {
+        isMuted = forceState;
+    } else {
+        isMuted = !isMuted;
+    }
+    
     localStorage.setItem('muteState', isMuted);
-    
-    // Update button appearance
-    const icon = muteBtn.querySelector('.icon');
+    const icon = elements.muteBtn.querySelector('.icon');
     icon.textContent = isMuted ? '🔇' : '🔊';
-    muteBtn.classList.toggle('muted', isMuted);
-    
-    // Force-stop all active sounds when muting
+    elements.muteBtn.classList.toggle('muted', isMuted);
+
     if(isMuted) {
-      Object.values(elements).forEach(element => {
-        if(element instanceof HTMLAudioElement) {
-          element.pause();
-          element.currentTime = 0;
-        }
-      });
+        Object.values(elements).forEach(element => {
+            if(element instanceof HTMLAudioElement) {
+                element.pause();
+                element.currentTime = 0;
+            }
+        });
     }
 }
 
 function togglePause() {
     isPaused = !isPaused;
     pauseBtn.classList.toggle('paused', isPaused);
-    
+
     if(isPaused) {
-      // Show pause overlay
-      const overlay = document.createElement('div');
-      overlay.className = 'pause-overlay';
-      overlay.textContent = 'PAUSED';
-      document.body.appendChild(overlay);
-      
-      // Store remaining time and clear timer
-      remainingTime = timeLeft;
-      clearInterval(timerInterval);
-      
-      // Disable answer buttons
-      document.querySelectorAll('.answer-btn').forEach(btn => {
-        btn.disabled = true;
-      });
+        stopSound(elements.tickSound);
+        const overlay = document.createElement('div');
+        overlay.className = 'pause-overlay';
+        overlay.textContent = 'PAUSED';
+        document.body.appendChild(overlay);
+        remainingTime = timeLeft;
+        clearInterval(timerInterval);
+        document.querySelectorAll('.answer-btn').forEach(btn => btn.disabled = true);
     } else {
-      // Remove overlay
-      document.querySelector('.pause-overlay')?.remove();
-      
-      // Restart timer
-      timeLeft = remainingTime;
-      timerInterval = setInterval(updateTimer, 1000);
-      
-      // Re-enable answers
-      document.querySelectorAll('.answer-btn').forEach(btn => {
-        btn.disabled = false;
-      });
+        document.querySelector('.pause-overlay')?.remove();
+        timeLeft = remainingTime;
+        timerInterval = setInterval(updateTimer, 1000);
+        document.querySelectorAll('.answer-btn').forEach(btn => btn.disabled = false);
+        if(timeLeft <= 10) playSound(elements.tickSound);
     }
 }
 
 function playSound(sound) {
     if(!isMuted && sound) {
-      sound.currentTime = 0;
-      sound.play().catch(() => {});
+        sound.currentTime = 0;
+        sound.play().catch(() => {});
     }
 }
 
 function stopSound(sound) {
-    if(!isMuted && sound) {
+    if(sound) {
         sound.pause();
         sound.currentTime = 0;
     }
@@ -178,38 +193,6 @@ function setLevel(level) {
     });
 }
 
-function startGame() {
-    // Reset critical values
-    totalQuestions = 0;
-    correctAnswers = 0;
-    currentProblem = null;
-    isPaused = false;
-    remainingTime = 0;
-    pauseBtn.disabled = false;
-    pauseBtn.classList.remove('paused');
-    document.querySelector('.pause-overlay')?.remove();
-    document.body.classList.add('game-active');
-    elements.startBtn.classList.add('hidden');
-    elements.gameContainer.classList.remove('hidden');
-    elements.gameOverScreen.classList.add('hidden');
-    
-    score = 0;
-    correctAnswers = 0;
-    totalQuestions = 0;
-    timeLeft = config[currentLevel].time;
-    gameActive = true;
-    
-    elements.scoreElement.textContent = score;
-    elements.timerElement.textContent = timeLeft;
-    
-    generateProblem();
-    timerInterval = setInterval(updateTimer, 1000);
-    elements.feedbackElement.classList.add('hidden')
-    elements.feedbackElement.classList.remove('visible');
-}
-
-
-// Updated problem generation with safeguards
 function generateProblem() {
     const params = config[currentLevel];
     let newProblem;
@@ -217,75 +200,91 @@ function generateProblem() {
     
     do {
         attempts++;
-        if(currentLevel === 'kid') {
-            generateBodmasProblem(params);
-            }
-        else if(currentLevel === 'genius') {
-                Math.random() < params.equationChance ? 
-                    generateEquationProblem() : 
-                    generateGeniusProblem();
-            }        
-        else if(Math.random() < params.complexChance) {
-                generateBasicProblem(params);
-            }
-        else {
-                generateBasicProblem(params);
-            } 
-        newProblem = currentProblem.problemText;
-        // Allow duplicates after 5 attempts to prevent infinite loops
-        if(attempts > 5) break;
+        try {
+            if (currentLevel === 'kid') generateBodmasProblem(params);
+            else if (currentLevel === 'genius') generateGeniusProblem();
+            else generateBasicProblem(params);
+            
+            newProblem = currentProblem.problemText;
+        } catch (error) {
+            currentProblem = generateFallbackProblem();
+            break;
+        }
+        if (attempts > 5) break;
     } while(problemHistory.includes(newProblem));
     
     problemHistory.push(newProblem);
+    if(problemHistory.length > MAX_HISTORY) problemHistory.shift();
     
-    // Keep history buffer manageable
-    if(problemHistory.length > MAX_HISTORY) {
-        problemHistory.shift();
-    }
     totalQuestions++;
     showAnswers();
 }
 
 function generateBasicProblem(params) {
-    const operator = params.operations[Math.floor(Math.random() * params.operations.length)];
-    let num1, num2, problemText, correctAnswer;
+    let operator = params.operations[Math.floor(Math.random() * params.operations.length)];
+    let num1, num2, correctAnswer;
 
+    if (currentLevel === 'toddler') {
+        // Enforce at least one number ≥ 10
+        if (operator === '+') {
+            num1 = randomNumber(params.maxNumber, 10); // 10-20
+            num2 = randomNumber(params.maxNumber, 1);  // 1-20 (at least num1 ≥10)
+        } else { // Subtraction
+            num1 = randomNumber(params.maxNumber, 10); // 10-20
+            num2 = randomNumber(num1, 1); // 1-num1 (ensures non-negative)
+        }
+    } else { // For other levels (baby)
+        num1 = randomNumber(params.maxNumber);
+        num2 = randomNumber(operator === '-' ? num1 : params.maxNumber);
+    }
+
+    // Rest of the code remains the same...
     switch(operator) {
-        case '+':
-            num1 = randomNumber(params.maxNumber);
-            num2 = randomNumber(params.maxNumber);
-            correctAnswer = num1 + num2;
-            break;
-        case '-':
-            num1 = randomNumber(params.maxNumber);
-            num2 = randomNumber(num1);
-            correctAnswer = num1 - num2;
-            break;
-        case '×':
-            num1 = randomNumber(10);
-            num2 = randomNumber(10);
-            correctAnswer = num1 * num2;
-            break;
+        case '+': correctAnswer = num1 + num2; break;
+        case '-': correctAnswer = num1 - num2; break;
+        case '×': correctAnswer = num1 * num2; break;
         case '÷':
             num2 = randomNumber(12, 1);
             correctAnswer = randomNumber(12);
             num1 = num2 * correctAnswer;
             break;
-        case '²':
-            num1 = randomNumber(15);
-            correctAnswer = num1 ** 2;
-            problemText = `${num1}² = ?`;
-            break;
-        case '√':
-            num1 = randomNumber(15) ** 2;
-            correctAnswer = Math.sqrt(num1);
-            problemText = `√${num1} = ?`;
-            break;
     }
 
-    problemText = problemText || `${num1} ${operator} ${num2} = ?`;
-    currentProblem = { problemText, correctAnswer };
-    elements.problemElement.textContent = problemText;
+    currentProblem = { 
+        problemText: `${num1} ${operator} ${num2} = ?`,
+        correctAnswer 
+    };
+    elements.problemElement.textContent = currentProblem.problemText;
+}
+
+function generateAdvancedLinearEquation() {
+    const x = randomNumber(20, 1);
+    const a = randomNumber(12, 2);
+    const c = randomNumber(12, 2);
+    const b = randomNumber(30, 1);
+    const d = (a - c) * x + b;
+
+    return {
+        problemText: `Solve for x: ${a}x + ${b} = ${c}x + ${d}`,
+        correctAnswer: x
+    };
+}
+
+function generateSqrtEquation() {
+    const difficulty = {
+        easy: { maxBase: 15 },
+        medium: { maxBase: 25 },
+        hard: { maxBase: 40 }
+    };
+
+    const tier = Math.random() > 0.7 ? 'hard' : Math.random() > 0.4 ? 'medium' : 'easy';
+    const { maxBase } = difficulty[tier];
+    const base = randomNumber(maxBase, 2);
+    
+    return {
+        problemText: `√${base ** 2} = ?`,
+        correctAnswer: base
+    };
 }
 
 // ================== INTEGER-SAFE EQUATION GENERATORS ==================
@@ -299,8 +298,8 @@ function generateLinearEquation() {
     const c = a * x + b; // Calculate RHS
     
     return {
-        problem: `Solve for x: ${a}x + ${b} = ${c}`,
-        answer: x // Always integer
+        problemText: `Solve for x: ${a}x + ${b} = ${c}`,
+        correctAnswer: x // Always integer
     };
 }
 
@@ -311,8 +310,8 @@ function generateParenthesisEquation() {
     const e = a * (x - d); // Calculate RHS
     
     return {
-        problem: `Solve for x: ${a}(x - ${d}) = ${e}`,
-        answer: x // Always integer
+        problemText: `Solve for x: ${a}(x - ${d}) = ${e}`,
+        correctAnswer: x // Always integer
     };
 }
 
@@ -324,8 +323,8 @@ function generateAdvancedLinearEquation() {
     const d = (a - c) * x + b;
 
     return {
-        problem: `Solve for x: ${a}x + ${b} = ${c}x + ${d}`,
-        answer: x
+        problemText: `Solve for x: ${a}x + ${b} = ${c}x + ${d}`,
+        correctAnswer: x
     };
 }
 
@@ -335,19 +334,55 @@ function generateSquareEquation() {
     const rhs = coefficient * (x ** 2);
     
     return {
-        problem: `Solve for x: ${coefficient}x² = ${rhs}`,
-        answer: x
+        problemText: `Solve for x: ${coefficient}x² = ${rhs}`,
+        correctAnswer: x
     };
 }
 
 function generateSqrtEquation() {
-    const x = randomNumber(10, 1) ** 2; // Ensures perfect square
-    const coefficient = randomNumber(8, 2);
-    const rhs = coefficient * Math.sqrt(x);
+    const difficulty = {
+        easy: { maxBase: 15, coefficient: 1 },
+        medium: { maxBase: 25, coefficient: randomNumber(5, 2) },
+        hard: { 
+            maxBase: 40,
+            coefficient: randomNumber(8, 3),
+            offset: randomNumber(12, 1),
+            operation: Math.random() > 0.5 ? '+' : '-'
+        }
+    };
+
+    const tier = Math.random() > 0.7 ? 'hard' : Math.random() > 0.4 ? 'medium' : 'easy';
+    const { maxBase, coefficient, offset, operation } = difficulty[tier];
+    
+    // Ensure perfect square for clean answers
+    const base = randomNumber(maxBase, 2);
+    const x = base ** 2;
+    
+    let problem, answer;
+    
+    switch(tier) {
+        case 'easy':
+            problem = `√${x} = ?`;
+            answer = base;
+            break;
+            
+        case 'medium':
+            problem = `${coefficient}√${x} = ?`;
+            answer = coefficient * base;
+            break;
+            
+        case 'hard':
+            const modifiedX = operation === '+' ? x + offset : x - offset;
+            problem = `√${modifiedX} ${operation} ${offset} = ${base}`;
+            answer = coefficient * base;
+            problem = `Solve for x: ${coefficient}√x ${operation} ${offset} = ${base}`;
+            answer = ((base / coefficient) ** 2) + (operation === '+' ? -offset : offset);
+            break;
+    }
 
     return {
-        problem: `Solve for x: ${coefficient}√x = ${rhs}`,
-        answer: x
+        problemText: problem,
+        correctAnswer: answer
     };
 }
 
@@ -358,8 +393,8 @@ function generateFractionEquation() {
     const rhs = numerator / denominator;
     
     return {
-        problem: `Solve for x: (${numerator} + x)/${denominator} = ${rhs}`,
-        answer: (rhs * denominator) - numerator
+        problemText: `Solve for x: (${numerator} + x)/${denominator} = ${rhs}`,
+        correctAnswer: (rhs * denominator) - numerator
     };
 }
 
@@ -388,16 +423,18 @@ function generateEquationProblem() {
     currentProblem = generateFallbackProblem();
 }
 
-// ================== BODMAS PROBLEMS (kid Level) ==================
 function generateBodmasProblem(params) {
     let safeAttempts = 0;
-    let valid = false;
-    
-    while(!valid && safeAttempts < params.maxAttempts) {
+    while(safeAttempts < params.maxAttempts) {
         safeAttempts++;
         try {
             const pattern = params.patterns[Math.floor(Math.random() * params.patterns.length)];
             const numbers = generateSafeNumbers(pattern);
+            // Add 25% chance for double-digit divisors in division problems
+            if(pattern.includes('÷')) {
+                numbers.d = randomNumber(25, 10);
+                numbers.c = randomNumber(20, 5);
+            }
             const expr = buildExpression(pattern, numbers);
             const answer = calculateAnswer(expr);
 
@@ -406,87 +443,204 @@ function generateBodmasProblem(params) {
                     problemText: formatExpression(expr),
                     correctAnswer: answer
                 };
-                valid = true;
+                return;
             }
-        } catch {
-            if(safeAttempts >= params.maxAttempts/2) {
-                currentProblem = generateFallbackProblem();
-                valid = true;
-            }
+        } catch (error) {
+            console.error('BODMAS generation error:', error);
         }
     }
-    
-    // Fallback if all attempts fail
-    if(!valid) {
-        currentProblem = generateFallbackProblem();
-    }
+    // Fallback problem
+    currentProblem = {
+        problemText: `(${randomNumber(20)} + ${randomNumber(15)}) × ${randomNumber(10)} = ?`,
+        correctAnswer: (randomNumber(20) + randomNumber(15)) * randomNumber(10) // Fixed syntax
+    };
 }
 
 // ================== GENIUS LEVEL PROBLEMS ==================
+
 function generateGeniusProblem() {
     let safeAttempts = 0;
     let valid = false;
     
-    while(!valid && safeAttempts < 5) {
+    while (!valid && safeAttempts < 5) {
         safeAttempts++;
-        const problem = geniusProblemTypes[Math.floor(Math.random() * geniusProblemTypes.length)]();
+        const problemGenerator = geniusProblemTypes[Math.floor(Math.random() * geniusProblemTypes.length)];
+        const problem = problemGenerator(); // Generate problem with variables
         
-        if(problem && validateAnswer(problem.answer)) {
-            currentProblem = problem;
+        if (problem && validateAnswer(problem.correctAnswer)) {
+            currentProblem = problem; // Assign the full problem object
             valid = true;
         }
     }
     
-    if(!valid) {
+    if (!valid) {
         currentProblem = generateFallbackProblem();
     }
 }
 
 const geniusProblemTypes = [
-    () => ({
-        problem: `${randomNumber(12)}² + ${randomNumber(15)} = ?`,
-        answer: randomNumber(12)**2 + randomNumber(15)
-    }),
+    // Existing arithmetic problems
     () => {
-        const num = randomNumber(15)**2;
+        const a = randomNumber(20, 5);
+        const b = randomNumber(15, 5);
+        const c = randomNumber(10, 2);
+        const d = randomNumber(20);
         return {
-            problem: `√${num} × ${randomNumber(10)} = ?`,
-            answer: Math.sqrt(num) * randomNumber(10)
+            problemText: `(${a} + ${b}) × ${c} - ${d} = ?`,
+            correctAnswer: (a + b) * c - d
         };
     },
-    () => ({
-        problem: `(${randomNumber(20,5)} + ${randomNumber(15,5)}) × ${randomNumber(10,2)} - ${randomNumber(20)} = ?`,
-        answer: (randomNumber(20,5) + randomNumber(15,5)) * randomNumber(10,2) - randomNumber(20)
-    })
+    // Algebra/equation generators
+    generateAdvancedLinearEquation,
+    generateParenthesisEquation,
+    generateSquareEquation,
+    generateSqrtEquation,
+    generateFractionEquation
 ];
 
-// New safeguard functions
-function generateSafeNumbers(pattern, params) {
-    const numbers = {
-        a: randomNumber(15, 2),
-        b: randomNumber(15, 2),
-        c: randomNumber(12, 2),
-        d: randomNumber(12, 2)
+function showAnswers() {
+    elements.answersContainer.innerHTML = '';
+    if(!currentProblem) currentProblem = generateFallbackProblem();
+
+    const answers = [currentProblem.correctAnswer];
+    while(answers.length < 4) {
+        const wrong = currentProblem.correctAnswer + randomNumber(3, -2);
+        if(wrong > 0 && !answers.includes(wrong)) answers.push(wrong);
+    }
+    
+    elements.problemElement.textContent = currentProblem.problemText;
+    answers.sort(() => Math.random() - 0.5).forEach(answer => {
+        const button = document.createElement('button');
+        button.className = 'answer-btn';
+        button.textContent = answer;
+        button.onclick = () => checkAnswer(answer);
+        elements.answersContainer.appendChild(button);
+    });
+}
+
+function startGame() {
+    clearInterval(timerInterval);
+    clearTimeout(pendingTimeout);
+    elements.currentLevelEmoji.textContent = config[currentLevel].emoji;
+    document.querySelectorAll('.level-btn').forEach(btn => btn.hidden = true);
+    elements.startBtn.classList.add('hidden');
+    elements.gameContainer.classList.remove('hidden');
+    
+    // Enable pause button when game starts
+    elements.pauseBtn.disabled = false;
+    
+    gameActive = true;
+    isPaused = false;
+    resetState();
+    generateProblem();
+    timerInterval = setInterval(updateTimer, 1000);
+}
+
+function resetState() {
+    score = 0;
+    timeLeft = config[currentLevel].time;
+    totalQuestions = 0;
+    correctAnswers = 0;
+    currentStreak = 0;
+    problemHistory = [];
+    currentProblem = null;
+
+    elements.pauseBtn.disabled = false;
+    elements.scoreElement.textContent = "0";
+    elements.timerElement.textContent = timeLeft;
+    elements.feedbackElement.classList.remove('visible');
+}
+
+function updateTimer() {
+    if(isPaused) return;
+    
+    timeLeft--;
+    elements.timerElement.textContent = timeLeft;
+    
+    if(timeLeft <= 10) {
+        playSound(elements.tickSound);
+        if(timeLeft <= 0) endGame();
+    }
+}
+
+function endGame() {
+    gameActive = false;
+    stopSound(elements.tickSound);
+    clearInterval(timerInterval);
+    clearTimeout(pendingTimeout);
+    
+    elements.gameContainer.classList.add('hidden');
+    elements.gameOverScreen.classList.remove('hidden');
+    playSound(elements.gameOverSound);
+    elements.pauseBtn.disabled = true;
+
+    const percentage = Math.round((correctAnswers / Math.max(totalQuestions, 1)) * 100);
+    const messages = {
+        90: "Math Wizard! 🧙♂️", 75: "Brilliant! 🤩",
+        50: "Good Effort! 😊", 25: "Keep Trying! 💪",
+        0: "You'll Get Better! 🐣"
     };
+    
+    elements.performanceMessage.textContent = messages[Object.keys(messages).reverse().find(threshold => percentage >= threshold)];
+    elements.finalScore.textContent = score;
+}
 
-    // Ensure division safety
-    if(pattern.includes('÷')) {
-        if(pattern.includes('(b + c)')) {
-            numbers.c = randomNumber(5, 1);
-            numbers.a = (numbers.b + numbers.c) * randomNumber(5, 1);
+function checkAnswer(selected) {
+    if (!gameActive || isPaused) return;
+    clearTimeout(pendingTimeout);
+
+    const isCorrect = selected === currentProblem.correctAnswer;
+    const levelConfig = config[currentLevel];
+    let pointsEarned = 0;
+    let bonusMessage = '';
+
+    // Update streak and calculate points
+    if(isCorrect) {
+        currentStreak++;
+        pointsEarned = levelConfig.basePoints;
+        
+        // Apply streak bonus
+        if(currentStreak >= levelConfig.streakBonus) {
+            const bonus = Math.round(
+                levelConfig.basePoints * 
+                levelConfig.speedBonusMultiplier
+            );
+            pointsEarned += bonus;
+            bonusMessage = `<div class="streak-feedback">🔥 ${currentStreak}-in-a-row! +${bonus} bonus</div>`;
         }
-        if(pattern.includes('÷ b')) {
-            numbers.b = randomNumber(10, 2);
-            numbers.a = numbers.b * randomNumber(10, 2);
-        }
+        
+        score += pointsEarned;
+        correctAnswers++;
+        playSound(elements.correctSound);
+    } else {
+        currentStreak = 0; // Reset streak
+        score = Math.max(0, score - levelConfig.wrongPenalty);
+        playSound(elements.wrongSound);
     }
 
-    // Negative result protection
-    if(pattern.includes('-')) {
-        numbers.a = Math.max(numbers.a, numbers.b + 1);
-    }
+    // Update UI elements
+    elements.scoreElement.textContent = score;
+    elements.feedbackElement.classList.remove('wrong');
+    elements.feedbackElement.classList.add('visible', isCorrect ? 'correct' : 'wrong');
+    elements.feedbackElement.innerHTML = isCorrect 
+        ? `<div>🎉 Correct! 🎉 +${pointsEarned}</div>${bonusMessage}`
+        : `<div>❌ Wrong! ❌ -${levelConfig.wrongPenalty}</div>
+           <div class="correct-answer">Correct: ${currentProblem.correctAnswer}</div>`;
 
-    return numbers;
+    // Disable buttons and show states
+    document.querySelectorAll('.answer-btn').forEach(btn => {
+        btn.disabled = true;
+        const isCorrectButton = Number(btn.textContent) === currentProblem.correctAnswer;
+        btn.classList.add(isCorrectButton ? 'correct' : 'wrong');
+    });
+
+    // Prepare next question
+    pendingTimeout = setTimeout(() => {
+        if(gameActive) {
+            generateProblem();
+            elements.feedbackElement.classList.remove('visible');
+        }
+    }, 1500);
 }
 
 function generateFallbackProblem(params) {
@@ -500,227 +654,6 @@ function generateFallbackProblem(params) {
     };
 }
 
-function generateBasicAnswers(correct) {
-    const answers = [correct];
-    while(answers.length < 4) {
-        let wrong;
-        const offset = Math.floor(Math.random() * 5) + 1;
-        switch(Math.floor(Math.random() * 3)) {
-            case 0: wrong = correct + offset; break;
-            case 1: wrong = correct - offset; break;
-            case 2: wrong = Math.round(correct * (0.8 + Math.random() * 0.4)); break;
-        }
-        wrong = Math.max(1, wrong);
-        if(!answers.includes(wrong)) answers.push(wrong);
-    }
-    return answers.sort(() => Math.random() - 0.5);
-}
-
-function generateAlgebraAnswers(correct) {
-    const answers = [correct];
-    let attempts = 0;
-    
-    while(answers.length < 4 && attempts < 10) {
-        attempts++;
-        const wrong = this.generateWrongAnswer(correct);
-        if(wrong !== correct && !answers.includes(wrong)) {
-            answers.push(wrong);
-        }
-    }
-    
-    // Fallback mechanism
-    while(answers.length < 4) {
-        answers.push(correct + answers.length);
-    }
-    
-    return answers.sort(() => Math.random() - 0.5);
-}
-
-function showAnswers() {
-    elements.answersContainer.innerHTML = '';
-    
-    // Safety check
-    if(!currentProblem || !currentProblem.problemText) {
-        currentProblem = generateFallbackProblem();
-    }
-
-    const isAlgebra = currentProblem.problemText.includes('x');
-    const answers = isAlgebra ? 
-        generateAlgebraAnswers(currentProblem.correctAnswer) :
-        generateBasicAnswers(currentProblem.correctAnswer);
-    
-    // Display problem text
-    elements.problemElement.textContent = currentProblem.problemText;
-    
-    // Create answer buttons
-    answers.forEach(answer => {
-        const button = document.createElement('button');
-        button.className = 'answer-btn';
-        button.textContent = answer;
-        button.onclick = () => checkAnswer(answer);
-        elements.answersContainer.appendChild(button);
-    });
-}
-
-function generateWrongAnswer(correct) {
-    const mistakeType = Math.floor(Math.random() * 4);
-    switch(mistakeType) {
-        case 0: return correct + randomNumber(5, 1);
-        case 1: return Math.max(1, correct - randomNumber(5, 1));
-        case 2: return Math.round(correct * 0.8);
-        default: return Math.round(correct * 1.2);
-    }
-}
-
-function checkAnswer(selected) {
-    if (!gameActive || isPaused) return; // Add pause check
-    elements.feedbackElement.classList.remove('hidden')
-    elements.feedbackElement.classList.add('visible');
-    
-    const buttons = document.querySelectorAll('.answer-btn');
-    buttons.forEach(btn => {
-        btn.disabled = true;
-        if(Number(btn.textContent) === currentProblem.correctAnswer) {
-            btn.classList.add('correct');
-        } else {
-            btn.classList.add('wrong');
-        }
-    });
-
-    if(selected === currentProblem.correctAnswer) {
-        playSound(elements.correctSound);
-        score += config[currentLevel].correctPoints;
-        correctAnswers++;
-        //elements.feedbackElement.textContent = "🎉 <strong>Correct! 🎉 answer was </strong>"+ currentProblem.correctAnswer;
-        elements.feedbackElement.innerHTML = "🎉 <strong>Correct !</strong> 🎉";
-    } else {
-        playSound(elements.wrongSound);
-        score = Math.max(0, score - config[currentLevel].wrongPenalty);
-        //elements.feedbackElement.textContent = "❌ Wrong! ❌Correct answer was "+ currentProblem.correctAnswer;
-        elements.feedbackElement.innerHTML = `❌ <strong>Wrong !</strong> ❌ Correct answer was ${currentProblem.correctAnswer}`;
-    }
-
-    elements.scoreElement.textContent = score;
-    
-    setTimeout(() => {
-        if(gameActive) generateProblem();
-    }, 1500);
-
-    setTimeout(() => {
-        elements.feedbackElement.classList.remove('visible');
-    }, 1500);
-
-}
-
-function updateTimer() {
-    if(!isPaused) {
-        if(timeLeft > 0) {
-            timeLeft--;
-            elements.timerElement.textContent = timeLeft;
-            if(timeLeft <= 10) {
-                elements.tickSound.currentTime = 0;
-                //elements.tickSound.play();
-                playSound(elements.tickSound);  
-            }
-        } else if(timeLeft <= 0) {
-            endGame();
-        }
-    }    
-}
-
-function endGame() {
-    stopSound(elements.tickSound);
-    gameActive = false;
-    clearInterval(timerInterval);
-    
-    // Always show game over screen
-    elements.gameContainer.classList.add('hidden');
-    elements.gameOverScreen.classList.remove('hidden');
-    
-    // Handle zero-questions case
-    const safeTotal = totalQuestions || 1; // Prevent division by zero
-    const percentage = Math.round((correctAnswers / safeTotal) * 100);
-    
-    // Default message for no questions
-    const messages = {
-        90: "Math Wizard! 🧙♂️",
-        75: "Brilliant! 🤩",
-        50: "Good Effort! 😊",
-        25: "Keep Trying! 💪",
-        0: "You'll Get Better! 🐣"
-    };
-    
-    const performance = totalQuestions === 0 ? 0 : 
-        Object.keys(messages).reverse().find(threshold => percentage >= threshold);
-    
-    elements.performanceMessage.textContent = messages[performance];
-    
-    // Update scores safely
-    elements.finalScore.textContent = score;
-    elements.maxScore.textContent = totalQuestions * config[currentLevel].correctPoints || 0;
-    pauseBtn.disabled = true;
-    // Add error handling for sound
-    try {
-        playSound(elements.gameOverSound);
-    } catch (e) {
-        console.log('Game over sound error:', e);
-    }
-}
-
-/* function endGame() {
-    stopSound(elements.tickSound);
-    playSound(elements.gameOverSound);
-    gameActive = false;
-    document.body.classList.remove('game-active');
-    document.body.classList.add('game-over-visible');
-    clearInterval(timerInterval);
-    timerInterval = null;
-    
-    const percentage = Math.round((correctAnswers / totalQuestions) * 100);
-    const messages = {
-        90: "Math Wizard! 🧙♂️",
-        75: "Brilliant! 🤩",
-        50: "Good Effort! 😊",
-        25: "Keep Trying! 💪",
-        0: "You'll Get Better! 🐣"
-    };
-    
-    const performance = Object.keys(messages).reverse().find(threshold => percentage >= threshold);
-    
-    elements.gameContainer.classList.add('hidden');
-    elements.gameOverScreen.classList.remove('hidden');
-    elements.finalScore.textContent = score;
-    elements.maxScore.textContent = totalQuestions * config[currentLevel].correctPoints;
-    elements.performanceMessage.textContent = messages[performance];
-    document.getElementById('currentLevelEmoji').textContent = '';
-}*/
-
-// ================== HELPER FUNCTIONS ==================
-function buildExpression(pattern, numbers) {
-    let expr = pattern
-        .replace(/a/g, numbers.a)
-        .replace(/b/g, numbers.b)
-        .replace(/c/g, numbers.c)
-        .replace(/d/g, numbers.d)
-        .replace(/±/g, Math.random() > 0.5 ? '+' : '-');
-    return expr.replace(/×/g, '*').replace(/÷/g, '/');
-}
-
-function calculateAnswer(expr) {
-    try {
-        return eval(expr);
-    } catch {
-        return null;
-    }
-}
-
-function formatExpression(expr) {
-    return expr
-        .replace(/\*/g, '×')
-        .replace(/\//g, '÷')
-        .replace(/(\d+)/g, m => parseInt(m).toLocaleString()) + ' = ?';
-}
-
 function generateSafeNumbers(pattern) {
     const numbers = {
         a: randomNumber(15, 2),
@@ -729,18 +662,54 @@ function generateSafeNumbers(pattern) {
         d: randomNumber(12, 2)
     };
 
+    // Handle division safety
     if(pattern.includes('÷')) {
-        numbers.b = numbers.b || 1;
-        numbers.a = numbers.b * randomNumber(10, 2);
+        if(pattern.includes('(b + c)')) {
+            numbers.c = randomNumber(5, 1);
+            numbers.a = (numbers.b + numbers.c) * randomNumber(5, 1);
+        }
+        if(pattern.includes('÷ b')) {
+            numbers.b = randomNumber(10, 2);
+            numbers.a = numbers.b * randomNumber(10, 2);
+        }
     }
+
+    // Prevent negative results for subtraction
     if(pattern.includes('-')) {
         numbers.a = Math.max(numbers.a, numbers.b + 1);
     }
+
     return numbers;
 }
 
+function buildExpression(pattern, numbers) {
+    // Replace ± first before other replacements
+    let expr = pattern.replace(/±/g, Math.random() > 0.5 ? '+' : '-');
+    expr = expr.replace(/[abcd]/g, m => numbers[m]);
+    return expr.replace(/×/g, '*').replace(/÷/g, '/');
+}
+
+function formatExpression(expr) {
+    // First convert * to × and / to ÷
+    let formatted = expr.replace(/\*/g, '×').replace(/\//g, '÷');
+    
+    // Add thousand separators to numbers
+    formatted = formatted.replace(/\d+/g, match => {
+        return parseInt(match).toLocaleString();
+    });
+    
+    // Format square root symbols
+    formatted = formatted.replace(/Math\.sqrt\((\d+)\)/g, '√$1');
+    
+    return formatted + ' = ?';
+}
+
+function calculateAnswer(expr) {
+    try { return eval(expr); } catch { return null; }
+}
+
 function validateAnswer(answer) {
-    return Number.isInteger(answer) && answer > 0 && answer <= 1000;
+    return Number.isInteger(answer) && answer > 0;
 }
 
 function randomNumber(max, min = 1) {

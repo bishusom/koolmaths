@@ -22,7 +22,7 @@
         <div class="level-selector">
             <button class="level-btn active" data-level="baby">👶 Baby Mode</button>
             <button class="level-btn" data-level="toddler">🚼 Toddler Time</button>
-            <button class="level-btn" data-level="kid">🧒 Kid Whiz</button>
+            <button class="level-btn" data-level="kid">🧒 Whiz Kid</button>
             <button class="level-btn" data-level="genius">🧠 Genius Challenge</button>
         </div>
 
@@ -31,22 +31,23 @@
         <div class="game-container hidden">
             <div class="container">
                 <div class="score-board">
+                    <span id="currentLevelEmoji"></span>
                     <div>Score: <span id="score">0</span></div>
                     <div>Time: <span id="timer">30</span>s ⏳</div>
                 </div>
                 <div class="problem" id="problem"></div>
                 <div class="answers-grid" id="answers"></div>
-                <div class="feedback" id="feedback"></div>    
+                <div class="answer-feedback" id="answerFeedback"></div>
             </div>    
         </div>
 
         <div class="game-over hidden">
             <h2>Game Over! 🎯</h2>
             <div class="final-score">
-                You scored <span id="finalScore">0</span> out of <span id="maxScore">0</span>!
+                You scored <span id="finalScore">0</span> points!
             </div>
             <div class="performance-message" id="performanceMessage"></div>
-            <button onclick="location.reload()">Play Again? 🔄</button>
+            <button id="playAgainBtn">Play Again? 🔄</button>
         </div>
     </div>
     <!-- Sound Effects -->
