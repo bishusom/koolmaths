@@ -12,6 +12,19 @@ const config = {
         basePoints: 10,
         penaltyMultiplier: 1.2
     },
+    preschool: {
+        operations: ['+', '-'],
+        maxNumber: 20, // 5-20 range
+        time: 75,
+        emoji: '🎒',
+        correctPoints: 12,
+        wrongPenalty: 1,
+        speedBonusThreshold: 3,
+        speedBonusMultiplier: 1.6,
+        streakBonus: 3,
+        basePoints: 12,
+        penaltyMultiplier: 1.25
+    },
     toddler: {
         operations: ['+', '-'],
         maxNumber: 20,
@@ -225,24 +238,43 @@ function generateBasicProblem(params) {
     let num1, num2, correctAnswer;
 
     if (currentLevel === 'toddler') {
-        // Enforce at least one number ≥ 10
+        // Toddler logic (one number must be ≥10)
         if (operator === '+') {
             num1 = randomNumber(params.maxNumber, 10); // 10-20
-            num2 = randomNumber(params.maxNumber, 1);  // 1-20 (at least num1 ≥10)
+            num2 = randomNumber(params.maxNumber, 1);  // 1-20
         } else { // Subtraction
             num1 = randomNumber(params.maxNumber, 10); // 10-20
-            num2 = randomNumber(num1, 1); // 1-num1 (ensures non-negative)
+            num2 = randomNumber(num1, 1); // 1-num1
         }
-    } else { // For other levels (baby)
+    } else if (currentLevel === 'preschool') {
+        // Preschool logic (5-20 range)
+        if (operator === '+') {
+            num1 = randomNumber(20, 5);
+            num2 = randomNumber(20, 5);
+        } else { // Subtraction
+            num1 = randomNumber(20, 5);
+            num2 = randomNumber(num1, 1); // Ensure non-negative
+        }
+    } else if (currentLevel === 'baby') {
+        // Baby mode logic (1-5)
         num1 = randomNumber(params.maxNumber);
         num2 = randomNumber(operator === '-' ? num1 : params.maxNumber);
+    } else {
+        // Fallback for other levels
+        num1 = randomNumber(params.maxNumber);
+        num2 = randomNumber(params.maxNumber);
     }
 
-    // Rest of the code remains the same...
     switch(operator) {
-        case '+': correctAnswer = num1 + num2; break;
-        case '-': correctAnswer = num1 - num2; break;
-        case '×': correctAnswer = num1 * num2; break;
+        case '+': 
+            correctAnswer = num1 + num2;
+            break;
+        case '-': 
+            correctAnswer = num1 - num2;
+            break;
+        case '×': 
+            correctAnswer = num1 * num2;
+            break;
         case '÷':
             num2 = randomNumber(12, 1);
             correctAnswer = randomNumber(12);

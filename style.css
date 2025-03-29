@@ -90,7 +90,7 @@ h1 img {
 }
 
 .level-btn {
-    width: 100%;
+    width: 80%;
     padding: 0.8rem;
     margin: 0;
     font-size: 1.1rem;
@@ -102,9 +102,38 @@ h1 img {
     border: none;
     border-radius: 15px;
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
     background: #ffeaa7;
     color: #2d3436;
+}
+
+/* Base hover effect */
+.level-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    background: #d8fff7;
+    border-color: #4ecdc4;
+}
+
+/* Colorful hover background effect */
+.level-btn:hover::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, 
+        rgba(255,255,255,0.15) 0%,
+        rgba(255,255,255,0.05) 100%);
+    z-index: 1;
+}
+
+/* Bounce animation for active state */
+.level-btn.active:hover {
+    animation: buttonBounce 0.4s ease;
 }
 
 .level-btn.active {
@@ -316,7 +345,7 @@ h1 img {
 
     .level-selector {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 0.8rem;
     }
     
@@ -350,6 +379,7 @@ h1 img {
 
     .level-selector {
         gap: 0.5rem;
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .level-btn {
