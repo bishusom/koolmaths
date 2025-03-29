@@ -28,11 +28,23 @@ h1 {
     color: #e84393;
     text-shadow: 2px 2px #fff;
     letter-spacing: 2px;
+    transition: all 0.3s ease;
 }
 
 h1 img {
     height: 60px;
     filter: drop-shadow(2px 2px 1px rgba(0,0,0,0.2));
+    transition: height 0.3s ease;
+}
+
+/* ================== GAME ACTIVE STATES ================== */
+.game-container.active ~ h1 {
+    font-size: 1.5em;
+    margin: 0 0 1rem;
+}
+
+.game-container.active ~ h1 img {
+    height: 40px;
 }
 
 /* ================== CONTROLS & BUTTONS ================== */
@@ -85,13 +97,13 @@ h1 img {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 1rem; /* Desktop gap */
+    gap: 1rem;
     margin: 1.5rem 0;
 }
 
 .level-btn {
     width: 80%;
-    padding: 0.8rem;
+    padding: 1rem;
     margin: 0;
     font-size: 1.1rem;
     flex: 0 1 auto;
@@ -104,7 +116,6 @@ h1 img {
     cursor: pointer;
     transition: all 0.2s ease;
     position: relative;
-    overflow: hidden;
     background: #ffeaa7;
     color: #2d3436;
 }
@@ -140,10 +151,6 @@ h1 img {
     z-index: 1;
 }
 
-/* Bounce animation for active state */
-.level-btn.active:hover {
-    animation: buttonBounce 0.4s ease;
-}
 
 .level-btn.active {
     background: #00cec9;
@@ -182,7 +189,6 @@ h1 img {
     box-shadow: 0 6px 8px rgba(0,0,0,0.2);
     background: #45a049;
 }
-
 /* ================== GAME CONTAINER ================== */
 .game-container {
     background: rgba(255, 255, 255, 0.95);
@@ -322,19 +328,6 @@ h1 img {
     color: #af4949;
     font-size: 1.1em;
 }
-/* ================== ANIMATIONS ================== */
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
-
-@keyframes shake {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(10px); }
-    50% { transform: translateX(-10px); }
-    75% { transform: translateX(10px); }
-    100% { transform: translateX(0); }
-}
 
 /* ================== RESPONSIVE DESIGN ================== */
 @media (max-width: 768px) {
@@ -343,76 +336,51 @@ h1 img {
         width: 95%;
     }
 
-    h1 {
-        font-size: 1.8em;
-        margin-bottom: 1rem;
+    .level-selector {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+        width: 100%;
     }
-    
-    h1 img {
-        height: 40px;
+
+    .level-btn {
+        width: 100% !important;
+        padding: 1rem;
+        font-size: 1rem;
+        white-space: normal;
     }
 
     .game-container.active ~ h1 {
-        display: none; /* Hide header when game is active */
+        font-size: 1.2em;
+        margin: 0 0 0.5rem;
     }
 
-    .level-selector {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 0.8rem;
-    }
-    
-    .level-btn {
-        min-width: unset;
-        width: 100%;
-        font-size: 1rem;
-        padding: 0.8rem;
-    }
-
-    .answers-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .problem {
-        font-size: 1.8em;
-        padding: 15px;
+    .game-container.active ~ h1 img {
+        height: 30px;
     }
 }
 
 @media (max-width: 480px) {
     h1 {
         flex-direction: column;
-        font-size: 1.5em;
         gap: 5px;
-    }
-    
-    .game-container.active ~ h1 {
-        display: none; /* Hide header when game is active */
     }
 
     .level-selector {
         gap: 0.5rem;
-        grid-template-columns: repeat(2, 1fr);
     }
 
     .level-btn {
-        font-size: 0.9rem;
-        padding: 0.6rem;
+        padding: 0.8rem;
+        font-size: 0.95rem;
     }
 
-    .problem {
-        font-size: 1.4em;
-        margin: 15px 0;
-        padding: 10px;
+    .level-btn::after {
+        font-size: 0.85rem;
     }
-    
-    .answers-grid {
-        margin: 1rem 0;
-    }
-    
-    .game-container {
-        width: 95%;
-        padding: 15px;
+
+    .game-container.active ~ h1 {
+        font-size: 1em;
     }
 }
 
