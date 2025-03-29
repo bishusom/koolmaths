@@ -263,11 +263,11 @@ h1 img {
 .performance-message {
     font-size: 1.5em;
     margin: 1rem 0;
-    color: #00b894;
+    color: #02866b;
 }
 
 .performance-message .empty-state {
-    color: #ff6b6b;
+    color: #af4949;
     font-size: 1.1em;
 }
 /* ================== ANIMATIONS ================== */
