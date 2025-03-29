@@ -82,17 +82,20 @@ h1 img {
 }
 
 .level-selector {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.5rem;
-    margin: 1rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem; /* Desktop gap */
+    margin: 1.5rem 0;
 }
 
 .level-btn {
     width: 100%;
     padding: 0.8rem;
     margin: 0;
-    font-size: 1rem;
+    font-size: 1.1rem;
+    flex: 0 1 auto;
+    min-width: 180px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -103,21 +106,6 @@ h1 img {
     background: #ffeaa7;
     color: #2d3436;
 }
-
-/* remove later
-
-.level-btn {
-    padding: 1rem 2rem;
-    margin: 0.5rem;
-    font-size: 1.2em;
-    border: none;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: transform 0.2s;
-    background: #ffeaa7;
-    color: #2d3436;
-}
-*/
 
 .level-btn.active {
     background: #00cec9;
@@ -326,6 +314,19 @@ h1 img {
         height: 40px;
     }
 
+    .level-selector {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+    }
+    
+    .level-btn {
+        min-width: unset;
+        width: 100%;
+        font-size: 1rem;
+        padding: 0.8rem;
+    }
+
     .answers-grid {
         grid-template-columns: 1fr;
     }
@@ -345,6 +346,10 @@ h1 img {
     
     .game-container.active ~ h1 {
         display: none; /* Hide header when game is active */
+    }
+
+    .level-selector {
+        gap: 0.5rem;
     }
 
     .level-btn {
