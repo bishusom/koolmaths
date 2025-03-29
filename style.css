@@ -107,7 +107,6 @@ h1 img {
     overflow: hidden;
     background: #ffeaa7;
     color: #2d3436;
-    flex-direction: column; 
 }
 
 .level-btn::after {
@@ -356,7 +355,7 @@ h1 img {
     .game-container.active ~ h1 {
         display: none; /* Hide header when game is active */
     }
-    
+
     .level-selector {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -364,22 +363,10 @@ h1 img {
     }
     
     .level-btn {
-        width: 100% !important; /* Force full width */
-        min-width: auto;
-        padding: 1rem;
-        font-size: 1.1rem;
-        margin: 0;
-        white-space: normal; /* Allow text wrapping */
-        height: auto;
-        line-height: 1.4;
-    }
-    
-    .level-btn::after { /* Optional: Add description text */
-        content: attr(data-description);
-        display: block;
-        font-size: 0.9rem;
-        color: #666;
-        margin-top: 0.5rem;
+        min-width: unset;
+        width: 100%;
+        font-size: 1rem;
+        padding: 0.8rem;
     }
 
     .answers-grid {
@@ -395,7 +382,7 @@ h1 img {
 @media (max-width: 480px) {
     h1 {
         flex-direction: column;
-        font-size: 1.2em;
+        font-size: 1.5em;
         gap: 5px;
     }
     
