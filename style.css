@@ -373,8 +373,13 @@ h1 img {
 
 @media (max-width: 480px) {
     h1 {
-        flex-direction: column;
-        gap: 5px;
+        font-size: 1.8em; /* Reduced from default 2.8em */
+        gap: 8px;
+        margin: 0 0 1rem;
+    }
+
+    h1 img {
+        height: 40px; /* Reduced from 60px */
     }
 
     .level-selector {
@@ -391,12 +396,12 @@ h1 img {
     }
 
     .game-container.active ~ h1 {
-        font-size: 0.70em;
+        font-size: 1.2em; /* Increased from 0.70em for better readability */
     }
 
     .game-container.active ~ h1 img {
-        height: 30px;
-}
+        height: 30px; /* Maintain existing active state size */
+    }
 }
 /* ================== UTILITY CLASSES ================== */
 .hidden {
