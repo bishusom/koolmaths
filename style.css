@@ -12,14 +12,14 @@ body {
 
 .main-container {
     text-align: center;
-    padding: 2rem;
+    padding: 1rem 2rem; /* Reduced top/bottom padding */
     max-width: 800px;
     width: 90%;
 }
 
 /* ================== HEADER & TITLE ================== */
 h1 {
-    margin: 0 0 2rem;
+    margin: 0 0 1rem; /* Reduced from 2rem */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -198,6 +198,7 @@ h1 img {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    margin-top: 0.5rem; /* Added to control spacing */
 }
 
 .score-board {
@@ -343,8 +344,12 @@ h1 img {
 /* ================== RESPONSIVE DESIGN ================== */
 @media (max-width: 768px) {
     .main-container {
-        padding: 1rem;
+        padding: 0.5rem 1rem;
         width: 95%;
+    }
+
+    h1 {
+        margin: 0 0 0.5rem;
     }
 
     .level-selector {
@@ -375,7 +380,7 @@ h1 img {
     h1 {
         font-size: 1.8em; /* Reduced from default 2.8em */
         gap: 8px;
-        margin: 0 0 1rem;
+        margin: 0 0 0.3rem;
     }
 
     h1 img {
@@ -395,6 +400,10 @@ h1 img {
         font-size: 0.85rem;
     }
 
+    .game-container {
+        margin-top: 0.3rem;
+    }
+    
     .game-container.active ~ h1 {
         font-size: 1.2em; /* Increased from 0.70em for better readability */
     }

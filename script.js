@@ -94,11 +94,12 @@ let timerInterval = null;
 let totalQuestions = 0;
 let correctAnswers = 0;
 let currentStreak = 0;
-let isMuted = false;
-let isPaused = false;
 let remainingTime = 0;
 let problemHistory = [];
 let pendingTimeout = null;
+let isPaused = false;
+let isMuted = localStorage.getItem('muteState') === 'true';
+
 
 const elements = {
     startBtn: document.getElementById('startBtn'),
@@ -155,11 +156,15 @@ function toggleMute(forceState) {
         isMuted = !isMuted;
     }
     
+    // Persist state
     localStorage.setItem('muteState', isMuted);
+    
+    // Update UI
     const icon = elements.muteBtn.querySelector('.icon');
     icon.textContent = isMuted ? '🔇' : '🔊';
     elements.muteBtn.classList.toggle('muted', isMuted);
 
+    // Pause all sounds if muted
     if(isMuted) {
         Object.values(elements).forEach(element => {
             if(element instanceof HTMLAudioElement) {
@@ -169,6 +174,9 @@ function toggleMute(forceState) {
         });
     }
 }
+
+// Set initial state on page load
+toggleMute(isMuted);
 
 function togglePause() {
     isPaused = !isPaused;
@@ -290,9 +298,6 @@ function generateBasicProblem(params) {
         correctAnswer,
         emojiVisual
     };
-    
-    //elements.problemElement.textContent = currentProblem.problemText;
-
 }
 
 function generateAdvancedProblem(params) {
