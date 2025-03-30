@@ -385,8 +385,8 @@ h1 img {
 
     .game-container.active ~ h1 img {
         height: 30px;
+    }
 }
-
 /* ================== UTILITY CLASSES ================== */
 .hidden {
     display: none !important;
