@@ -221,6 +221,18 @@ h1 img {
     color: #2d3436;
 }
 
+.emoji-visual {
+    margin: 15px 0;
+    font-size: 0.8em;
+    line-height: 1.4;
+    animation: float 2s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
 .answers-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -279,7 +291,6 @@ h1 img {
     background: #f44336;
     color: white;
 }
-
 
 #feedback strong {
     color: #ffd700; /* Gold color for emphasized text */
@@ -351,7 +362,7 @@ h1 img {
     }
 
     .game-container.active ~ h1 {
-        font-size: 1.2em;
+        font-size: 1em;
         margin: 0 0 0.5rem;
     }
 
@@ -385,7 +396,7 @@ h1 img {
 
     .game-container.active ~ h1 img {
         height: 30px;
-    }
+}
 }
 /* ================== UTILITY CLASSES ================== */
 .hidden {
