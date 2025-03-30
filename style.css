@@ -402,6 +402,14 @@ h1 img {
     .game-container.active ~ h1 img {
         height: 30px; /* Maintain existing active state size */
     }
+
+    .emoji-visual {
+        font-size: 1.2rem !important;
+        white-space: nowrap;
+        overflow-x: auto;
+        padding: 5px 0;
+        -webkit-overflow-scrolling: touch;
+    }
 }
 /* ================== UTILITY CLASSES ================== */
 .hidden {
