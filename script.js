@@ -17,7 +17,7 @@ const config = {
         name: "Grade 1-3 Number Ninjas 🥷✨",
         operations: ['+', '-', '×'],
         maxNumber: 30,
-        time: 75,
+        time: 120,
         emoji: '🎒',
         correctPoints: 15,
         wrongPenalty: 2,
@@ -31,7 +31,7 @@ const config = {
         name: "Grade 4-6 Math Mavericks 🤠🔢",
         operations: ['BODMAS', '÷', '²'],
         maxNumber: 100,
-        time: 60,
+        time: 120,
         emoji: '🧮',
         correctPoints: 20,
         wrongPenalty: 5,
@@ -56,7 +56,7 @@ const config = {
         name: "Grade 7-8 Algebra Avengers 🦸♂️📐",
         operations: ['eq', '√', '()'],
         maxNumber: 150,
-        time: 45,
+        time: 120,
         emoji: '⚡',
         correctPoints: 25,
         wrongPenalty: 10,
@@ -71,7 +71,7 @@ const config = {
         name: "Math Megastars 🌟🧠",
         operations: ['eq', '²', '√', '()', 'π'],
         maxNumber: 200,
-        time: 30,
+        time: 120,
         emoji: '🎇',
         correctPoints: 30,
         wrongPenalty: 15,
@@ -243,13 +243,16 @@ function generateProblem() {
 function generateBasicProblem(params) {
     let operator = params.operations[Math.floor(Math.random() * params.operations.length)];
     let num1, num2, correctAnswer;
+    let emojiVisual = ''
+    currentProblem = {};
 
     switch(currentLevel) {
         case 'kinder':
-            num1 = randomNumber(params.maxNumber);
-            num2 = randomNumber(params.maxNumber);
+            num1 = randomNumber(5); // 1-5
+            num2 = randomNumber(10 - num1); // 1-5 (total ≤ 10)
+            emojiVisual = createEmojiVisual(num1, num2);
+            console.log(emojiVisual)
             break;
-            
         case 'primary1':
             if(operator === '-') {
                 num1 = randomNumber(params.maxNumber, 10);
@@ -284,9 +287,12 @@ function generateBasicProblem(params) {
 
     currentProblem = { 
         problemText: `${num1} ${operator} ${num2} = ?`,
-        correctAnswer 
+        correctAnswer,
+        emojiVisual
     };
-    elements.problemElement.textContent = currentProblem.problemText;
+    
+    //elements.problemElement.textContent = currentProblem.problemText;
+
 }
 
 function generateAdvancedProblem(params) {
@@ -448,7 +454,17 @@ function showAnswers() {
         if(wrong > 0 && !answers.includes(wrong)) answers.push(wrong);
     }
     
-    elements.problemElement.textContent = currentProblem.problemText;
+    if(currentLevel === 'kinder') {
+        elements.problemElement.innerHTML = `
+            ${currentProblem.problemText}
+            <div class="emoji-visual">
+                ${currentProblem.emojiVisual}
+            </div>    
+            `;
+    } else {
+        elements.problemElement.textContent = currentProblem.problemText;
+    }
+
     answers.sort(() => Math.random() - 0.5).forEach(answer => {
         const button = document.createElement('button');
         button.className = 'answer-btn';
@@ -538,7 +554,7 @@ function checkAnswer(selected) {
         if(currentStreak >= levelConfig.streakBonus) {
             const bonus = Math.round(levelConfig.basePoints * levelConfig.speedBonusMultiplier);
             pointsEarned += bonus;
-            bonusMessage = `<div class="streak-feedback">🔥 ${currentStreak}-in-a-row! +${bonus} bonus</div>`;
+            bonusMessage = `<div class="streak-feedback">🔥 ${currentStreak} ✅ In-A-Row! +${bonus} bonus</div>`;
         }
         
         score += pointsEarned;
@@ -630,4 +646,10 @@ function validateAnswer(answer) {
 
 function randomNumber(max, min = 1) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function createEmojiVisual(num1,num2) {
+    const emojis = ['🍎', '🌸', '🚗', '🦆', '⚽', ''];
+    const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+    return emoji.repeat(num1)+' + '+emoji.repeat(num2);
 }
