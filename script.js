@@ -345,7 +345,7 @@ function generateLinearEquation() {
 
 function generateParenthesisEquation() {
     const x = randomNumber(20, 1);
-    const a = randomNumber(10, 1);
+    const a = randomNumber(10, 2); // Changed from (10,1) to (10,2)
     const d = randomNumber(15, 1);
     const e = a * (x - d);
     
