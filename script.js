@@ -1,393 +1,617 @@
-/* ================== GLOBAL STYLES ================== */
-body {
-    font-family: 'Bubblegum Sans';
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #2c3e50, #e183e4);
-    margin: 0;
-    color: #2d3436;
-}
-
-.main-container {
-    text-align: center;
-    padding: 2rem;
-    max-width: 800px;
-    width: 90%;
-}
-
-/* ================== HEADER & TITLE ================== */
-h1 {
-    margin: 0 0 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    font-size: 2.8em;
-    color: #e84393;
-    text-shadow: 2px 2px #fff;
-    letter-spacing: 2px;
-    transition: all 0.3s ease;
-}
-
-h1 img {
-    height: 60px;
-    filter: drop-shadow(2px 2px 1px rgba(0,0,0,0.2));
-    transition: height 0.3s ease;
-}
-
-/* ================== GAME ACTIVE STATES ================== */
-.game-container.active ~ h1 {
-    font-size: 1.5em;
-    margin: 0 0 1rem;
-}
-
-.game-container.active ~ h1 img {
-    height: 40px;
-}
-
-/* ================== CONTROLS & BUTTONS ================== */
-.mute-btn, #pauseBtn {
-    position: fixed;
-    top: 15px;
-    background: rgba(255,255,255,0.9);
-    border: 2px solid #333;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s;
-}
-
-.mute-btn {
-    right: 15px;
-}
-
-#pauseBtn {
-    right: 65px;
-}
-
-#pauseBtn.paused {
-    background: #ffeb3b;
-}
-
-.pause-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.7);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    color: white;
-    z-index: 999;
-    backdrop-filter: blur(3px);
-}
-
-.level-selector {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1rem;
-    margin: 1.5rem 0;
-}
-
-.level-btn {
-    width: 80%;
-    padding: 1rem;
-    margin: 0;
-    font-size: 1.1rem;
-    flex: 0 1 auto;
-    min-width: 180px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    border: none;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    position: relative;
-    background: #ffeaa7;
-    color: #2d3436;
-}
-
-.level-btn::after {
-    content: attr(data-description);
-    display: block;
-    font-size: 0.9rem;
-    color: #666;
-    margin-top: 0.5rem;
-    white-space: normal;
-}
-
-/* Base hover effect */
-.level-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    background: #d8fff7;
-    border-color: #4ecdc4;
-}
-
-/* Colorful hover background effect */
-.level-btn:hover::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(45deg, 
-        rgba(255,255,255,0.15) 0%,
-        rgba(255,255,255,0.05) 100%);
-    z-index: 1;
-}
-
-
-.level-btn.active {
-    background: #00cec9;
-    color: white;
-    border: 2px solid #00a693;
-    transform: scale(1.05);
-}
-
-.start-btn {
-    padding: 1rem 3rem;
-    font-size: 1.5em;
-    background: #14a33c;
-    color: white;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-#startBtn, .game-over button {
-    background: #4CAF50;
-    color: white;
-    padding: 15px 30px;
-    border: none;
-    border-radius: 25px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    display: block;
-    margin: 20px auto;
-  }
-  
-#startBtn:hover, .game-over button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 8px rgba(0,0,0,0.2);
-    background: #45a049;
-}
-/* ================== GAME CONTAINER ================== */
-.game-container {
-    background: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 0 20px rgba(0,0,0,0.1);
-    padding: 2rem;
-    border-radius: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.score-board {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-    padding: 12px 20px;
-    margin-bottom: 20px;
-    background: rgba(255,255,255,0.95);
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-.problem {
-    font-size: 2.5em;
-    margin: 25px 0;
-    padding: 25px;
-    line-height: 1.3;
-    word-wrap: break-word;
-    color: #2d3436;
-}
-
-.answers-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-    margin: 2rem 0;
-}
-
-.answer-btn {
-    padding: 1.5rem;
-    font-size: 1.5em;
-    border: none;
-    border-radius: 15px;
-    background: #6da9e4; /* Cobalt blue */
-    color: white;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.answer-btn:hover {
-    background: #1565C0; /* Darker cobalt */
-    transform: scale(1.05);
-}
-
-.answer-btn.correct {
-    background: #00b894 !important;
-    animation: bounce 0.5s;
-}
-
-.answer-btn.wrong {
-    background: #d63031 !important;
-    animation: shake 0.5s;
-}
-
-/* ================== FEEDBACK SYSTEM ================== */
-#answerFeedback {
-    opacity: 0;
-    transition: opacity 0.3s;
-    margin: 20px 0 0;
-    padding: 15px;
-    border-radius: 8px;
-    text-align: center;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-#answerFeedback.visible {
-    opacity: 1;
-}
-
-#answerFeedback.correct {
-    background: #007304;
-    color: white;
-}
-
-#answerFeedback.wrong {
-    background: #f44336;
-    color: white;
-}
-
-
-#feedback strong {
-    color: #ffd700; /* Gold color for emphasized text */
-    margin: 0 5px;
-}
-
-.streak-feedback {
-    color: #ff9f43;
-    font-weight: bold;
-    margin-top: 8px;
-    animation: streak-pop 0.3s ease;
-}
-
-@keyframes streak-pop {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); }
-}
-/* ================== GAME OVER ELEMENTS ================== */
-.game-over {
-    background: rgba(255, 255, 255, 0.98) !important;
-    padding: 2rem;
-    border-radius: 20px;
-    margin-top: 2rem;
-    color: #fff !important;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
-}
-
-.game-over h2 {
-    color: #ffd700; /* Gold color for headings */
-}
-
-.final-score {
-    font-size: 2em;
-    color: #e84393;
-    margin: 1rem 0;
-}
-
-.performance-message {
-    font-size: 1.5em;
-    margin: 1rem 0;
-    color: #02866b;
-}
-
-.performance-message .empty-state {
-    color: #af4949;
-    font-size: 1.1em;
-}
-
-/* ================== RESPONSIVE DESIGN ================== */
-@media (max-width: 768px) {
-    .main-container {
-        padding: 1rem;
-        width: 95%;
+const config = {
+    kinder: {
+        name: "Kindergarten Questers 🐛➡🦋",
+        operations: ['+'],
+        maxNumber: 5,
+        time: 90,
+        emoji: '🐛',
+        correctPoints: 5,
+        wrongPenalty: 0,
+        speedBonusThreshold: 3,
+        speedBonusMultiplier: 1.5,
+        streakBonus: 3,
+        basePoints: 10,
+        penaltyMultiplier: 1.2
+    },
+    primary1: {
+        name: "Grade 1-3 Number Ninjas 🥷✨",
+        operations: ['+', '-'],
+        maxNumber: 20,
+        time: 120,
+        emoji: '🥷',
+        correctPoints: 15,
+        wrongPenalty: 2,
+        speedBonusThreshold: 3,
+        speedBonusMultiplier: 1.7,
+        streakBonus: 3,
+        basePoints: 15,
+        penaltyMultiplier: 1.3
+    },
+    primary2: {
+        name: "Grade 4-6 Math Mavericks 🤠🔢",
+        operations: ['x','BODMAS', '÷', '²'],
+        maxNumber: 100,
+        time: 120,
+        emoji: '🤠',
+        correctPoints: 20,
+        wrongPenalty: 5,
+        maxAttempts: 15,
+        patterns: [
+            '(a ± b) × (c ± d)',
+            'a × (b ± c) ÷ d',
+            '(a + b) × c - d',
+            'a ÷ (b ± c)',
+            '(a × b) + (c × d)',
+            'a - (b × c) ÷ d',
+            '(a + b) ÷ (c - d)',
+            'a² ± b × c'
+        ],
+        speedBonusThreshold: 5,
+        speedBonusMultiplier: 2.5,
+        streakBonus: 4,
+        basePoints: 25,
+        penaltyMultiplier: 1.6
+    },
+    secondary: {
+        name: "Grade 7-8 Algebra Avengers 🦸♂️📐",
+        operations: ['eq', '√', '()'],
+        maxNumber: 150,
+        time: 120,
+        emoji: '🦸♂️',
+        correctPoints: 25,
+        wrongPenalty: 10,
+        maxAttempts: 15,
+        speedBonusThreshold: 5,
+        speedBonusMultiplier: 2.5,
+        streakBonus: 3,
+        basePoints: 25,
+        penaltyMultiplier: 1.5
+    },
+    genius: {
+        name: "Math Megastars 🌟🧠",
+        operations: ['eq', '²', '√', '()', 'π'],
+        maxNumber: 200,
+        time: 120,
+        emoji: '🌟',
+        correctPoints: 30,
+        wrongPenalty: 15,
+        equationChance: 0.7,
+        maxAttempts: 20,
+        speedBonusThreshold: 5,
+        speedBonusMultiplier: 3,
+        streakBonus: 5,
+        basePoints: 30,
+        penaltyMultiplier: 2
     }
+};
 
-    .level-selector {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 0.8rem;
-        width: 100%;
+let currentLevel = 'kinder';
+let score = 0;
+let timeLeft = 0;
+let gameActive = false;
+let currentProblem = null;
+let timerInterval = null;
+let totalQuestions = 0;
+let correctAnswers = 0;
+let currentStreak = 0;
+let isMuted = false;
+let isPaused = false;
+let remainingTime = 0;
+let problemHistory = [];
+let pendingTimeout = null;
+
+const elements = {
+    startBtn: document.getElementById('startBtn'),
+    gameContainer: document.querySelector('.game-container'),
+    levelBtns: document.querySelectorAll('.level-btn'),
+    muteBtn: document.getElementById('muteBtn'),
+    pauseBtn: document.getElementById('pauseBtn'),
+    scoreElement: document.getElementById('score'),
+    timerElement: document.getElementById('timer'),
+    problemElement: document.getElementById('problem'),
+    answersContainer: document.getElementById('answers'),
+    feedbackElement: document.getElementById('answerFeedback'),
+    gameOverScreen: document.querySelector('.game-over'),
+    finalScore: document.getElementById('finalScore'),
+    performanceMessage: document.getElementById('performanceMessage'),
+    playAgainBtn: document.getElementById('playAgainBtn'),
+    correctSound: document.getElementById('correctSound'),
+    wrongSound: document.getElementById('wrongSound'),
+    tickSound: document.getElementById('tickSound'),
+    gameOverSound: document.getElementById('gameOverSound'),
+    currentLevelEmoji: document.getElementById('currentLevelEmoji'),
+    currentLevelName: document.getElementById('currentLevelName')
+};
+
+const MAX_HISTORY = 10;
+
+// Event Listeners
+document.querySelectorAll('.level-btn').forEach(btn => {
+    btn.addEventListener('click', () => setLevel(btn.dataset.level));
+});
+
+elements.startBtn.addEventListener('click', startGame);
+elements.muteBtn.addEventListener('click', () => toggleMute());
+elements.pauseBtn.addEventListener('click', togglePause);
+
+elements.playAgainBtn.addEventListener('click', () => {
+    elements.gameOverScreen.classList.add('hidden');
+    document.querySelectorAll('.level-btn').forEach(btn => btn.hidden = false);
+    elements.startBtn.classList.remove('hidden');
+    elements.gameContainer.classList.add('hidden');
+    
+    score = 0;
+    timeLeft = 0;
+    problemHistory = [];
+    elements.scoreElement.textContent = "0";
+    elements.timerElement.textContent = "0";
+    toggleMute(localStorage.getItem('muteState') === 'true');
+});
+
+function toggleMute(forceState) {
+    if(typeof forceState === 'boolean') {
+        isMuted = forceState;
+    } else {
+        isMuted = !isMuted;
     }
+    
+    localStorage.setItem('muteState', isMuted);
+    const icon = elements.muteBtn.querySelector('.icon');
+    icon.textContent = isMuted ? '🔇' : '🔊';
+    elements.muteBtn.classList.toggle('muted', isMuted);
 
-    .level-btn {
-        width: 100% !important;
-        padding: 1rem;
-        font-size: 1rem;
-        white-space: normal;
-    }
-
-    .game-container.active ~ h1 {
-        font-size: 1.2em;
-        margin: 0 0 0.5rem;
-    }
-
-    .game-container.active ~ h1 img {
-        height: 30px;
+    if(isMuted) {
+        Object.values(elements).forEach(element => {
+            if(element instanceof HTMLAudioElement) {
+                element.pause();
+                element.currentTime = 0;
+            }
+        });
     }
 }
 
-@media (max-width: 480px) {
-    h1 {
-        flex-direction: column;
-        gap: 5px;
-    }
+function togglePause() {
+    isPaused = !isPaused;
+    elements.pauseBtn.classList.toggle('paused', isPaused);
 
-    .level-selector {
-        gap: 0.5rem;
+    if(isPaused) {
+        stopSound(elements.tickSound);
+        const overlay = document.createElement('div');
+        overlay.className = 'pause-overlay';
+        overlay.textContent = 'PAUSED';
+        document.body.appendChild(overlay);
+        remainingTime = timeLeft;
+        clearInterval(timerInterval);
+        document.querySelectorAll('.answer-btn').forEach(btn => btn.disabled = true);
+    } else {
+        document.querySelector('.pause-overlay')?.remove();
+        timeLeft = remainingTime;
+        timerInterval = setInterval(updateTimer, 1000);
+        document.querySelectorAll('.answer-btn').forEach(btn => btn.disabled = false);
+        if(timeLeft <= 10) playSound(elements.tickSound);
     }
-
-    .level-btn {
-        padding: 0.8rem;
-        font-size: 0.95rem;
-    }
-
-    .level-btn::after {
-        font-size: 0.85rem;
-    }
-
-    .game-container.active ~ h1 {
-        font-size: 0.70em;
-    }
-
-    .game-container.active ~ h1 img {
-        height: 30px;
 }
 
-/* ================== UTILITY CLASSES ================== */
-.hidden {
-    display: none !important;
+function playSound(sound) {
+    if(!isMuted && sound) {
+        sound.currentTime = 0;
+        sound.play().catch(() => {});
+    }
+}
+
+function stopSound(sound) {
+    if(sound) {
+        sound.pause();
+        sound.currentTime = 0;
+    }
+}
+
+function setLevel(level) {
+    currentLevel = level;
+    elements.levelBtns.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.level === level);
+    });
+}
+
+function generateProblem() {
+    const params = config[currentLevel];
+    let newProblem;
+    let attempts = 0;
+    
+    do {
+        attempts++;
+        try {
+            if (currentLevel === 'primary2') generateBodmasProblem(params);
+            else if (currentLevel === 'secondary' || currentLevel === 'genius') generateAdvancedProblem(params);
+            else generateBasicProblem(params);
+            
+            newProblem = currentProblem.problemText;
+        } catch (error) {
+            currentProblem = generateFallbackProblem();
+            break;
+        }
+        if (attempts > 5) break;
+    } while(problemHistory.includes(newProblem));
+    
+    problemHistory.push(newProblem);
+    if(problemHistory.length > MAX_HISTORY) problemHistory.shift();
+    
+    totalQuestions++;
+    showAnswers();
+}
+
+function generateBasicProblem(params) {
+    let operator = params.operations[Math.floor(Math.random() * params.operations.length)];
+    let num1, num2, correctAnswer;
+
+    switch(currentLevel) {
+        case 'kinder':
+            num1 = randomNumber(params.maxNumber);
+            num2 = randomNumber(params.maxNumber);
+            break;
+            
+        case 'primary1':
+            if(operator === '-') {
+                num1 = randomNumber(params.maxNumber, 10);
+                num2 = randomNumber(num1, 1);
+            } else {
+                num1 = randomNumber(params.maxNumber, 5);
+                num2 = randomNumber(params.maxNumber, 5);
+            }
+            break;
+            
+        default:
+            num1 = randomNumber(params.maxNumber);
+            num2 = randomNumber(params.maxNumber);
+    }
+
+    switch(operator) {
+        case '+': 
+            correctAnswer = num1 + num2;
+            break;
+        case '-': 
+            correctAnswer = num1 - num2;
+            break;
+        case '×': 
+            correctAnswer = num1 * num2;
+            break;
+        case '÷':
+            num2 = randomNumber(12, 1);
+            correctAnswer = randomNumber(12);
+            num1 = num2 * correctAnswer;
+            break;
+    }
+
+    currentProblem = { 
+        problemText: `${num1} ${operator} ${num2} = ?`,
+        correctAnswer 
+    };
+    elements.problemElement.textContent = currentProblem.problemText;
+}
+
+function generateAdvancedProblem(params) {
+    const generators = {
+        secondary: [
+            generateLinearEquation,
+            generateParenthesisEquation,
+            generateSquareEquation
+        ],
+        genius: [
+            generateComplexEquation,
+            generateSqrtEquation,
+            generateFractionEquation,
+            generateAlgebraicExpression
+        ]
+    };
+    
+    let safeAttempts = 0;
+    while(safeAttempts < 10) {
+        const generator = generators[currentLevel][Math.floor(Math.random() * generators[currentLevel].length)];
+        const problem = generator();
+        
+        if(problem && validateAnswer(problem.correctAnswer)) {
+            currentProblem = problem;
+            return;
+        }
+        safeAttempts++;
+    }
+    currentProblem = generateFallbackProblem();
+}
+
+// Advanced problem generators
+function generateLinearEquation() {
+    const x = randomNumber(20, 1);
+    const a = randomNumber(12, 2);
+    const b = randomNumber(30, 1);
+    const c = a * x + b;
+    
+    return {
+        problemText: `Solve for x: ${a}x + ${b} = ${c}`,
+        correctAnswer: x
+    };
+}
+
+function generateParenthesisEquation() {
+    const x = randomNumber(20, 1);
+    const a = randomNumber(10, 1);
+    const d = randomNumber(15, 1);
+    const e = a * (x - d);
+    
+    return {
+        problemText: `Solve for x: ${a}(x - ${d}) = ${e}`,
+        correctAnswer: x
+    };
+}
+
+function generateSquareEquation() {
+    const x = randomNumber(15, 1);
+    const coefficient = randomNumber(9, 2);
+    return {
+        problemText: `${coefficient}x² = ${coefficient * x ** 2}`,
+        correctAnswer: x
+    };
+}
+
+function generateComplexEquation() {
+    const x = randomNumber(20, 1);
+    const a = randomNumber(12, 2);
+    const c = randomNumber(12, 2);
+    const b = randomNumber(30, 1);
+    const d = (a - c) * x + b;
+    
+    return {
+        problemText: `Solve for x: ${a}x + ${b} = ${c}x + ${d}`,
+        correctAnswer: x
+    };
+}
+
+function generateSqrtEquation() {
+    const base = randomNumber(20, 2);
+    return {
+        problemText: `√${base ** 2} = ?`,
+        correctAnswer: base
+    };
+}
+
+function generateFractionEquation() {
+    const x = randomNumber(20, 1);
+    const denominator = randomNumber(10, 2);
+    const numerator = randomNumber(40, 10);
+    const rhs = numerator / denominator;
+    
+    return {
+        problemText: `Solve for x: (${numerator} + x)/${denominator} = ${rhs}`,
+        correctAnswer: (rhs * denominator) - numerator
+    };
+}
+
+function generateAlgebraicExpression() {
+    const a = randomNumber(20, 5);
+    const b = randomNumber(15, 5);
+    const c = randomNumber(10, 2);
+    const d = randomNumber(20);
+    return {
+        problemText: `(${a} + ${b}) × ${c} - ${d} = ?`,
+        correctAnswer: (a + b) * c - d
+    };
+}
+
+function generateBodmasProblem(params) {
+    let safeAttempts = 0;
+    while(safeAttempts < params.maxAttempts) {
+        safeAttempts++;
+        try {
+            const pattern = params.patterns[Math.floor(Math.random() * params.patterns.length)];
+            const numbers = generateSafeNumbers(pattern);
+            const expr = buildExpression(pattern, numbers);
+            const answer = calculateAnswer(expr);
+
+            if(validateAnswer(answer)) {
+                currentProblem = {
+                    problemText: formatExpression(expr),
+                    correctAnswer: answer
+                };
+                return;
+            }
+        } catch (error) {
+            console.error('BODMAS generation error:', error);
+        }
+    }
+    currentProblem = generateFallbackProblem();
+}
+
+function showAnswers() {
+    elements.answersContainer.innerHTML = '';
+    if(!currentProblem) currentProblem = generateFallbackProblem();
+
+    const answers = [currentProblem.correctAnswer];
+    while(answers.length < 4) {
+        const wrong = currentProblem.correctAnswer + randomNumber(3, -2);
+        if(wrong > 0 && !answers.includes(wrong)) answers.push(wrong);
+    }
+    
+    elements.problemElement.textContent = currentProblem.problemText;
+    answers.sort(() => Math.random() - 0.5).forEach(answer => {
+        const button = document.createElement('button');
+        button.className = 'answer-btn';
+        button.textContent = answer;
+        button.onclick = () => checkAnswer(answer);
+        elements.answersContainer.appendChild(button);
+    });
+}
+
+function startGame() {
+    clearInterval(timerInterval);
+    clearTimeout(pendingTimeout);
+    elements.currentLevelEmoji.textContent = config[currentLevel].emoji;
+    //elements.currentLevelName.textContent = config[currentLevel].name;
+    document.querySelectorAll('.level-btn').forEach(btn => btn.hidden = true);
+    elements.startBtn.classList.add('hidden');
+    elements.gameContainer.classList.remove('hidden');
+    
+    elements.pauseBtn.disabled = false;
+    gameActive = true;
+    isPaused = false;
+    resetState();
+    generateProblem();
+    timerInterval = setInterval(updateTimer, 1000);
+}
+
+function resetState() {
+    score = 0;
+    timeLeft = config[currentLevel].time;
+    totalQuestions = 0;
+    correctAnswers = 0;
+    currentStreak = 0;
+    problemHistory = [];
+    currentProblem = null;
+
+    elements.scoreElement.textContent = "0";
+    elements.timerElement.textContent = timeLeft;
+    elements.feedbackElement.classList.remove('visible');
+}
+
+function updateTimer() {
+    if(isPaused) return;
+    
+    timeLeft--;
+    elements.timerElement.textContent = timeLeft;
+    
+    if(timeLeft <= 10) {
+        playSound(elements.tickSound);
+        if(timeLeft <= 0) endGame();
+    }
+}
+
+function endGame() {
+    gameActive = false;
+    stopSound(elements.tickSound);
+    clearInterval(timerInterval);
+    clearTimeout(pendingTimeout);
+    
+    elements.gameContainer.classList.add('hidden');
+    elements.gameOverScreen.classList.remove('hidden');
+    playSound(elements.gameOverSound);
+    elements.pauseBtn.disabled = true;
+
+    const percentage = Math.round((correctAnswers / Math.max(totalQuestions, 1)) * 100);
+    const messages = {
+        90: "Math Wizard! 🧙♂️", 75: "Brilliant! 🤩",
+        50: "Good Effort! 😊", 25: "Keep Trying! 💪",
+        0: "You'll Get Better! 🐣"
+    };
+    
+    elements.performanceMessage.textContent = messages[Object.keys(messages).reverse().find(threshold => percentage >= threshold)];
+    elements.finalScore.textContent = score;
+}
+
+function checkAnswer(selected) {
+    if (!gameActive || isPaused) return;
+    clearTimeout(pendingTimeout);
+
+    const isCorrect = selected === currentProblem.correctAnswer;
+    const levelConfig = config[currentLevel];
+    let pointsEarned = 0;
+    let bonusMessage = '';
+
+    if(isCorrect) {
+        currentStreak++;
+        pointsEarned = levelConfig.basePoints;
+        
+        if(currentStreak >= levelConfig.streakBonus) {
+            const bonus = Math.round(levelConfig.basePoints * levelConfig.speedBonusMultiplier);
+            pointsEarned += bonus;
+            bonusMessage = `<div class="streak-feedback">🔥 ${currentStreak} ✅ In-A-Row! +${bonus} bonus</div>`;
+        }
+        
+        score += pointsEarned;
+        correctAnswers++;
+        playSound(elements.correctSound);
+    } else {
+        currentStreak = 0;
+        score = Math.max(0, score - levelConfig.wrongPenalty);
+        playSound(elements.wrongSound);
+    }
+
+    elements.scoreElement.textContent = score;
+    elements.feedbackElement.classList.remove('wrong');
+    elements.feedbackElement.classList.add('visible', isCorrect ? 'correct' : 'wrong');
+    elements.feedbackElement.innerHTML = isCorrect 
+        ? `<div>🎉 Correct! 🎉 +${pointsEarned}</div>${bonusMessage}`
+        : `<div>❌ Wrong! ❌ -${levelConfig.wrongPenalty}</div>
+           <div class="correct-answer">Correct: ${currentProblem.correctAnswer}</div>`;
+
+    document.querySelectorAll('.answer-btn').forEach(btn => {
+        btn.disabled = true;
+        btn.classList.add(Number(btn.textContent) === currentProblem.correctAnswer ? 'correct' : 'wrong');
+    });
+
+    // Prepare next question
+    pendingTimeout = setTimeout(() => {
+        if(gameActive) {
+            generateProblem();
+            elements.feedbackElement.classList.remove('visible');
+        }
+    }, 1500);
+}
+
+function generateFallbackProblem() {
+    const a = randomNumber(99, 19);
+    const b = randomNumber(11, 19);
+    return {
+        problemText: `${a} × ${b} = ?`,
+        correctAnswer: a * b
+    };
+}
+
+function generateSafeNumbers(pattern) {
+    const numbers = {
+        a: randomNumber(15, 2),
+        b: randomNumber(15, 2),
+        c: randomNumber(12, 2),
+        d: randomNumber(12, 2)
+    };
+
+    if(pattern.includes('÷')) {
+        if(pattern.includes('(b + c)')) {
+            numbers.c = randomNumber(5, 1);
+            numbers.a = (numbers.b + numbers.c) * randomNumber(5, 1);
+        }
+        if(pattern.includes('÷ b')) {
+            numbers.b = randomNumber(10, 2);
+            numbers.a = numbers.b * randomNumber(10, 2);
+        }
+    }
+
+    if(pattern.includes('-')) {
+        numbers.a = Math.max(numbers.a, numbers.b + 1);
+    }
+
+    return numbers;
+}
+
+function buildExpression(pattern, numbers) {
+    let expr = pattern.replace(/±/g, Math.random() > 0.5 ? '+' : '-');
+    expr = expr.replace(/[abcd]/g, m => numbers[m]);
+    return expr.replace(/×/g, '*').replace(/÷/g, '/');
+}
+
+function formatExpression(expr) {
+    let formatted = expr.replace(/\*/g, '×').replace(/\//g, '÷')
+                       .replace(/\d+/g, match => parseInt(match).toLocaleString())
+                       .replace(/Math\.sqrt\((\d+)\)/g, '√$1');
+    return formatted + ' = ?';
+}
+
+function calculateAnswer(expr) {
+    try { return eval(expr); } 
+    catch { return null; }
+}
+
+function validateAnswer(answer) {
+    return Number.isInteger(answer) && answer > 0;
+}
+
+function randomNumber(max, min = 1) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
