@@ -649,7 +649,7 @@ function randomNumber(max, min = 1) {
 }
 
 function createEmojiVisual(num1,num2) {
-    const emojis = ['🍎', '🌸', '🚗', '🦆', '⚽', ''];
+    const emojis = ['🍎', '🌸', '🚗', '🦆', '⚽', '🍦'];
     const emoji = emojis[Math.floor(Math.random() * emojis.length)];
     return emoji.repeat(num1)+' + '+emoji.repeat(num2);
 }
