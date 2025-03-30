@@ -380,8 +380,11 @@ h1 img {
     }
 
     .game-container.active ~ h1 {
-        font-size: 1em;
+        font-size: 0.70em;
     }
+
+    .game-container.active ~ h1 img {
+        height: 30px;
 }
 
 /* ================== UTILITY CLASSES ================== */
