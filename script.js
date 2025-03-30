@@ -2,10 +2,10 @@ const config = {
     kinder: {
         name: "Kindergarten Questers 🐛➡🦋",
         operations: ['+'],
-        maxNumber: 5,
+        maxNumber: 10,
         time: 90,
-        emoji: '🐛',
-        correctPoints: 5,
+        emoji: '📚',
+        correctPoints: 10,
         wrongPenalty: 0,
         speedBonusThreshold: 3,
         speedBonusMultiplier: 1.5,
@@ -15,10 +15,10 @@ const config = {
     },
     primary1: {
         name: "Grade 1-3 Number Ninjas 🥷✨",
-        operations: ['+', '-'],
-        maxNumber: 20,
-        time: 120,
-        emoji: '🥷',
+        operations: ['+', '-', '×'],
+        maxNumber: 30,
+        time: 75,
+        emoji: '🎒',
         correctPoints: 15,
         wrongPenalty: 2,
         speedBonusThreshold: 3,
@@ -29,10 +29,10 @@ const config = {
     },
     primary2: {
         name: "Grade 4-6 Math Mavericks 🤠🔢",
-        operations: ['x','BODMAS', '÷', '²'],
+        operations: ['BODMAS', '÷', '²'],
         maxNumber: 100,
-        time: 120,
-        emoji: '🤠',
+        time: 60,
+        emoji: '🧮',
         correctPoints: 20,
         wrongPenalty: 5,
         maxAttempts: 15,
@@ -56,8 +56,8 @@ const config = {
         name: "Grade 7-8 Algebra Avengers 🦸♂️📐",
         operations: ['eq', '√', '()'],
         maxNumber: 150,
-        time: 120,
-        emoji: '🦸♂️',
+        time: 45,
+        emoji: '⚡',
         correctPoints: 25,
         wrongPenalty: 10,
         maxAttempts: 15,
@@ -71,8 +71,8 @@ const config = {
         name: "Math Megastars 🌟🧠",
         operations: ['eq', '²', '√', '()', 'π'],
         maxNumber: 200,
-        time: 120,
-        emoji: '🌟',
+        time: 30,
+        emoji: '🎇',
         correctPoints: 30,
         wrongPenalty: 15,
         equationChance: 0.7,
@@ -298,6 +298,7 @@ function generateAdvancedProblem(params) {
         ],
         genius: [
             generateComplexEquation,
+            generateSquareEquation,
             generateSqrtEquation,
             generateFractionEquation,
             generateAlgebraicExpression
@@ -366,11 +367,28 @@ function generateComplexEquation() {
 }
 
 function generateSqrtEquation() {
-    const base = randomNumber(20, 2);
-    return {
-        problemText: `√${base ** 2} = ?`,
-        correctAnswer: base
-    };
+    if (currentLevel == 'secondary') {
+        const base = randomNumber(20, 2);
+        return {
+            problemText: `√${base ** 2} = ?`,
+            correctAnswer: base
+        };
+    } else {    
+        const terms = [
+            `${randomInt(2, 5)}x`, 
+            `${randomInt(1, 4)}y`, 
+            `-(${randomInt(1, 3)}x - ${randomInt(1, 3)}y)`, 
+            `${randomInt(2, 4)}*${randomInt(2, 5)}z`
+        ];
+        
+        // Combine terms into a complex expression
+        const innerExpression = shuffle(terms).join(' + '); // e.g., "3x + 2y - (x - 4y)"
+        
+        return {
+            question: `√[(${innerExpression})²]`,
+            answer: `|${simplifyExpression(innerExpression)}|`, // Use a simplification library or custom logic
+        };
+    }    
 }
 
 function generateFractionEquation() {
@@ -444,7 +462,6 @@ function startGame() {
     clearInterval(timerInterval);
     clearTimeout(pendingTimeout);
     elements.currentLevelEmoji.textContent = config[currentLevel].emoji;
-    //elements.currentLevelName.textContent = config[currentLevel].name;
     document.querySelectorAll('.level-btn').forEach(btn => btn.hidden = true);
     elements.startBtn.classList.add('hidden');
     elements.gameContainer.classList.remove('hidden');
@@ -521,7 +538,7 @@ function checkAnswer(selected) {
         if(currentStreak >= levelConfig.streakBonus) {
             const bonus = Math.round(levelConfig.basePoints * levelConfig.speedBonusMultiplier);
             pointsEarned += bonus;
-            bonusMessage = `<div class="streak-feedback">🔥 ${currentStreak} ✅ In-A-Row! +${bonus} bonus</div>`;
+            bonusMessage = `<div class="streak-feedback">🔥 ${currentStreak}-in-a-row! +${bonus} bonus</div>`;
         }
         
         score += pointsEarned;
@@ -546,7 +563,6 @@ function checkAnswer(selected) {
         btn.classList.add(Number(btn.textContent) === currentProblem.correctAnswer ? 'correct' : 'wrong');
     });
 
-    // Prepare next question
     pendingTimeout = setTimeout(() => {
         if(gameActive) {
             generateProblem();
