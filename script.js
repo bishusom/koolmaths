@@ -129,6 +129,11 @@ const MAX_HISTORY = 10;
 // Event Listeners
 document.querySelectorAll('.level-btn').forEach(btn => {
     btn.addEventListener('click', () => setLevel(btn.dataset.level));
+    // Add double-click handler
+    btn.addEventListener('dblclick', () => {
+        setLevel(btn.dataset.level);
+        startGame();
+    });
 });
 
 elements.startBtn.addEventListener('click', startGame);
@@ -593,12 +598,30 @@ function checkAnswer(selected) {
 }
 
 function generateFallbackProblem() {
-    const a = randomNumber(99, 19);
-    const b = randomNumber(11, 19);
-    return {
-        problemText: `${a} × ${b} = ?`,
-        correctAnswer: a * b
-    };
+    if (currentLevel === 'kinder') {
+        const num1 = randomNumber(5); // 1-5
+        const num2 = randomNumber(10 - num1); // Ensures sum ≤ 10
+        return {
+            problemText: `${num1} + ${num2} = ?`,
+            correctAnswer: num1 + num2,
+            emojiVisual: createEmojiVisual(num1, num2)
+        };
+    } else if (currentLevel === 'primary1') {
+        const num1 = randomNumber(30, 1);
+        const num2 = randomNumber(30, 1);
+        return {
+            problemText: `${num1} + ${num2} = ?`,
+            correctAnswer: num1 + num2
+        };
+    } else {
+        // Existing multiplication fallback for other levels
+        const a = randomNumber(99, 19);
+        const b = randomNumber(11, 19);
+        return {
+            problemText: `${a} × ${b} = ?`,
+            correctAnswer: a * b
+        };
+    }
 }
 
 function generateSafeNumbers(pattern) {
