@@ -15,7 +15,7 @@ const config = {
     },
     primary1: {
         name: "Grade 1-3 Number Ninjas 🥷✨",
-        operations: ['+', '-', '×'],
+        operations: ['+', '-'],
         maxNumber: 30,
         time: 120,
         emoji: '🎒',
@@ -29,7 +29,7 @@ const config = {
     },
     primary2: {
         name: "Grade 4-6 Math Mavericks 🤠🔢",
-        operations: ['BODMAS', '÷', '²'],
+        operations: ['BODMAS', '÷', , '×','²'],
         maxNumber: 100,
         time: 120,
         emoji: '🧮',
@@ -264,7 +264,6 @@ function generateBasicProblem(params) {
             num1 = randomNumber(5); // 1-5
             num2 = randomNumber(10 - num1); // 1-5 (total ≤ 10)
             emojiVisual = createEmojiVisual(num1, num2);
-            console.log(emojiVisual)
             break;
         case 'primary1':
             if(operator === '-') {
@@ -314,6 +313,7 @@ function generateAdvancedProblem(params) {
         ],
         genius: [
             generateComplexEquation,
+            generateQuadraticEquation,  // Added new generator
             generateSquareEquation,
             generateSqrtEquation,
             generateFractionEquation,
@@ -361,50 +361,67 @@ function generateParenthesisEquation() {
 }
 
 function generateSquareEquation() {
-    const x = randomNumber(15, 1);
-    const coefficient = randomNumber(9, 2);
-    return {
-        problemText: `${coefficient}x² = ${coefficient * x ** 2}`,
-        correctAnswer: x
-    };
+    if (currentLevel === 'genius') {
+        const x = randomNumber(15, 1);
+        const a = randomNumber(9, 2);
+        const b = randomNumber(20, 1);
+        const c = a * x * x + b * x;
+        return {
+            problemText: `${a}x² + ${b}x = ${c}`,
+            correctAnswer: x
+        };
+    } else {
+        const x = randomNumber(15, 1);
+        const coefficient = randomNumber(9, 2);
+        return {
+            problemText: `${coefficient}x² = ${coefficient * x ** 2}`,
+            correctAnswer: x
+        };
+    }
 }
 
 function generateComplexEquation() {
     const x = randomNumber(20, 1);
     const a = randomNumber(12, 2);
     const c = randomNumber(12, 2);
-    const b = randomNumber(30, 1);
-    const d = (a - c) * x + b;
+    const d = randomNumber(10, 1);
+    const b = (a - c) * x + a * d;
     
     return {
-        problemText: `Solve for x: ${a}x + ${b} = ${c}x + ${d}`,
+        problemText: `Solve for x: ${a}(x + ${d}) = ${c}x + ${b}`,
         correctAnswer: x
     };
 }
 
+// New quadratic equation generator for genius
+function generateQuadraticEquation() {
+    const a = -randomNumber(5, 1); // Generates -1 to -5
+    const root = -a; // Positive root
+    const b = 2 * a;
+    const c = a * a;
+    return {
+        problemText: `Solve for x: x² + ${b}x + ${c} = 0`,
+        correctAnswer: root
+    };
+}
+
 function generateSqrtEquation() {
-    if (currentLevel == 'secondary') {
+    if (currentLevel === 'secondary') {
         const base = randomNumber(20, 2);
         return {
             problemText: `√${base ** 2} = ?`,
             correctAnswer: base
         };
-    } else {    
-        const terms = [
-            `${randomInt(2, 5)}x`, 
-            `${randomInt(1, 4)}y`, 
-            `-(${randomInt(1, 3)}x - ${randomInt(1, 3)}y)`, 
-            `${randomInt(2, 4)}*${randomInt(2, 5)}z`
-        ];
-        
-        // Combine terms into a complex expression
-        const innerExpression = shuffle(terms).join(' + '); // e.g., "3x + 2y - (x - 4y)"
-        
+    } else {
+        const c = randomNumber(5, 2); // 2-5
+        const x = randomNumber(10, 1); // 1-10
+        const a = randomNumber(3, 1); // 1-3
+        const b = c**2 - a * x;
         return {
-            question: `√[(${innerExpression})²]`,
-            answer: `|${simplifyExpression(innerExpression)}|`, // Use a simplification library or custom logic
+            problemText: `√(${a}x + ${b}) = ${c}`,
+            correctAnswer: x
         };
-    }    
+    }
 }
 
 function generateFractionEquation() {
@@ -459,9 +476,37 @@ function showAnswers() {
     if(!currentProblem) currentProblem = generateFallbackProblem();
 
     const answers = [currentProblem.correctAnswer];
+    const correct = currentProblem.correctAnswer;
+    const lastDigitCorrect = correct % 10;
+
     while(answers.length < 4) {
-        const wrong = currentProblem.correctAnswer + randomNumber(3, -2);
-        if(wrong > 0 && !answers.includes(wrong)) answers.push(wrong);
+        let wrong;
+        
+        if(['secondary', 'genius'].includes(currentLevel)) {
+            // Special handling for advanced levels
+            let attempts = 0;
+            do {
+                // Generate base wrong answer with larger variance
+                wrong = correct + randomNumber(40, -30);
+                attempts++;
+                
+                // Force different last digit after 3 attempts
+                if(attempts > 3 && wrong % 10 === lastDigitCorrect) {
+                    wrong += randomNumber(9, 1); // Adjust last digit
+                }
+            } while(
+                wrong <= 0 || 
+                wrong === correct || 
+                answers.includes(wrong) || 
+                (wrong % 10 === lastDigitCorrect && attempts <= 10)
+            );
+        } else {
+            // Original logic for other levels
+            wrong = correct + randomNumber(3, -2);
+            if(wrong <= 0) wrong = correct + 2;
+        }
+
+        if(!answers.includes(wrong)) answers.push(wrong);
     }
     
     if(currentLevel === 'kinder') {
@@ -537,7 +582,8 @@ function endGame() {
     playSound(elements.gameOverSound);
     elements.pauseBtn.disabled = true;
 
-    const percentage = Math.round((correctAnswers / Math.max(totalQuestions, 1)) * 100);
+    
+    /*const percentage = Math.round((correctAnswers / Math.max(totalQuestions, 1)) * 100);
     const messages = {
         90: "Math Wizard! 🧙♂️", 75: "Brilliant! 🤩",
         50: "Good Effort! 😊", 25: "Keep Trying! 💪",
@@ -545,7 +591,43 @@ function endGame() {
     };
     
     elements.performanceMessage.textContent = messages[Object.keys(messages).reverse().find(threshold => percentage >= threshold)];
-    elements.finalScore.textContent = score;
+    elements.finalScore.textContent = score;*/
+
+    // In the endGame function, replace the percentage-based messages with this:
+    const finalScore = score + Math.floor(timeLeft * 0.7); // Time bonus for remaining seconds
+    const totalAnswered = totalQuestions;
+
+    const performanceCriteria = [
+        { 
+            message: "🏆 Math Megastar! 🧠", 
+            minScore: 300, 
+            minAnswered: 15 
+        },
+        { 
+            message: "🔥 Brilliant Grinder! ⏳", 
+            minScore: 200, 
+            minAnswered: 10 
+        },
+        { 
+            message: "📚 Steady Achiever! ✨", 
+            minScore: 100, 
+            minAnswered: 5 
+        },
+        { 
+            message: "🌱 Keep Growing! 🌿", 
+            minScore: 0, 
+            minAnswered: 0 
+        }
+    ];
+
+    const earnedTier = performanceCriteria.find(tier => 
+        finalScore >= tier.minScore && 
+        totalAnswered >= tier.minAnswered
+    ) || performanceCriteria[3];
+
+    elements.performanceMessage.textContent = earnedTier.message;
+    elements.finalScore.textContent = finalScore;
+
 }
 
 function checkAnswer(selected) {
@@ -556,6 +638,12 @@ function checkAnswer(selected) {
     const levelConfig = config[currentLevel];
     let pointsEarned = 0;
     let bonusMessage = '';
+
+    if(['secondary', 'genius'].includes(currentLevel)) {
+        // Progressive scoring - later questions worth more
+        const progressiveBonus = Math.floor(totalQuestions / 5) * 5;
+        pointsEarned += progressiveBonus;
+    }
 
     if(isCorrect) {
         currentStreak++;
@@ -598,6 +686,7 @@ function checkAnswer(selected) {
 }
 
 function generateFallbackProblem() {
+    console.log(currentLevel);
     if (currentLevel === 'kinder') {
         const num1 = randomNumber(5); // 1-5
         const num2 = randomNumber(10 - num1); // Ensures sum ≤ 10
