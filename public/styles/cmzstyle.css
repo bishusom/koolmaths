@@ -39,13 +39,19 @@ h1 img {
 /* ================== TAGLINE ================== */
 .tagline {
     font-family: 'Bubblegum Sans', cursive;
-    color: #FF6B00; /* Bright orange for attention */
+    color: #FFEE58; /* Yellow */
     font-size: 1.2em;
     text-align: center;
     margin: 10px 0 20px;
     text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
     animation: pulse 2s infinite; /* Optional: subtle animation */
 }
+
+.tagline span {
+    color: #00E676 !important; /* Green */
+    font-weight: bold;
+}
+
 .tagline.reappear {
     animation: bounceIn 0.5s;
 }
