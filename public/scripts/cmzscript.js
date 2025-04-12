@@ -104,6 +104,7 @@ let isMuted = localStorage.getItem('muteState') === 'true';
 const elements = {
     tagLine : document.querySelector('.tagline'),
     startBtn: document.getElementById('startBtn'),
+    euPrivacy: document.getElementById('eu-privacy'),
     gameContainer: document.querySelector('.game-container'),
     levelBtns: document.querySelectorAll('.level-btn'),
     muteBtn: document.getElementById('muteBtn'),
@@ -146,6 +147,7 @@ elements.playAgainBtn.addEventListener('click', () => {
     elements.tagLine.classList.remove('hidden');
     document.querySelectorAll('.level-btn').forEach(btn => btn.hidden = false);
     elements.startBtn.classList.remove('hidden');
+    elements.euPrivacy.classList.remove('hidden');
     elements.gameContainer.classList.add('hidden');
     
     score = 0;
@@ -539,6 +541,7 @@ function startGame() {
     elements.startBtn.classList.add('hidden');
     elements.gameContainer.classList.remove('hidden');
     elements.tagLine.classList.add('hidden');
+    elements.euPrivacy.classList.add('hidden');
     
     elements.pauseBtn.disabled = false;
     gameActive = true;
@@ -583,19 +586,9 @@ function endGame() {
     elements.gameContainer.classList.add('hidden');
     elements.gameOverScreen.classList.remove('hidden');
     elements.tagLine.classList.remove('hidden');
+    elements.euPrivacy.classList.remove('hidden');
     playSound(elements.gameOverSound);
     elements.pauseBtn.disabled = true;
-
-    
-    /*const percentage = Math.round((correctAnswers / Math.max(totalQuestions, 1)) * 100);
-    const messages = {
-        90: "Math Wizard! 🧙♂️", 75: "Brilliant! 🤩",
-        50: "Good Effort! 😊", 25: "Keep Trying! 💪",
-        0: "You'll Get Better! 🐣"
-    };
-    
-    elements.performanceMessage.textContent = messages[Object.keys(messages).reverse().find(threshold => percentage >= threshold)];
-    elements.finalScore.textContent = score;*/
 
     // In the endGame function, replace the percentage-based messages with this:
     const finalScore = score + Math.floor(timeLeft * 0.7); // Time bonus for remaining seconds
