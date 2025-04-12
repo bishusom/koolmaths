@@ -102,6 +102,7 @@ let isMuted = localStorage.getItem('muteState') === 'true';
 
 
 const elements = {
+    tagLine : document.querySelector('.tagline'),
     startBtn: document.getElementById('startBtn'),
     gameContainer: document.querySelector('.game-container'),
     levelBtns: document.querySelectorAll('.level-btn'),
@@ -142,6 +143,7 @@ elements.pauseBtn.addEventListener('click', togglePause);
 
 elements.playAgainBtn.addEventListener('click', () => {
     elements.gameOverScreen.classList.add('hidden');
+    elements.tagLine.classList.remove('hidden');
     document.querySelectorAll('.level-btn').forEach(btn => btn.hidden = false);
     elements.startBtn.classList.remove('hidden');
     elements.gameContainer.classList.add('hidden');
@@ -536,6 +538,7 @@ function startGame() {
     document.querySelectorAll('.level-btn').forEach(btn => btn.hidden = true);
     elements.startBtn.classList.add('hidden');
     elements.gameContainer.classList.remove('hidden');
+    elements.tagLine.classList.add('hidden');
     
     elements.pauseBtn.disabled = false;
     gameActive = true;
@@ -579,6 +582,7 @@ function endGame() {
     
     elements.gameContainer.classList.add('hidden');
     elements.gameOverScreen.classList.remove('hidden');
+    elements.tagLine.classList.remove('hidden');
     playSound(elements.gameOverSound);
     elements.pauseBtn.disabled = true;
 
