@@ -106,6 +106,7 @@ const elements = {
     startBtn: document.getElementById('startBtn'),
     euPrivacy: document.getElementById('eu-privacy'),
     gameContainer: document.querySelector('.game-container'),
+    levelSelector: document.querySelector('.level-selector'),
     levelBtns: document.querySelectorAll('.level-btn'),
     muteBtn: document.getElementById('muteBtn'),
     pauseBtn: document.getElementById('pauseBtn'),
@@ -145,7 +146,8 @@ elements.pauseBtn.addEventListener('click', togglePause);
 elements.playAgainBtn.addEventListener('click', () => {
     elements.gameOverScreen.classList.add('hidden');
     elements.tagLine.classList.remove('hidden');
-    document.querySelectorAll('.level-btn').forEach(btn => btn.hidden = false);
+    //document.querySelectorAll('.level-btn').forEach(btn => btn.hidden = false); 
+    elements.levelSelector.remove('hidden');
     elements.startBtn.classList.remove('hidden');
     elements.euPrivacy.classList.remove('hidden');
     elements.gameContainer.classList.add('hidden');
@@ -537,7 +539,8 @@ function startGame() {
     clearInterval(timerInterval);
     clearTimeout(pendingTimeout);
     elements.currentLevelEmoji.textContent = config[currentLevel].emoji;
-    document.querySelectorAll('.level-btn').forEach(btn => btn.hidden = true);
+    //document.querySelectorAll('.level-btn').forEach(btn => btn.hidden = true);
+    elements.levelSelector.classList.add('hidden');
     elements.startBtn.classList.add('hidden');
     elements.gameContainer.classList.remove('hidden');
     elements.tagLine.classList.add('hidden');
