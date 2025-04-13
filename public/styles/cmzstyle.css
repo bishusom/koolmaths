@@ -73,149 +73,8 @@ h1 img {
     height: 40px;
 }
 
-/* ================== ENHANCED BUTTON STYLES ================== */
-.level-btn, #startBtn, .game-over button, .answer-btn {
-    position: relative;
-    border: none;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    box-shadow: 
-        0 4px 8px rgba(0,0,0,0.1),
-        0 6px 6px rgba(0,0,0,0.05),
-        inset 0 2px 2px rgba(255,255,255,0.2);
-    text-shadow: 0 1px 1px rgba(0,0,0,0.1);
-    overflow: hidden;
-    transform: translateY(0);
-    font-weight: bold;
-    letter-spacing: 0.5px;
-}
-
-.level-btn:active, #startBtn:active, .game-over button:active, .answer-btn:active {
-    transform: translateY(4px);
-    box-shadow: 
-        0 2px 4px rgba(0,0,0,0.1),
-        0 3px 3px rgba(0,0,0,0.05),
-        inset 0 1px 1px rgba(255,255,255,0.2);
-}
-
-.level-btn:hover, #startBtn:hover, .game-over button:hover, .answer-btn:hover {
-    box-shadow: 
-        0 8px 16px rgba(0,0,0,0.15),
-        0 10px 10px rgba(0,0,0,0.1),
-        inset 0 2px 2px rgba(255,255,255,0.2),
-        0 0 15px rgba(255,255,255,0.3);
-    transform: translateY(-3px);
-}
-
-.level-btn {
-    background: linear-gradient(145deg, #ffeaa7, #ffdf80);
-    color: #2d3436;
-    border: 2px solid rgba(255,255,255,0.5);
-    padding: 1.2rem;
-    min-height: 80px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 80%;
-    margin: 0;
-    font-size: 1.1rem;
-    flex: 0 1 auto;
-    min-width: 180px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.level-btn::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(
-        to bottom right,
-        rgba(255,255,255,0.3) 0%,
-        rgba(255,255,255,0) 60%
-    );
-    transform: rotate(30deg);
-    transition: all 0.5s ease;
-}
-
-.level-btn:hover::before {
-    animation: shine 1.5s infinite;
-}
-
-@keyframes shine {
-    0% { left: -50%; top: -50%; }
-    100% { left: 150%; top: 150%; }
-}
-
-.level-btn::after {
-    content: attr(data-description);
-    display: block;
-    font-size: 0.9rem;
-    color: #666;
-    margin-top: 0.5rem;
-    white-space: normal;
-}
-
-.level-btn.active {
-    background: linear-gradient(145deg, #00cec9, #00b5ad);
-    color: white;
-    border: 2px solid #00a693;
-    animation: pulseActive 2s infinite;
-    box-shadow: 
-        0 0 20px rgba(0,206,201,0.5),
-        0 8px 16px rgba(0,0,0,0.15);
-}
-
-@keyframes pulseActive {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.03); }
-    100% { transform: scale(1); }
-}
-
-#startBtn, .game-over button {
-    background: linear-gradient(145deg, #4CAF50, #3e8e41);
-    color: white;
-    padding: 18px 36px;
-    border: none;
-    border-radius: 25px;
-    font-size: 1.3rem;
-    cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    display: block;
-    margin: 20px auto;
-    text-transform: uppercase;
-    border: 2px solid rgba(255,255,255,0.3);
-}
-
-#startBtn::after, .game-over button::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255,255,255,0.2),
-        transparent
-    );
-    transform: translateX(-100%);
-}
-
-#startBtn:hover::after, .game-over button:hover::after {
-    animation: shimmer 1.5s infinite;
-}
-
-@keyframes shimmer {
-    100% { transform: translateX(100%); }
+.game-container.active ~ .level-selector {
+    display: none !important;
 }
 
 /* ================== CONTROLS & BUTTONS ================== */
@@ -228,14 +87,12 @@ h1 img {
     width: 40px;
     height: 40px;
     cursor: pointer;
-    box-shadow: 
-        0 4px 8px rgba(0,0,0,0.2),
-        inset 0 2px 2px rgba(255,255,255,0.3);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     z-index: 1000;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: all 0.3s;
 }
 
 .mute-btn {
@@ -248,13 +105,6 @@ h1 img {
 
 #pauseBtn.paused {
     background: #ffeb3b;
-}
-
-.mute-btn:hover, #pauseBtn:hover {
-    transform: scale(1.1);
-    box-shadow: 
-        0 6px 12px rgba(0,0,0,0.25),
-        inset 0 2px 2px rgba(255,255,255,0.3);
 }
 
 .pause-overlay {
@@ -279,6 +129,81 @@ h1 img {
     justify-content: center;
     gap: 1rem;
     margin: 1.5rem 0;
+}
+
+.level-btn {
+    width: 80%;
+    padding: 1rem;
+    margin: 0;
+    font-size: 1.1rem;
+    flex: 0 1 auto;
+    min-width: 180px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    background: #ffeaa7;
+    color: #2d3436;
+}
+
+.level-btn::after {
+    content: attr(data-description);
+    display: block;
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 0.5rem;
+    white-space: normal;
+}
+
+.level-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    background: #d8fff7;
+    border-color: #4ecdc4;
+}
+
+.level-btn:hover::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, 
+        rgba(255,255,255,0.15) 0%,
+        rgba(255,255,255,0.05) 100%);
+    z-index: 1;
+}
+
+.level-btn.active {
+    background: #00cec9;
+    color: white;
+    border: 2px solid #00a693;
+    transform: scale(1.05);
+}
+
+#startBtn, .game-over button {
+    background: #4CAF50;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    display: block;
+    margin: 20px auto;
+}
+  
+#startBtn:hover, .game-over button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0,0,0,0.2);
+    background: #45a049;
 }
 
 /* ================== GAME CONTAINER ================== */
@@ -334,48 +259,35 @@ h1 img {
 }
 
 .answer-btn {
-    background: linear-gradient(145deg, #6da9e4, #5c97d1);
-    color: white;
-    padding: 1.8rem;
-    font-size: 1.6rem;
-    border: 2px solid rgba(255,255,255,0.3);
+    padding: 1.5rem;
+    font-size: 1.5em;
+    border: none;
     border-radius: 15px;
+    background: #6da9e4;
+    color: white;
     cursor: pointer;
     transition: all 0.2s ease;
 }
 
 .answer-btn:hover {
-    background: linear-gradient(145deg, #1565C0, #0d47a1);
+    background: #1565C0;
+    transform: scale(1.05);
+}
+
+.answer-btn.correct, 
+.answer-btn.wrong {
+    animation: none !important;
+    transform: none !important;
 }
 
 .answer-btn.correct {
     background: #00b894 !important;
-    animation: 
-        bounce 0.5s,
-        pulseGlow 1.5s infinite alternate;
-    box-shadow: 
-        0 0 20px rgba(0,184,148,0.7),
-        0 8px 16px rgba(0,0,0,0.15);
+    box-shadow: 0 0 0 3px rgba(0,184,148,0.5) !important;
 }
 
 .answer-btn.wrong {
     background: #d63031 !important;
-    animation: 
-        shake 0.5s,
-        pulseRed 1s 2;
-    box-shadow: 
-        0 0 20px rgba(214,48,49,0.7),
-        0 8px 16px rgba(0,0,0,0.15);
-}
-
-@keyframes pulseGlow {
-    from { box-shadow: 0 0 10px rgba(0,184,148,0.5); }
-    to { box-shadow: 0 0 30px rgba(0,184,148,0.9); }
-}
-
-@keyframes pulseRed {
-    from { box-shadow: 0 0 10px rgba(214,48,49,0.5); }
-    to { box-shadow: 0 0 30px rgba(214,48,49,0.9); }
+    box-shadow: 0 0 0 3px rgba(214,48,49,0.5) !important;
 }
 
 /* ================== FEEDBACK SYSTEM ================== */
@@ -482,19 +394,11 @@ h1 img {
         width: 100%;
     }
 
-    .level-btn, #startBtn, .game-over button, .answer-btn {
-        padding: 1rem;
-        font-size: 1.1rem;
-    }
-
     .level-btn {
         width: 100% !important;
+        padding: 1rem;
+        font-size: 1rem;
         white-space: normal;
-    }
-
-    .answer-btn {
-        padding: 1.5rem;
-        font-size: 1.4rem;
     }
 
     .game-container.active ~ h1 {
