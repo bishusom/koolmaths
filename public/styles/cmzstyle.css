@@ -355,21 +355,17 @@ h1 img {
     background: #00b894 !important;
     animation: none !important;
     transform: none !important;
-    box-shadow: 
-        0 0 20px rgba(0,184,148,0.7),
-        0 8px 16px rgba(0,0,0,0.15);
+    box-shadow: 0 0 0 3px rgba(0,184,148,0.5) !important
 }
 
 .answer-btn.wrong {
     background: #d63031 !important;
     animation: none !important;
     transform: none !important;
-    box-shadow: 
-        0 0 20px rgba(214,48,49,0.7),
-        0 8px 16px rgba(0,0,0,0.15);
+    box-shadow: 0 0 0 3px rgba(214,48,49,0.5) !important;
 }
 
-/*@keyframes pulseGlow {
+@keyframes pulseGlow {
     from { box-shadow: 0 0 10px rgba(0,184,148,0.5); }
     to { box-shadow: 0 0 30px rgba(0,184,148,0.9); }
 }
@@ -377,7 +373,7 @@ h1 img {
 @keyframes pulseRed {
     from { box-shadow: 0 0 10px rgba(214,48,49,0.5); }
     to { box-shadow: 0 0 30px rgba(214,48,49,0.9); }
-}*/
+}
 
 /* ================== FEEDBACK SYSTEM ================== */
 #answerFeedback {

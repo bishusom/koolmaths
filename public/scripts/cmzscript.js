@@ -147,7 +147,7 @@ elements.playAgainBtn.addEventListener('click', () => {
     elements.gameOverScreen.classList.add('hidden');
     elements.tagLine.classList.remove('hidden');
     //document.querySelectorAll('.level-btn').forEach(btn => btn.hidden = false); 
-    elements.levelSelector.remove('hidden');
+    elements.levelSelector.classList.remove('hidden');
     elements.startBtn.classList.remove('hidden');
     elements.euPrivacy.classList.remove('hidden');
     elements.gameContainer.classList.add('hidden');
