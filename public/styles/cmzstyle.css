@@ -5,9 +5,17 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(135deg, #2c3e50, #e183e4);
+    background: linear-gradient(135deg, #d07dd3, #e183e4, #fface8, #b96fbb);
+    animation: rainbowBackground 15s ease infinite;
+    background-size: 400% 400%;
     margin: 0;
     color: #2d3436;
+}
+
+@keyframes rainbowBackground {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .main-container {
@@ -15,6 +23,13 @@ body {
     padding: 1rem 2rem;
     max-width: 800px;
     width: 90%;
+    /*background-color: rgba(255, 255, 255, 0.9);*/
+    background: linear-gradient(135deg, #b96fbb, #fface8);*
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.8), 
+                0 0 20px rgba(255, 215, 0, 0.6),
+                0 0 10px rgba(255, 105, 180, 0.4);
+    border: 3px solid #ffcc00;
 }
 
 /* ================== HEADER & TITLE ================== */
@@ -24,11 +39,22 @@ h1 {
     align-items: center;
     justify-content: center;
     gap: 15px;
-    font-size: 2.8em;
+    font-size: 3em;
+    /*color: #ff6b6b;
+    text-shadow: 3px 3px 0 #ffcc00, 
+                 5px 5px 0 #ff8e8e;*/
     color: #e84393;
-    text-shadow: 2px 2px #fff;
+    text-shadow: 3px 3px 0 #ffffff, 
+                 5px 5px 0 #ff8e8e; 
+    /*text-shadow: 3px 3px 0 #ffcc00, 
+                 5px 5px 0 #ff8e8e;*/             
     letter-spacing: 2px;
-    transition: all 0.3s ease;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
 }
 
 h1 img {
@@ -36,23 +62,24 @@ h1 img {
     filter: drop-shadow(2px 2px 1px rgba(0,0,0,0.2));
     transition: height 0.3s ease;
 }
-
 /* ================== TAGLINE ================== */
 .tagline {
     font-family: 'Bubblegum Sans', cursive;
-    color: #FFEE58;
-    font-size: 1.2em;
+    color: #ffffff;
+    font-size: 1.5em;
     text-align: center;
     margin: 10px 0 20px;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
-    animation: pulse 2s infinite;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+    animation: none; /* Removed color changing animation for better readability */
 }
 
 .tagline span {
-    color: #00E676 !important;
+    color: #ffeb3b !important; /* Changed to bright yellow for contrast */
     font-weight: bold;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
 }
 
+/* Keep the reappear animation */
 .tagline.reappear {
     animation: bounceIn 0.5s;
 }
@@ -61,6 +88,42 @@ h1 img {
     0% { transform: scale(0.9); opacity: 0; }
     50% { transform: scale(1.05); }
     100% { transform: scale(1); opacity: 1; }
+}
+
+/* ================== PERFORMANCE METER ================== */
+.performance-meter {
+    width: 100%;
+    height: 30px;
+    background-color: #f0f0f0;
+    border-radius: 15px;
+    margin: 20px 0;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+}
+
+.performance-bar {
+    height: 100%;
+    width: 50%;
+    background: linear-gradient(90deg, #ff7675, #fdcb6e);
+    border-radius: 15px;
+    transition: width 0.5s ease, background-color 0.5s ease;
+    position: relative;
+}
+
+.performance-change {
+    position: absolute;
+    right: 10px;
+    font-weight: bold;
+    font-size: 1.2em;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    animation: floatUp 1s ease-out forwards;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-30px); opacity: 0; }
 }
 
 /* ================== GAME ACTIVE STATES ================== */
@@ -76,13 +139,14 @@ h1 img {
 .game-container.active ~ .level-selector {
     display: none !important;
 }
+
 /* ================== ENHANCED BUTTON STYLES ================== */
 .level-btn, #startBtn, .game-over button, .answer-btn {
     position: relative;
     border: none;
     border-radius: 15px;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     box-shadow: 
         0 4px 8px rgba(0,0,0,0.1),
         0 6px 6px rgba(0,0,0,0.05),
@@ -108,7 +172,7 @@ h1 img {
         0 10px 10px rgba(0,0,0,0.1),
         inset 0 2px 2px rgba(255,255,255,0.2),
         0 0 15px rgba(255,255,255,0.3);
-    transform: translateY(-3px);
+    transform: scale(1.05);
 }
 
 .level-btn {
@@ -294,6 +358,14 @@ h1 img {
     flex-direction: column;
     gap: 15px;
     margin-top: 0.5rem;
+    border: 3px dashed #74b9ff;
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 20px rgba(116, 185, 255, 0.5);
+}
+
+body:has(.game-container:not(.hidden)) h1 {
+    animation: none !important;
+    transform: none !important;
 }
 
 .score-board {
@@ -303,18 +375,22 @@ h1 img {
     gap: 15px;
     padding: 12px 20px;
     margin-bottom: 20px;
-    background: rgba(255,255,255,0.95);
+    background: linear-gradient(90deg, #a18cd1, #fbc2eb);
+    color: white;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    font-size: 1.2em;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 }
 
 .problem {
-    font-size: 2.5em;
+    font-size: 3em;
     margin: 25px 0;
     padding: 25px;
     line-height: 1.3;
     word-wrap: break-word;
-    color: #2d3436;
+    color: #6c5ce7;
+    text-shadow: 2px 2px 0 #a29bfe;
 }
 
 .emoji-visual {
@@ -352,10 +428,15 @@ h1 img {
 }
 
 .answer-btn.correct {
-    background: #00b894 !important;
-    animation: none !important;
-    transform: none !important;
+    background: linear-gradient(145deg, #00b894, #55efc4) !important;
+    animation: celebrate 0.5s ease;
     box-shadow: 0 0 0 3px rgba(0,184,148,0.5) !important
+}
+
+@keyframes celebrate {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
 }
 
 .answer-btn.wrong {
@@ -364,17 +445,6 @@ h1 img {
     transform: none !important;
     box-shadow: 0 0 0 3px rgba(214,48,49,0.5) !important;
 }
-
-@keyframes pulseGlow {
-    from { box-shadow: 0 0 10px rgba(0,184,148,0.5); }
-    to { box-shadow: 0 0 30px rgba(0,184,148,0.9); }
-}
-
-@keyframes pulseRed {
-    from { box-shadow: 0 0 10px rgba(214,48,49,0.5); }
-    to { box-shadow: 0 0 30px rgba(214,48,49,0.9); }
-}
-
 /* ================== FEEDBACK SYSTEM ================== */
 #answerFeedback {
     opacity: 0;
