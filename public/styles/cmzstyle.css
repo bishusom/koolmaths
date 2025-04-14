@@ -64,7 +64,7 @@ h1 img {
 }
 /* ================== TAGLINE ================== */
 .tagline {
-    font-family: 'Bubblegum Sans', cursive;
+    font-family: Roboto;
     color: #ffffff;
     font-size: 1.5em;
     text-align: center;
@@ -74,7 +74,7 @@ h1 img {
 }
 
 .tagline span {
-    color: #19ff34 !important; /* Changed to fluroscent green for contrast */
+    color: #24ff3ee9 !important; /* Changed to fluroscent green for contrast */
     font-weight: bold;
     text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
 }
