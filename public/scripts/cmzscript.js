@@ -17,7 +17,7 @@ const config = {
         name: "Grade 1-3 Number Ninjas 🥷✨",
         operations: ['+', '-'],
         maxNumber: 30,
-        time: 120,
+        time: 90,
         emoji: '🎒',
         correctPoints: 15,
         wrongPenalty: 2,
@@ -124,10 +124,16 @@ const elements = {
     tickSound: document.getElementById('tickSound'),
     gameOverSound: document.getElementById('gameOverSound'),
     currentLevelEmoji: document.getElementById('currentLevelEmoji'),
-    currentLevelName: document.getElementById('currentLevelName')
+    currentLevelName: document.getElementById('currentLevelName'),
+    performanceMeter: document.createElement('div'),
+    performanceBar: document.createElement('div')
 };
 
 const MAX_HISTORY = 10;
+elements.performanceMeter.className = 'performance-meter';
+elements.performanceBar.className = 'performance-bar';
+elements.performanceMeter.appendChild(elements.performanceBar);
+document.querySelector('.container').prepend(elements.performanceMeter);
 
 // Event Listeners
 document.querySelectorAll('.level-btn').forEach(btn => {
@@ -566,6 +572,8 @@ function resetState() {
     elements.scoreElement.textContent = "0";
     elements.timerElement.textContent = timeLeft;
     elements.feedbackElement.classList.remove('visible');
+    elements.performanceBar.style.width = "0%";
+    elements.performanceBar.style.background = 'linear-gradient(90deg, #ff7675, #fdcb6e)';  
 }
 
 function updateTimer() {
@@ -639,11 +647,9 @@ function checkAnswer(selected) {
     let pointsEarned = 0;
     let bonusMessage = '';
 
-    if(['secondary', 'genius'].includes(currentLevel)) {
-        // Progressive scoring - later questions worth more
-        const progressiveBonus = Math.floor(totalQuestions / 5) * 5;
-        pointsEarned += progressiveBonus;
-    }
+    // Create performance change element
+    const performanceChange = document.createElement('div');
+    performanceChange.className = 'performance-change';
 
     if(isCorrect) {
         currentStreak++;
@@ -653,15 +659,54 @@ function checkAnswer(selected) {
             const bonus = Math.round(levelConfig.basePoints * levelConfig.speedBonusMultiplier);
             pointsEarned += bonus;
             bonusMessage = `<div class="streak-feedback">🔥 ${currentStreak} ✅ In-A-Row! +${bonus} bonus</div>`;
+            
+            // Show bonus animation
+            performanceChange.textContent = `+${bonus}!`;
+            performanceChange.style.color = '#fdcb6e';
+            elements.performanceBar.appendChild(performanceChange);
         }
         
         score += pointsEarned;
         correctAnswers++;
         playSound(elements.correctSound);
+        
+        // Show base points animation
+        performanceChange.textContent = `+${levelConfig.basePoints}`;
+        performanceChange.style.color = '#00b894';
+        elements.performanceBar.appendChild(performanceChange);
     } else {
         currentStreak = 0;
-        score = Math.max(0, score - levelConfig.wrongPenalty);
+        const penalty = levelConfig.wrongPenalty;
+        score = Math.max(0, score - penalty);
         playSound(elements.wrongSound);
+        
+        // Show penalty animation
+        performanceChange.textContent = `-${penalty}`;
+        performanceChange.style.color = '#ff7675';
+        elements.performanceBar.appendChild(performanceChange);
+    }
+
+    // Update performance meter with level-based max scores
+    const maxScores = {
+        kinder: 200,
+        primary1: 300,
+        primary2: 600,
+        secondary: 800,
+        genius: 1000
+    };
+    const maxScore = maxScores[currentLevel];
+    const percentage = Math.min(100, (score / maxScore) * 100);
+    elements.performanceBar.style.width = `${percentage}%`;
+    
+    // Change color based on performance
+    if (percentage > 75) {
+        elements.performanceBar.style.background = 'linear-gradient(90deg, #00b894, #55efc4)';
+    } else if (percentage > 50) {
+        elements.performanceBar.style.background = 'linear-gradient(90deg, #fdcb6e, #ffeaa7)';
+    } else if (percentage > 25) {
+        elements.performanceBar.style.background = 'linear-gradient(90deg, #fab1a0, #ff7675)';
+    } else {
+        elements.performanceBar.style.background = 'linear-gradient(90deg, #ff7675, #d63031)';
     }
 
     elements.scoreElement.textContent = score;
