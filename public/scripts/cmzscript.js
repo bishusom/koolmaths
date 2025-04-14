@@ -129,6 +129,10 @@ const elements = {
     performanceBar: document.createElement('div')
 };
 
+//Make sure the buttons are hidden initially
+elements.muteBtn.style.display = 'none';
+elements.pauseBtn.style.display = 'none';
+
 const MAX_HISTORY = 10;
 elements.performanceMeter.className = 'performance-meter';
 elements.performanceBar.className = 'performance-bar';
@@ -158,6 +162,10 @@ elements.playAgainBtn.addEventListener('click', () => {
     elements.euPrivacy.classList.remove('hidden');
     elements.gameContainer.classList.add('hidden');
     
+    // Hide the control buttons
+    elements.muteBtn.style.display = 'none';
+    elements.pauseBtn.style.display = 'none';
+
     score = 0;
     timeLeft = 0;
     problemHistory = [];
@@ -551,7 +559,12 @@ function startGame() {
     elements.gameContainer.classList.remove('hidden');
     elements.tagLine.classList.add('hidden');
     elements.euPrivacy.classList.add('hidden');
-    
+
+    // Show the control buttons
+    elements.muteBtn.style.display = 'flex';
+    elements.pauseBtn.style.display = 'flex';
+    elements.pauseBtn.disabled = false;
+
     elements.pauseBtn.disabled = false;
     gameActive = true;
     isPaused = false;

@@ -303,6 +303,8 @@ h1 img {
     align-items: center;
     justify-content: center;
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    /* Hide by default */
+    display: none;
 }
 
 .mute-btn {
@@ -444,6 +446,14 @@ body:has(.game-container:not(.hidden)) h1 {
     animation: none !important;
     transform: none !important;
     box-shadow: 0 0 0 3px rgba(214,48,49,0.5) !important;
+}
+
+/* Show buttons when game is active */
+.game-container:not(.hidden) ~ .mute-btn,
+.game-container:not(.hidden) ~ #pauseBtn,
+.game-over:not(.hidden) ~ .mute-btn,
+.game-over:not(.hidden) ~ #pauseBtn {
+    display: flex;
 }
 /* ================== FEEDBACK SYSTEM ================== */
 #answerFeedback {
