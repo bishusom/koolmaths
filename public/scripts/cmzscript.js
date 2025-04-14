@@ -137,6 +137,10 @@ const MAX_HISTORY = 10;
 elements.performanceMeter.className = 'performance-meter';
 elements.performanceBar.className = 'performance-bar';
 elements.performanceMeter.appendChild(elements.performanceBar);
+const maxScoreDisplay = document.createElement('div');
+maxScoreDisplay.className = 'max-score-display';
+elements.performanceMeter.appendChild(maxScoreDisplay);
+
 document.querySelector('.container').prepend(elements.performanceMeter);
 
 // Event Listeners
@@ -664,6 +668,23 @@ function checkAnswer(selected) {
     const performanceChange = document.createElement('div');
     performanceChange.className = 'performance-change';
 
+    // Get current max scores
+    const baseMaxScores = {
+        kinder: 200,
+        primary1: 300,
+        primary2: 600,
+        secondary: 800,
+        genius: 1000
+    };
+    
+    // Check if we need to increase max score
+    let currentMaxScore = baseMaxScores[currentLevel];
+    const storedMaxIncrease = localStorage.getItem(`maxScoreIncrease_${currentLevel}`) || 0;
+    currentMaxScore += parseInt(storedMaxIncrease);
+    
+    // Update max score display
+    document.querySelector('.max-score-display').textContent = currentMaxScore;
+
     if(isCorrect) {
         currentStreak++;
         pointsEarned = levelConfig.basePoints;
@@ -687,6 +708,25 @@ function checkAnswer(selected) {
         performanceChange.textContent = `+${levelConfig.basePoints}`;
         performanceChange.style.color = '#00b894';
         elements.performanceBar.appendChild(performanceChange);
+
+        // Check if player reached max score
+        if (score >= currentMaxScore && timeLeft > 10) {
+            // Increase max score by 200
+            const newMaxIncrease = parseInt(storedMaxIncrease) + 200;
+            localStorage.setItem(`maxScoreIncrease_${currentLevel}`, newMaxIncrease.toString());
+            
+            // Show special message
+            const maxScoreReached = document.createElement('div');
+            maxScoreReached.className = 'performance-change';
+            maxScoreReached.textContent = 'MAX+200!';
+            maxScoreReached.style.color = '#00b894';
+            maxScoreReached.style.fontWeight = 'bold';
+            maxScoreReached.style.animation = 'floatUp 1.5s ease-out forwards';
+            elements.performanceBar.appendChild(maxScoreReached);
+            
+            // Update display immediately
+            document.querySelector('.max-score-display').textContent = currentMaxScore + 200;
+        }
     } else {
         currentStreak = 0;
         const penalty = levelConfig.wrongPenalty;
@@ -699,16 +739,9 @@ function checkAnswer(selected) {
         elements.performanceBar.appendChild(performanceChange);
     }
 
-    // Update performance meter with level-based max scores
-    const maxScores = {
-        kinder: 200,
-        primary1: 300,
-        primary2: 600,
-        secondary: 800,
-        genius: 1000
-    };
-    const maxScore = maxScores[currentLevel];
-    const percentage = Math.min(100, (score / maxScore) * 100);
+    // Get updated max score in case it changed
+    const updatedMaxScore = baseMaxScores[currentLevel] + (parseInt(localStorage.getItem(`maxScoreIncrease_${currentLevel}`)) || 0);
+    const percentage = Math.min(100, (score / updatedMaxScore) * 100);
     elements.performanceBar.style.width = `${percentage}%`;
     
     // Change color based on performance
@@ -722,6 +755,7 @@ function checkAnswer(selected) {
         elements.performanceBar.style.background = 'linear-gradient(90deg, #ff7675, #d63031)';
     }
 
+    // Rest of the checkAnswer function remains the same...
     elements.scoreElement.textContent = score;
     elements.feedbackElement.classList.remove('wrong');
     elements.feedbackElement.classList.add('visible', isCorrect ? 'correct' : 'wrong');

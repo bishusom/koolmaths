@@ -23,7 +23,6 @@ body {
     padding: 1rem 2rem;
     max-width: 800px;
     width: 90%;
-    /*background-color: rgba(255, 255, 255, 0.9);*/
     background: linear-gradient(135deg, #b96fbb, #fface8);*
     border-radius: 20px;
     box-shadow: 0 0 30px rgba(255, 255, 255, 0.8), 
@@ -40,14 +39,9 @@ h1 {
     justify-content: center;
     gap: 15px;
     font-size: 3em;
-    /*color: #ff6b6b;
-    text-shadow: 3px 3px 0 #ffcc00, 
-                 5px 5px 0 #ff8e8e;*/
     color: #e84393;
     text-shadow: 3px 3px 0 #ffffff, 
-                 5px 5px 0 #ff8e8e; 
-    /*text-shadow: 3px 3px 0 #ffcc00, 
-                 5px 5px 0 #ff8e8e;*/             
+                 5px 5px 0 #ff8e8e;          
     letter-spacing: 2px;
     animation: bounce 2s infinite;
 }
@@ -74,7 +68,7 @@ h1 img {
 }
 
 .tagline span {
-    color: #24ff3ee9 !important; /* Changed to fluroscent green for contrast */
+    color: #24ff3ee9 !important; /* Changed to bright yellow for contrast */
     font-weight: bold;
     text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
 }
@@ -119,6 +113,21 @@ h1 img {
     color: white;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
     animation: floatUp 1s ease-out forwards;
+}
+
+.max-score-display {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: bold;
+    color: #333;
+    text-shadow: 0 0 2px rgba(255,255,255,0.7);
+    z-index: 2;
+}
+
+.performance-meter {
+    position: relative; /* Add this to make positioning work */
 }
 
 @keyframes floatUp {
