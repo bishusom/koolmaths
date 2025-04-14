@@ -74,7 +74,7 @@ h1 img {
 }
 
 .tagline span {
-    color: #ffeb3b !important; /* Changed to bright yellow for contrast */
+    color: #19ff34 !important; /* Changed to fluroscent green for contrast */
     font-weight: bold;
     text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
 }
