@@ -181,7 +181,8 @@ h1 img {
 }
 
 .level-btn {
-    background: linear-gradient(145deg, #ffeaa7, #ffdf80);
+    /*background: linear-gradient(145deg, #ffeaa7, #ffdf80);*/
+    background: linear-gradient(145deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee, #a18cd1);
     color: #2d3436;
     border: 2px solid rgba(255,255,255,0.5);
     padding: 1.2rem;
