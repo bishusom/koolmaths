@@ -23,7 +23,7 @@ body {
     padding: 1rem 2rem;
     max-width: 800px;
     width: 90%;
-    background: linear-gradient(135deg, #b96fbb, #fface8);
+    background: linear-gradient(135deg, #b96fbb, #fface8);*
     border-radius: 20px;
     box-shadow: 0 0 30px rgba(255, 255, 255, 0.8), 
                 0 0 20px rgba(255, 215, 0, 0.6),
@@ -56,7 +56,6 @@ h1 img {
     filter: drop-shadow(2px 2px 1px rgba(0,0,0,0.2));
     transition: height 0.3s ease;
 }
-
 /* ================== TAGLINE ================== */
 .tagline {
     font-family: Roboto;
@@ -65,15 +64,16 @@ h1 img {
     text-align: center;
     margin: 10px 0 20px;
     text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
-    animation: none;
+    animation: none; /* Removed color changing animation for better readability */
 }
 
 .tagline span {
-    color: #24ff3ee9 !important;
+    color: #24ff3ee9 !important; /* Changed to bright yellow for contrast */
     font-weight: bold;
     text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
 }
 
+/* Keep the reappear animation */
 .tagline.reappear {
     animation: bounceIn 0.5s;
 }
@@ -124,6 +124,10 @@ h1 img {
     color: #333;
     text-shadow: 0 0 2px rgba(255,255,255,0.7);
     z-index: 2;
+}
+
+.performance-meter {
+    position: relative; /* Add this to make positioning work */
 }
 
 @keyframes floatUp {
@@ -308,6 +312,7 @@ h1 img {
     align-items: center;
     justify-content: center;
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    /* Hide by default */
     display: none;
 }
 
@@ -459,7 +464,6 @@ body:has(.game-container:not(.hidden)) h1 {
 .game-over:not(.hidden) ~ #pauseBtn {
     display: flex;
 }
-
 /* ================== FEEDBACK SYSTEM ================== */
 #answerFeedback {
     opacity: 0;
@@ -554,17 +558,7 @@ body:has(.game-container:not(.hidden)) h1 {
     }
 
     h1 {
-        font-size: 2.2em;
         margin: 0 0 0.5rem;
-    }
-
-    .tagline {
-        font-size: 1.2em;
-        margin: 5px 0 15px;
-    }
-
-    .tagline span {
-        font-size: 0.9em;
     }
 
     .level-selector {
@@ -574,17 +568,14 @@ body:has(.game-container:not(.hidden)) h1 {
         width: 100%;
     }
 
-    .level-btn {
-        width: 100% !important;
-        min-height: 70px;
+    .level-btn, #startBtn, .game-over button, .answer-btn {
         padding: 1rem;
-        font-size: 1rem;
-        white-space: normal;
+        font-size: 1.1rem;
     }
 
-    #startBtn, .game-over button {
-        padding: 1rem 1.5rem;
-        font-size: 1.1rem;
+    .level-btn {
+        width: 100% !important;
+        white-space: normal;
     }
 
     .answer-btn {
@@ -592,18 +583,9 @@ body:has(.game-container:not(.hidden)) h1 {
         font-size: 1.4rem;
     }
 
-    .game-container {
-        padding: 1.5rem;
-    }
-
-    .problem {
-        font-size: 2.2em;
-        padding: 15px;
-        margin: 15px 0;
-    }
-
     .game-container.active ~ h1 {
-        font-size: 1.2em;
+        font-size: 1em;
+        margin: 0 0 0.5rem;
     }
 
     .game-container.active ~ h1 img {
@@ -622,14 +604,6 @@ body:has(.game-container:not(.hidden)) h1 {
         height: 40px;
     }
 
-    .tagline {
-        font-size: 1em;
-    }
-
-    .tagline span {
-        font-size: 0.85em;
-    }
-
     .level-selector {
         gap: 0.5rem;
     }
@@ -637,7 +611,6 @@ body:has(.game-container:not(.hidden)) h1 {
     .level-btn {
         padding: 0.8rem;
         font-size: 0.95rem;
-        min-height: 60px;
     }
 
     .level-btn::after {
@@ -646,32 +619,14 @@ body:has(.game-container:not(.hidden)) h1 {
 
     .game-container {
         margin-top: 0.3rem;
-        padding: 1rem;
-    }
-
-    .problem {
-        font-size: 1.8em;
-        padding: 10px;
-        margin: 10px 0;
-    }
-
-    .answers-grid {
-        grid-template-columns: 1fr;
-        gap: 0.8rem;
-        margin: 1.5rem 0;
-    }
-
-    .answer-btn {
-        padding: 1.2rem;
-        font-size: 1.3rem;
     }
     
     .game-container.active ~ h1 {
-        font-size: 1em;
+        font-size: 1.2em;
     }
 
     .game-container.active ~ h1 img {
-        height: 25px;
+        height: 30px;
     }
 
     .emoji-visual {
@@ -680,11 +635,6 @@ body:has(.game-container:not(.hidden)) h1 {
         overflow-x: auto;
         padding: 5px 0;
         -webkit-overflow-scrolling: touch;
-    }
-
-    .score-board {
-        padding: 8px 15px;
-        font-size: 1em;
     }
 }
 
