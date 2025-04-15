@@ -103,6 +103,7 @@ let lastSelectedLevel = currentLevel; // Initialize with currentLevel
 
 const elements = {
     tagLine : document.querySelector('.tagline'),
+    themeToggleBtn: document.getElementById('themeToggleBtn'),
     startBtn: document.getElementById('startBtn'),
     euPrivacy: document.getElementById('eu-privacy'),
     gameContainer: document.querySelector('.game-container'),
@@ -149,6 +150,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (storedLevel) {
         setLevel(storedLevel);
     }
+    elements.themeToggleBtn.addEventListener('click', toggleTheme);
+    
+    // Initialize theme - make sure this runs
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.body.setAttribute('data-theme', savedTheme);
+    elements.themeToggleBtn.querySelector('.icon').textContent = savedTheme === 'dark' ? '☀️' : '🌙';
 });
 
 // Event Listeners
@@ -177,6 +184,7 @@ elements.playAgainBtn.addEventListener('click', () => {
     // Hide the control buttons
     elements.muteBtn.style.display = 'none';
     elements.pauseBtn.style.display = 'none';
+    elements.themeToggleBtn.style.display = 'flex'; // Show theme toggle
 
     score = 0;
     timeLeft = 0;
@@ -238,6 +246,14 @@ function togglePause() {
         document.querySelectorAll('.answer-btn').forEach(btn => btn.disabled = false);
         if(timeLeft <= 10) playSound(elements.tickSound);
     }
+}
+
+function toggleTheme() {
+    const isDarkMode = document.body.getAttribute('data-theme') === 'dark';
+    const newTheme = isDarkMode ? 'light' : 'dark';
+    document.body.setAttribute('data-theme', newTheme);
+    elements.themeToggleBtn.querySelector('.icon').textContent = isDarkMode ? '🌙' : '☀️';
+    localStorage.setItem('theme', newTheme);
 }
 
 function playSound(sound) {
@@ -580,8 +596,7 @@ function startGame() {
     // Show the control buttons
     elements.muteBtn.style.display = 'flex';
     elements.pauseBtn.style.display = 'flex';
-    elements.pauseBtn.disabled = false;
-
+    elements.themeToggleBtn.style.display = 'none'; // Hide during game
     elements.pauseBtn.disabled = false;
     gameActive = true;
     isPaused = false;
