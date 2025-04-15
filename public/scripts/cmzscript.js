@@ -85,7 +85,6 @@ const config = {
     }
 };
 
-let currentLevel = 'kinder';
 let score = 0;
 let timeLeft = 0;
 let gameActive = false;
@@ -99,7 +98,8 @@ let problemHistory = [];
 let pendingTimeout = null;
 let isPaused = false;
 let isMuted = localStorage.getItem('muteState') === 'true';
-
+let currentLevel = localStorage.getItem('lastLevel') || 'kinder'; // Default to kinder if nothing stored
+let lastSelectedLevel = currentLevel; // Initialize with currentLevel
 
 const elements = {
     tagLine : document.querySelector('.tagline'),
@@ -143,6 +143,14 @@ elements.performanceMeter.appendChild(maxScoreDisplay);
 
 document.querySelector('.container').prepend(elements.performanceMeter);
 
+document.addEventListener('DOMContentLoaded', () => {
+    // Set the active button based on stored level
+    const storedLevel = localStorage.getItem('lastLevel');
+    if (storedLevel) {
+        setLevel(storedLevel);
+    }
+});
+
 // Event Listeners
 document.querySelectorAll('.level-btn').forEach(btn => {
     btn.addEventListener('click', () => setLevel(btn.dataset.level));
@@ -175,6 +183,9 @@ elements.playAgainBtn.addEventListener('click', () => {
     problemHistory = [];
     elements.scoreElement.textContent = "0";
     elements.timerElement.textContent = "0";
+    
+    // This will automatically use the stored level
+    setLevel(lastSelectedLevel);
     toggleMute(localStorage.getItem('muteState') === 'true');
 });
 
@@ -245,6 +256,8 @@ function stopSound(sound) {
 
 function setLevel(level) {
     currentLevel = level;
+    lastSelectedLevel = level;
+    localStorage.setItem('lastLevel', level); // Store in localStorage
     elements.levelBtns.forEach(btn => {
         btn.classList.toggle('active', btn.dataset.level === level);
     });
