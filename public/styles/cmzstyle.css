@@ -353,7 +353,7 @@ h1 img {
 #themeToggleBtn {
     position: fixed;
     top: 15px;
-    right: 120px; /* Position to the left of mute button */
+    right: 15px; /* Align with mute-btn (previously 120px) */
     width: 40px;
     height: 40px;
     border-radius: 20px;
