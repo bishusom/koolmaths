@@ -1,6 +1,8 @@
 /* ================== GLOBAL STYLES ================== */
 body[data-theme="light"],
 body:not([data-theme]) { /* Fallback for when no theme is set */
+    min-height: 85vh; /* Add this to ensure consistent height */
+    margin: 2rem auto; /* Adjust margin for better spacing */
     font-family: 'Bubblegum Sans';
     display: flex;
     justify-content: center;
@@ -578,150 +580,9 @@ body:has(.game-container:not(.hidden)) h1 {
     clip: rect(0, 0, 0, 0);
     border: 0;
 }
-
-/* ================== RESPONSIVE DESIGN ================== */
-@media (max-width: 768px) {
-    .main-container {
-        padding: 0.5rem 1rem;
-        width: 95%;
-    }
-
-    h1 {
-        font-size: 2.2em;
-        margin: 0 0 0.5rem;
-    }
-
-    .tagline {
-        font-size: 0.9em;
-        margin: 5px 0 15px;
-    }
-
-    .tagline span {
-        font-size: 0.9em;
-    }
-
-    .level-selector {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 0.8rem;
-        width: 100%;
-    }
-
-    .level-btn {
-        width: 100% !important;
-        min-height: 70px;
-        padding: 1rem;
-        font-size: 1rem;
-        white-space: normal;
-    }
-
-    #startBtn, .game-over button {
-        padding: 1rem 1.5rem;
-        font-size: 1.1rem;
-    }
-
-    .answer-btn {
-        padding: 1.5rem;
-        font-size: 1.4rem;
-    }
-
-    .game-container {
-        padding: 1.5rem;
-    }
-
-    .problem {
-        font-size: 2.2em;
-        padding: 15px;
-        margin: 15px 0;
-    }
-
-    .game-container.active ~ h1 {
-        font-size: 1.2em;
-    }
-
-    .game-container.active ~ h1 img {
-        height: 30px;
-    }
-}
-
-@media (max-width: 480px) {
-    h1 {
-        font-size: 1.8em;
-        gap: 8px;
-        margin: 0 0 0.3rem;
-    }
-
-    h1 img {
-        height: 40px;
-    }
-
-    .tagline {
-        font-size: 1em;
-    }
-
-    .tagline span {
-        font-size: 0.85em;
-    }
-
-    .level-selector {
-        gap: 0.5rem;
-    }
-
-    .level-btn {
-        padding: 0.8rem;
-        font-size: 0.95rem;
-        min-height: 60px;
-    }
-
-    .level-btn::after {
-        font-size: 0.85rem;
-    }
-
-    .game-container {
-        margin-top: 0.3rem;
-        padding: 1rem;
-    }
-
-    .problem {
-        font-size: 1.8em;
-        padding: 10px;
-        margin: 10px 0;
-    }
-
-    .answers-grid {
-        grid-template-columns: 1fr;
-        gap: 0.8rem;
-        margin: 1.5rem 0;
-    }
-
-    .answer-btn {
-        padding: 1.2rem;
-        font-size: 1.3rem;
-    }
-    
-    .game-container.active ~ h1 {
-        font-size: 1em;
-    }
-
-    .game-container.active ~ h1 img {
-        height: 25px;
-    }
-
-    .emoji-visual {
-        font-size: 1.2rem !important;
-        white-space: nowrap;
-        overflow-x: auto;
-        padding: 5px 0;
-        -webkit-overflow-scrolling: touch;
-    }
-
-    .score-board {
-        padding: 8px 15px;
-        font-size: 1em;
-    }
-}
 /* ================== DARK MODE STYLES ================== */
 body[data-theme="dark"] {
+    min-height: 85vh; /* Match light theme */
     background: linear-gradient(135deg, #2c3e50, #34495e, #7f8c8d, #95a5a6) !important;
     color: #ecf0f1;
     animation: none !important;
@@ -864,6 +725,154 @@ body[data-theme="dark"] {
 
 [data-theme="dark"] #pauseBtn.paused {
     background: #f1c40f;
+}
+/* ================== RESPONSIVE DESIGN ================== */
+@media (max-width: 768px) {
+    .main-container {
+        padding: 0.5rem 1rem;
+        width: 95%;
+        min-height: 90vh; /* Slightly taller on mobile */
+        margin: 1rem auto; /* Tighter margin */
+        padding: 1.5rem 1rem; /* Adjusted padding */
+    }
+
+    [data-theme="dark"] .main-container {
+        min-height: 90vh; /* Match mobile light theme */
+    }
+
+    h1 {
+        font-size: 2.2em;
+        margin: 0 0 0.5rem;
+    }
+
+    .tagline {
+        font-size: 0.9em;
+        margin: 5px 0 15px;
+    }
+
+    .tagline span {
+        font-size: 0.9em;
+    }
+
+    .level-selector {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+        width: 100%;
+    }
+
+    .level-btn {
+        width: 100% !important;
+        min-height: 70px;
+        padding: 1rem;
+        font-size: 1rem;
+        white-space: normal;
+    }
+
+    #startBtn, .game-over button {
+        padding: 1rem 1.5rem;
+        font-size: 1.1rem;
+    }
+
+    .answer-btn {
+        padding: 1.5rem;
+        font-size: 1.4rem;
+    }
+
+    .game-container {
+        padding: 1.5rem;
+    }
+
+    .problem {
+        font-size: 2.2em;
+        padding: 15px;
+        margin: 15px 0;
+    }
+
+    .game-container.active ~ h1 {
+        font-size: 1.2em;
+    }
+
+    .game-container.active ~ h1 img {
+        height: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.8em;
+        gap: 8px;
+        margin: 0 0 0.3rem;
+    }
+
+    h1 img {
+        height: 40px;
+    }
+
+    .tagline {
+        font-size: 1em;
+    }
+
+    .tagline span {
+        font-size: 0.85em;
+    }
+
+    .level-selector {
+        gap: 0.5rem;
+    }
+
+    .level-btn {
+        padding: 0.8rem;
+        font-size: 0.95rem;
+        min-height: 60px;
+    }
+
+    .level-btn::after {
+        font-size: 0.85rem;
+    }
+
+    .game-container {
+        margin-top: 0.3rem;
+        padding: 1rem;
+    }
+
+    .problem {
+        font-size: 1.8em;
+        padding: 10px;
+        margin: 10px 0;
+    }
+
+    .answers-grid {
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+        margin: 1.5rem 0;
+    }
+
+    .answer-btn {
+        padding: 1.2rem;
+        font-size: 1.3rem;
+    }
+    
+    .game-container.active ~ h1 {
+        font-size: 1em;
+    }
+
+    .game-container.active ~ h1 img {
+        height: 25px;
+    }
+
+    .emoji-visual {
+        font-size: 1.2rem !important;
+        white-space: nowrap;
+        overflow-x: auto;
+        padding: 5px 0;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .score-board {
+        padding: 8px 15px;
+        font-size: 1em;
+    }
 }
 /* ================== UTILITY CLASSES ================== */
 .hidden {
