@@ -72,6 +72,10 @@ h1 img {
     margin: 10px 0 20px;
     text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
     animation: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5em; /* Adjust spacing as needed */
 }
 
 .tagline span {
@@ -749,6 +753,9 @@ body[data-theme="dark"] {
     .tagline {
         font-size: 0.9em;
         margin: 5px 0 15px;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.3em; /* Reduce gap for tighter spacing */
     }
 
     .tagline span {
