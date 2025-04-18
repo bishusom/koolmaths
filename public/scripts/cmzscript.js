@@ -164,6 +164,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('theme') || 'light';
     document.body.setAttribute('data-theme', savedTheme);
     elements.themeToggleBtn.querySelector('.icon').textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+
+    // Set initial logo based on theme
+    const logo = document.querySelector('.logo-image');
+    if (logo) {
+        logo.src = savedTheme === 'dark' ? '/images/cmz-logo-dark.png' : '/images/cmz-logo-light.png';
+    }
 });
 
 // Event Listeners
@@ -313,6 +319,8 @@ function toggleTheme() {
     // Force logo image update
     const logo = document.querySelector('.logo-image');
     if (logo) {
+        logo.removeAttribute('srcset');
+        // Set new source based on theme
         logo.src = isDarkMode ? '/images/cmz-logo-light.png' : '/images/cmz-logo-dark.png';
     }
 }
