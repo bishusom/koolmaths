@@ -44,11 +44,6 @@ h1 {
     align-items: center;
     justify-content: center;
     gap: 15px;
-    /*font-size: 3em;
-    color: #e84393;
-    text-shadow: 3px 3px 0 #ffffff, 
-                 5px 5px 0 #ff8e8e;          
-    letter-spacing: 2px;*/
     color: transparent;
     text-shadow: none;
     letter-spacing: normal;

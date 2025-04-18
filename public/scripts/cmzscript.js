@@ -168,6 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Set initial logo based on theme
     const logo = document.querySelector('.logo-image');
     if (logo) {
+        logo.removeAttribute('srcset'); // Remove srcset on initial load
         logo.src = savedTheme === 'dark' ? '/images/cmz-logo-dark.png' : '/images/cmz-logo-light.png';
     }
 });
