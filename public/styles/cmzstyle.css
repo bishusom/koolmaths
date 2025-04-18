@@ -50,17 +50,19 @@ h1 {
     animation: bounce 2s infinite;
 }
 
+.site-logo {
+    width: 300px; /* Adjust based on your logo dimensions */
+    height: 80px; /* Adjust based on your logo dimensions */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('images/logo-light.png');
+}
+
 @keyframes bounce {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-10px); }
 }
-
-.logo-image {
-    height: 120px; /* Adjust as needed */
-    filter: drop-shadow(2px 2px 1px rgba(0,0,0,0.2));
-    transition: all 0.3s ease;
-}
-
 /* ================== TAGLINE ================== */
 .tagline {
     font-family: Roboto;
@@ -145,13 +147,15 @@ h1 {
     margin: 0 0 1rem;
 }
 
-.game-container.active ~ h1 .logo-image {
-    height: 60px;
-}
 .game-container.active ~ .level-selector {
     display: none !important;
 }
 
+/* Adjust size when game is active */
+.game-container.active ~ h1.site-logo {
+    height: 60px;
+    width: 225px;
+}
 /* ================== ENHANCED BUTTON STYLES ================== */
 .level-btn, #startBtn, .game-over button, .answer-btn {
     position: relative;
@@ -766,9 +770,10 @@ body[data-theme="dark"] {
     text-shadow: 2px 2px 0 #2c3e50, 4px 4px 0 #ecf0f1;
 }
 
-[data-theme="dark"] .logo-image {
-    filter: drop-shadow(2px 2px 1px rgba(0,0,0,0.5));
+[data-theme="dark"] .site-logo {
+    background-image: url('images/logo-dark.png');
 }
+
 
 [data-theme="dark"] .tagline {
     color: #ecf0f1;
@@ -967,13 +972,15 @@ body[data-theme="dark"] {
         font-size: 2.2em;
         margin: 0 0 0.5rem;
     }
-
-    .logo-image {
+    
+    .site-logo {
         height: 70px;
+        width: 260px;
     }
     
-    .game-container.active ~ h1 .logo-image {
+    .game-container.active ~ h1.site-logo {
         height: 50px;
+        width: 190px;
     }
 
     .tagline {
@@ -1039,8 +1046,14 @@ body[data-theme="dark"] {
         margin: 0 0 0.3rem;
     }
 
-    .logo-image {
+    .site-logo {
         height: 60px;
+        width: 225px;
+    }
+    
+    .game-container.active ~ h1.site-logo {
+        height: 40px;
+        width: 150px;
     }
 
     .tagline {
@@ -1068,10 +1081,6 @@ body[data-theme="dark"] {
     .game-container {
         margin-top: 0.3rem;
         padding: 1rem;
-    }
-
-    .game-container.active ~ h1 .logo-image {
-        height: 40px;
     }
 
     .problem {
