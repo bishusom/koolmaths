@@ -67,7 +67,7 @@
             "name": "Cool Maths Zone",
             "logo": {
                 "@type": "ImageObject",
-                "url": "https://coolmathszone.com/images/logo.png"
+                "url": "https://coolmathszone.com/images/cmz-logo-light.png"
             }
         }
     }
@@ -80,11 +80,13 @@
 <body>
     <div class="main-container">
         <h1>
-            <img src="/images/einstein.png" alt="Albert Einstein Mascot - Cool Maths Zone Games">
-            <span>COOL MATHS ZONE <span class="visually-hidden">| Fun Math Games & Number Puzzles</span></span>
+            <picture>
+                <source srcset="/images/cmz-logo-dark.png" media="(prefers-color-scheme: dark)">
+                <img src="/images/cmz-logo-light.png" alt="Cool Maths Zone" class="logo-image">
+            </picture>
         </h1>
         <p class="tagline">
-            5 minutes a day = Math Superpowers💪 <span>Solve 🔍, Smile 😊, Repeat 🔄</span>
+            5 minutes a day = Math Superpowers💪 <span>Solve 🔍, Smile 😊, Repeat 🔄</span> 
         </p>
         <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle dark mode">
             <span class="icon">🌙</span>
@@ -96,6 +98,7 @@
             <span class="icon">⏸️</span>
         </button>
         <div class="level-selector">
+            <!-- Add toggle button -->
             <div class="level-selector">
                 <button class="level-btn active" data-level="kinder" data-description="Ages 4-5">🐛 Kindergarten Questers</button>
                 <button class="level-btn" data-level="primary1" data-description="Grade 1-3">🥷 Number Ninjas</button>
@@ -129,13 +132,60 @@
             </div>
             <div class="performance-message" id="performanceMessage"></div>
             <button id="playAgainBtn">Play Again? 🔄</button>
+            <button id="feedbackBtn">Give Feedback 💬</button>
         </div>
+
+        <div class="feedback-form-container hidden" id="feedbackForm">
+            <h2>Send Us Feedback</h2>
+            <form name="feedback" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+                <input type="hidden" name="game-level" id="feedbackGameLevel">
+                <input type="hidden" name="final-score" id="feedbackFinalScore">
+                <p class="hidden">
+                    <label>Don't fill this out if you're human: <input name="bot-field"></label>
+                </p>
+                <div class="form-content">
+                    <div class="form-group">
+                        <label for="feedbackName">Your Name (optional):</label>
+                        <input type="text" id="feedbackName" name="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="feedbackEmail">Your Email (optional):</label>
+                        <input type="email" id="feedbackEmail" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="feedbackMessage">Your Feedback:*</label>
+                        <textarea id="feedbackMessage" name="message" required></textarea>
+                    </div>
+                    <div class="form-group rating-group">
+                        <label>How would you rate this game?</label>
+                        <div class="star-rating">
+                            <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label>
+                            <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
+                            <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
+                            <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
+                            <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+                        </div>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="submit" class="submit-btn">Send Feedback</button>
+                        <button type="button" class="cancel-btn" id="cancelFeedback">Cancel</button>
+                    </div>
+                </div>
+                <div class="feedback-success hidden">
+                    <p>Thank you for your feedback! We appreciate your input.</p>
+                </div>
+            </form>
+            <div class="game-over-buttons">
+                <button id="playAgainFromFeedback">Play Again? 🔄</button>
+            </div>
+        </div>
+
     </div>
     <!-- Sound Effects -->
-    <audio id="correctSound" src="/sounds/correct.mp3"></audio>
-    <audio id="wrongSound" src="/sounds/wrong.mp3"></audio>
-    <audio id="tickSound" src="/sounds/tick.mp3"></audio>
-    <audio id="gameOverSound" src="/sounds/game-over.mp3"></audio>
+    <audio id="correctSound" src="correct.mp3"></audio>
+    <audio id="wrongSound" src="wrong.mp3"></audio>
+    <audio id="tickSound" src="tick.mp3"></audio>
+    <audio id="gameOverSound" src="game-over.mp3"></audio>
     <script src="/scripts/cmzscript.js"></script>
 </body>
 </html>

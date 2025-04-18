@@ -127,7 +127,15 @@ const elements = {
     currentLevelEmoji: document.getElementById('currentLevelEmoji'),
     currentLevelName: document.getElementById('currentLevelName'),
     performanceMeter: document.createElement('div'),
-    performanceBar: document.createElement('div')
+    performanceBar: document.createElement('div'),
+    feedbackForm: document.getElementById('feedbackForm'),
+    feedbackGameLevel: document.getElementById('feedbackGameLevel'),
+    feedbackFinalScore: document.getElementById('feedbackFinalScore'),
+    feedbackBtn: document.getElementById('feedbackBtn'),
+    cancelFeedback: document.getElementById('cancelFeedback'),
+    playAgainFromFeedback: document.getElementById('playAgainFromFeedback'),
+    formContent: document.querySelector('.form-content'),
+    feedbackSuccess: document.querySelector('.feedback-success')
 };
 
 //Make sure the buttons are hidden initially
@@ -197,6 +205,53 @@ elements.playAgainBtn.addEventListener('click', () => {
     toggleMute(localStorage.getItem('muteState') === 'true');
 });
 
+elements.cancelFeedback.addEventListener('click', () => {
+    elements.feedbackForm.classList.add('hidden');
+    elements.gameOverScreen.classList.remove('hidden');
+});
+
+elements.feedbackBtn.addEventListener('click', () => {
+    elements.gameOverScreen.classList.add('hidden');
+    showFeedbackForm();
+});
+
+document.querySelector('form[name="feedback"]').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const form = this;
+    
+    fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(new FormData(form)).toString()
+    })
+    .then(() => {
+        // Show success message and hide form
+        elements.formContent.classList.add('hidden');
+        elements.feedbackSuccess.classList.add('visible');
+        form.reset();
+    })
+    .catch(error => {
+        alert('There was an error submitting your feedback. Please try again.');
+        console.error(error);
+    });
+});
+
+// Add this function to show the feedback form
+function showFeedbackForm() {
+    elements.feedbackGameLevel.value = config[currentLevel].name;
+    elements.feedbackFinalScore.value = score;
+    elements.feedbackForm.classList.remove('hidden');
+    elements.feedbackForm.scrollIntoView({ behavior: 'smooth' });
+}
+
+// Add this event listener for the Play Again button in feedback form
+elements.playAgainFromFeedback.addEventListener('click', () => {
+    elements.feedbackForm.classList.add('hidden');
+    elements.formContent.classList.remove('hidden');
+    elements.feedbackSuccess.classList.remove('visible');
+    elements.gameOverScreen.classList.remove('hidden');
+});
+
 function toggleMute(forceState) {
     if(typeof forceState === 'boolean') {
         isMuted = forceState;
@@ -254,6 +309,12 @@ function toggleTheme() {
     document.body.setAttribute('data-theme', newTheme);
     elements.themeToggleBtn.querySelector('.icon').textContent = isDarkMode ? '🌙' : '☀️';
     localStorage.setItem('theme', newTheme);
+
+    // Force logo image update
+    const logo = document.querySelector('.logo-image');
+    if (logo) {
+        logo.src = isDarkMode ? '/images/cmz-logo-light.png' : '/images/cmz-logo-dark.png';
+    }
 }
 
 function playSound(sound) {

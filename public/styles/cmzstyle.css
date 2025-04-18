@@ -44,11 +44,14 @@ h1 {
     align-items: center;
     justify-content: center;
     gap: 15px;
-    font-size: 3em;
+    /*font-size: 3em;
     color: #e84393;
     text-shadow: 3px 3px 0 #ffffff, 
                  5px 5px 0 #ff8e8e;          
-    letter-spacing: 2px;
+    letter-spacing: 2px;*/
+    color: transparent;
+    text-shadow: none;
+    letter-spacing: normal;
     animation: bounce 2s infinite;
 }
 
@@ -57,10 +60,10 @@ h1 {
     50% { transform: translateY(-10px); }
 }
 
-h1 img {
-    height: 60px;
+.logo-image {
+    height: 120px; /* Adjust as needed */
     filter: drop-shadow(2px 2px 1px rgba(0,0,0,0.2));
-    transition: height 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 /* ================== TAGLINE ================== */
@@ -147,10 +150,9 @@ h1 img {
     margin: 0 0 1rem;
 }
 
-.game-container.active ~ h1 img {
-    height: 40px;
+.game-container.active ~ h1 .logo-image {
+    height: 60px;
 }
-
 .game-container.active ~ .level-selector {
     display: none !important;
 }
@@ -574,6 +576,167 @@ body:has(.game-container:not(.hidden)) h1 {
     font-size: 1.1em;
 }
 
+/* ================== FEEDBACK FORM STYLES ================== */
+.feedback-form-container {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 20px;
+    margin-top: 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+.feedback-form-container h2 {
+    color: #e84393;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #2d3436;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.form-content {
+    transition: opacity 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #6c5ce7;
+    outline: none;
+}
+
+.form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.rating-group {
+    text-align: center;
+}
+
+.star-rating {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 0.5rem 0;
+}
+
+.star-rating label {
+    font-size: 2rem;
+    cursor: pointer;
+    color: #ddd;
+    transition: color 0.2s;
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+}
+
+.star-rating input:checked ~ label,
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: #ffd700;
+}
+
+.star-rating input:checked + label {
+    color: #ffd700;
+}
+
+/* Hide the radio buttons but keep them accessible */
+.star-rating input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.star-rating label:hover {
+    transform: scale(1.2);
+}
+
+.submit-btn, .cancel-btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-right: 1rem;
+}
+
+.submit-btn {
+    background: linear-gradient(145deg, #4CAF50, #3e8e41);
+    color: white;
+}
+
+.cancel-btn {
+    background: linear-gradient(145deg, #f44336, #d32f2f);
+    color: white;
+}
+
+.submit-btn:hover {
+    background: linear-gradient(145deg, #3e8e41, #2e7d32);
+}
+
+.cancel-btn:hover {
+    background: linear-gradient(145deg, #d32f2f, #b71c1c);
+}
+
+/* Success message */
+.feedback-success {
+    text-align: center;
+    padding: 1rem 0;
+    color: #4CAF50;
+    font-size: 1.2rem;
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.feedback-success.visible {
+    opacity: 1;
+    height: auto;
+    padding: 1rem 0 2rem;
+}
+
+.form-content.hidden {
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    padding: 0;
+}
+
+#playAgainFromFeedback {
+    background: linear-gradient(145deg, #6c5ce7, #a29bfe);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
 .visually-hidden {
     position: absolute;
     width: 1px;
@@ -606,6 +769,10 @@ body[data-theme="dark"] {
     font-family: 'Bubblegum Sans' !important; /* Force font in dark mode */
     color: #e74c3c;
     text-shadow: 2px 2px 0 #2c3e50, 4px 4px 0 #ecf0f1;
+}
+
+[data-theme="dark"] .logo-image {
+    filter: drop-shadow(2px 2px 1px rgba(0,0,0,0.5));
 }
 
 [data-theme="dark"] .tagline {
@@ -731,6 +898,62 @@ body[data-theme="dark"] {
 [data-theme="dark"] #pauseBtn.paused {
     background: #f1c40f;
 }
+
+[data-theme="dark"] .feedback-form-container {
+    background: rgba(44, 62, 80, 0.95);
+}
+
+[data-theme="dark"] .feedback-form-container h2 {
+    color: #e74c3c;
+}
+
+[data-theme="dark"] .form-group label {
+    color: #ecf0f1;
+}
+
+[data-theme="dark"] .form-group input,
+[data-theme="dark"] .form-group textarea {
+    background-color: #34495e;
+    border-color: #7f8c8d;
+    color: #ecf0f1;
+}
+
+[data-theme="dark"] .form-group input:focus,
+[data-theme="dark"] .form-group textarea:focus {
+    border-color: #3498db;
+}
+
+[data-theme="dark"] .submit-btn {
+    background: linear-gradient(145deg, #27ae60, #2ecc71);
+}
+
+[data-theme="dark"] .cancel-btn {
+    background: linear-gradient(145deg, #c0392b, #e74c3c);
+}
+
+[data-theme="dark"] .submit-btn:hover {
+    background: linear-gradient(145deg, #2ecc71, #27ae60);
+}
+
+[data-theme="dark"] .cancel-btn:hover {
+    background: linear-gradient(145deg, #e74c3c, #c0392b);
+}
+
+[data-theme="dark"] .feedback-success {
+    color: #2ecc71;
+}
+
+#playAgainFromFeedback:hover {
+    background: linear-gradient(145deg, #a29bfe, #6c5ce7);
+}
+
+[data-theme="dark"] #playAgainFromFeedback {
+    background: linear-gradient(145deg, #3498db, #2980b9);
+}
+
+[data-theme="dark"] #playAgainFromFeedback:hover {
+    background: linear-gradient(145deg, #2980b9, #3498db);
+}
 /* ================== RESPONSIVE DESIGN ================== */
 @media (max-width: 768px) {
     .main-container {
@@ -748,6 +971,14 @@ body[data-theme="dark"] {
     h1 {
         font-size: 2.2em;
         margin: 0 0 0.5rem;
+    }
+
+    .logo-image {
+        height: 70px;
+    }
+    
+    .game-container.active ~ h1 .logo-image {
+        height: 50px;
     }
 
     .tagline {
@@ -813,8 +1044,8 @@ body[data-theme="dark"] {
         margin: 0 0 0.3rem;
     }
 
-    h1 img {
-        height: 40px;
+    .logo-image {
+        height: 60px;
     }
 
     .tagline {
@@ -842,6 +1073,10 @@ body[data-theme="dark"] {
     .game-container {
         margin-top: 0.3rem;
         padding: 1rem;
+    }
+
+    .game-container.active ~ h1 .logo-image {
+        height: 40px;
     }
 
     .problem {
