@@ -39,7 +39,6 @@ body:not([data-theme]) { /* Fallback for when no theme is set */
 
 /* ================== HEADER & TITLE ================== */
 h1 {
-    align-self: center;
     margin: 0 0 1rem;
     display: flex;
     align-items: center;
@@ -49,6 +48,8 @@ h1 {
     text-shadow: none;
     letter-spacing: normal;
     animation: bounce 2s infinite;
+    justify-content: center; /* Ensure horizontal centering */
+    width: 100%; /* Take full width */
 }
 
 .site-logo {
@@ -58,6 +59,7 @@ h1 {
     background-repeat: no-repeat;
     background-position: center;
     background-image: url('/images/cmz-logo-light.png');
+    margin: 0 auto; /* Add this to center the logo */
 }
 
 @keyframes bounce {
@@ -774,6 +776,7 @@ body[data-theme="dark"] {
 
 [data-theme="dark"] .site-logo {
     background-image: url('/images/cmz-logo-dark.png');
+    margin: 0 auto; /* Ensure centering in dark mode too */
 }
 
 [data-theme="dark"] .tagline {
@@ -977,11 +980,13 @@ body[data-theme="dark"] {
     .site-logo {
         height: 70px;
         width: 260px;
+        margin: 0 auto; /* Ensure centering on mobile */
     }
     
     .game-container.active ~ h1.site-logo {
         height: 50px;
         width: 190px;
+        margin: 0 auto; /* Ensure centering when game is active */
     }
 
     .tagline {
@@ -1050,11 +1055,13 @@ body[data-theme="dark"] {
     .site-logo {
         height: 60px;
         width: 225px;
+        margin: 0 auto; /* Ensure centering on small screens */
     }
     
     .game-container.active ~ h1.site-logo {
         height: 40px;
         width: 150px;
+        margin: 0 auto; /* Ensure centering on small screens */
     }
 
     .tagline {
