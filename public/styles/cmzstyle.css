@@ -39,6 +39,7 @@ body:not([data-theme]) { /* Fallback for when no theme is set */
 
 /* ================== HEADER & TITLE ================== */
 h1 {
+    align-self: center;
     margin: 0 0 1rem;
     display: flex;
     align-items: center;
@@ -765,13 +766,14 @@ body[data-theme="dark"] {
 }
 
 [data-theme="dark"] h1 {
+    align-self: center;
     font-family: 'Bubblegum Sans' !important; /* Force font in dark mode */
     color: #e74c3c;
     text-shadow: 2px 2px 0 #2c3e50, 4px 4px 0 #ecf0f1;
 }
 
 [data-theme="dark"] .site-logo {
-    background-image: url('/public/images/cmz-logo-dark.png');
+    background-image: url('/images/cmz-logo-dark.png');
 }
 
 [data-theme="dark"] .tagline {
