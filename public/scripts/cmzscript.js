@@ -123,17 +123,15 @@ const elements = {
     correctSound: document.getElementById('correctSound'),
     wrongSound: document.getElementById('wrongSound'),
     tickSound: document.getElementById('tickSound'),
+    bonusSound: document.getElementById('bonusSound'),
     gameOverSound: document.getElementById('gameOverSound'),
     currentLevelEmoji: document.getElementById('currentLevelEmoji'),
     currentLevelName: document.getElementById('currentLevelName'),
     performanceMeter: document.createElement('div'),
     performanceBar: document.createElement('div'),
     feedbackForm: document.getElementById('feedbackForm'),
-    feedbackGameLevel: document.getElementById('feedbackGameLevel'),
-    feedbackFinalScore: document.getElementById('feedbackFinalScore'),
-    feedbackBtn: document.getElementById('feedbackBtn'),
     cancelFeedback: document.getElementById('cancelFeedback'),
-    playAgainFromFeedback: document.getElementById('playAgainFromFeedback'),
+    closeFeedbackBtn: document.getElementById('closeFeedbackBtn'),
     formContent: document.querySelector('.form-content'),
     feedbackSuccess: document.querySelector('.feedback-success')
 };
@@ -143,6 +141,7 @@ elements.muteBtn.style.display = 'none';
 elements.pauseBtn.style.display = 'none';
 
 const MAX_HISTORY = 10;
+const GA_TRACKING_ID = 'G-SHMYVQ4TGH';
 elements.performanceMeter.className = 'performance-meter';
 elements.performanceBar.className = 'performance-bar';
 elements.performanceMeter.appendChild(elements.performanceBar);
@@ -183,7 +182,6 @@ elements.pauseBtn.addEventListener('click', togglePause);
 elements.playAgainBtn.addEventListener('click', () => {
     elements.gameOverScreen.classList.add('hidden');
     elements.tagLine.classList.remove('hidden');
-    //document.querySelectorAll('.level-btn').forEach(btn => btn.hidden = false); 
     elements.levelSelector.classList.remove('hidden');
     elements.startBtn.classList.remove('hidden');
     elements.euPrivacy.classList.remove('hidden');
@@ -192,7 +190,7 @@ elements.playAgainBtn.addEventListener('click', () => {
     // Hide the control buttons
     elements.muteBtn.style.display = 'none';
     elements.pauseBtn.style.display = 'none';
-    elements.themeToggleBtn.style.display = 'flex'; // Show theme toggle
+    elements.themeToggleBtn.style.display = 'flex';
 
     score = 0;
     timeLeft = 0;
@@ -200,20 +198,28 @@ elements.playAgainBtn.addEventListener('click', () => {
     elements.scoreElement.textContent = "0";
     elements.timerElement.textContent = "0";
     
-    // This will automatically use the stored level
     setLevel(lastSelectedLevel);
     toggleMute(localStorage.getItem('muteState') === 'true');
+    
+    // Explicitly reset the performance meter
+    elements.performanceBar.style.width = "0%";
+    elements.performanceBar.style.background = 'linear-gradient(90deg, #ff7675, #fdcb6e)';
 });
 
 elements.cancelFeedback.addEventListener('click', () => {
     elements.feedbackForm.classList.add('hidden');
-    elements.gameOverScreen.classList.remove('hidden');
 });
 
-elements.feedbackBtn.addEventListener('click', () => {
-    elements.gameOverScreen.classList.add('hidden');
-    showFeedbackForm();
+elements.closeFeedbackBtn?.addEventListener('click', () => {
+    elements.feedbackForm.classList.add('hidden');
+    elements.formContent.classList.remove('hidden');
+    elements.feedbackSuccess.classList.remove('visible');
 });
+
+document.getElementById('feedbackLink')?.addEventListener('click', function(e) {
+    e.preventDefault();
+    showFeedbackForm();
+})
 
 document.querySelector('form[name="feedback"]').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -237,20 +243,24 @@ document.querySelector('form[name="feedback"]').addEventListener('submit', funct
 });
 
 // Add this function to show the feedback form
-function showFeedbackForm() {
-    elements.feedbackGameLevel.value = config[currentLevel].name;
-    elements.feedbackFinalScore.value = score;
+function showFeedbackForm() {    
     elements.feedbackForm.classList.remove('hidden');
     elements.feedbackForm.scrollIntoView({ behavior: 'smooth' });
+    
+    // Track feedback form view
+    trackEvent('Engagement', 'Feedback Form Viewed', 'From Link', 0);
 }
 
-// Add this event listener for the Play Again button in feedback form
-elements.playAgainFromFeedback.addEventListener('click', () => {
-    elements.feedbackForm.classList.add('hidden');
-    elements.formContent.classList.remove('hidden');
-    elements.feedbackSuccess.classList.remove('visible');
-    elements.gameOverScreen.classList.remove('hidden');
-});
+// Add this function to track events
+function trackEvent(category, action, label, value) {
+    if (typeof gtag === 'function') {
+        gtag('event', action, {
+            'event_category': category,
+            'event_label': label,
+            'value': value
+        });
+    }
+}
 
 function toggleMute(forceState) {
     if(typeof forceState === 'boolean') {
@@ -648,6 +658,9 @@ function startGame() {
     elements.tagLine.classList.add('hidden');
     elements.euPrivacy.classList.add('hidden');
 
+    // Track game start
+    trackEvent('Gameplay', 'Game Started', config[currentLevel].name, 0);
+
     // Show the control buttons
     elements.muteBtn.style.display = 'flex';
     elements.pauseBtn.style.display = 'flex';
@@ -673,7 +686,17 @@ function resetState() {
     elements.timerElement.textContent = timeLeft;
     elements.feedbackElement.classList.remove('visible');
     elements.performanceBar.style.width = "0%";
-    elements.performanceBar.style.background = 'linear-gradient(90deg, #ff7675, #fdcb6e)';  
+    elements.performanceBar.style.background = 'linear-gradient(90deg, #ff7675, #fdcb6e)';
+    
+    // Reset max score display to base value
+    const baseMaxScores = {
+        kinder: 200,
+        primary1: 300,
+        primary2: 600,
+        secondary: 800,
+        genius: 1000
+    };
+    document.querySelector('.max-score-display').textContent = baseMaxScores[currentLevel];
 }
 
 function updateTimer() {
@@ -693,6 +716,9 @@ function endGame() {
     stopSound(elements.tickSound);
     clearInterval(timerInterval);
     clearTimeout(pendingTimeout);
+ 
+    // Reset max score increase for this level
+    localStorage.removeItem(`maxScoreIncrease_${currentLevel}`);
     
     elements.gameContainer.classList.add('hidden');
     elements.gameOverScreen.classList.remove('hidden');
@@ -701,9 +727,9 @@ function endGame() {
     playSound(elements.gameOverSound);
     elements.pauseBtn.disabled = true;
 
-    // In the endGame function, replace the percentage-based messages with this:
     const finalScore = score + Math.floor(timeLeft * 0.7); // Time bonus for remaining seconds
     const totalAnswered = totalQuestions;
+    trackEvent('Gameplay', 'Game Completed', config[currentLevel].name, finalScore);
 
     const performanceCriteria = [
         { 
@@ -735,7 +761,6 @@ function endGame() {
 
     elements.performanceMessage.textContent = earnedTier.message;
     elements.finalScore.textContent = finalScore;
-
 }
 
 function checkAnswer(selected) {
@@ -806,6 +831,12 @@ function checkAnswer(selected) {
             maxScoreReached.style.fontWeight = 'bold';
             maxScoreReached.style.animation = 'floatUp 1.5s ease-out forwards';
             elements.performanceBar.appendChild(maxScoreReached);
+
+            // Show bonus round message
+            showBonusRoundMessage();
+            
+            // Play special sound if available
+            playSound(elements.bonusSound); 
             
             // Update display immediately
             document.querySelector('.max-score-display').textContent = currentMaxScore + 200;
@@ -944,4 +975,35 @@ function createEmojiVisual(num1,num2) {
     const emojis = ['🍎', '🌸', '🚗', '🦆', '⚽', '🍦'];
     const emoji = emojis[Math.floor(Math.random() * emojis.length)];
     return emoji.repeat(num1)+' + '+emoji.repeat(num2);
+}
+
+function showBonusRoundMessage() {
+    // Pause the game
+    const wasPaused = isPaused;
+    if (!isPaused) {
+        togglePause();
+    }
+
+    const bonusMessage = document.createElement('div');
+    bonusMessage.className = 'bonus-round-message';
+    bonusMessage.innerHTML = `
+        <div class="bonus-round-content">
+            <div class="bonus-round-title">🌟 BONUS ROUND! 🌟</div>
+            <div class="bonus-round-text">Max Score Increased by 200!</div>
+            <div class="bonus-round-emoji">🔥⚡🎯</div>
+        </div>
+    `;
+    document.body.appendChild(bonusMessage);
+    
+    // Remove after animation
+    setTimeout(() => {
+        bonusMessage.classList.add('fade-out');
+        setTimeout(() => {
+            bonusMessage.remove();
+            // Restore previous pause state only if we were the ones who paused it
+            if (!wasPaused && isPaused) {
+                togglePause();
+            }
+        }, 1000);
+    }, 3000);
 }
