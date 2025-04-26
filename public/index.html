@@ -106,9 +106,16 @@
         </div>
 
         <button id="startBtn" class="start-btn">Start Game! 🚀</button>
+
         <div id="eu-privacy">
-            <a href="?cmpscreen" class="cmpfooterlink cmpfooterlinkcmp">Privacy settings</a>
+            <a href="/privacy" class="privacy-link">Privacy Policy</a> | 
+            <a href="/terms" class="terms-link">Terms of Service</a> | 
+            <a href="#feedbackForm" class="feedback-link" id="feedbackLink">Feedback</a>
         </div>
+        <div>
+            <a href="?cmpscreen" class="cmpfooterlink cmpfooterlinkcmp">Cookie Settings</a>
+        </div>
+                        
         <div class="game-container hidden">
             <div class="container">
                 <div class="score-board">
@@ -129,11 +136,11 @@
             </div>
             <div class="performance-message" id="performanceMessage"></div>
             <button id="playAgainBtn">Play Again? 🔄</button>
-            <button id="feedbackBtn">Give Feedback 💬</button>
         </div>
 
         <div class="feedback-form-container hidden" id="feedbackForm">
-            <h2>Send Us Feedback</h2>
+            <button class="close-feedback-btn" id="closeFeedbackBtn">×</button>
+            <h2>Feedback Form</h2>
             <form name="feedback" method="POST" data-netlify="true" netlify-honeypot="bot-field">
                 <input type="hidden" name="game-level" id="feedbackGameLevel">
                 <input type="hidden" name="final-score" id="feedbackFinalScore">
@@ -168,19 +175,17 @@
                         <button type="button" class="cancel-btn" id="cancelFeedback">Cancel</button>
                     </div>
                 </div>
-                <div class="feedback-success hidden">
+                <div class="feedback-success">
                     <p>Thank you for your feedback! We appreciate your input.</p>
                 </div>
             </form>
-            <div class="game-over-buttons">
-                <button id="playAgainFromFeedback">Play Again? 🔄</button>
-            </div>
         </div>
 
     </div>
     <!-- Sound Effects -->
     <audio id="correctSound" src="/sounds/correct.mp3"></audio>
     <audio id="wrongSound" src="/sounds/wrong.mp3"></audio>
+    <audio id="bonusSound" src="/sounds/bonus.mp3"></audio>
     <audio id="tickSound" src="/sounds/tick.mp3"></audio>
     <audio id="gameOverSound" src="/sounds/game-over.mp3"></audio>
     <script src="/scripts/cmzscript.js"></script>
