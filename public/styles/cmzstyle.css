@@ -144,6 +144,59 @@ h1 {
     100% { transform: translateY(-30px); opacity: 0; }
 }
 
+/* Bonus Round Message Styles */
+.bonus-round-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2000;
+    background: rgba(0, 0, 0, 0.9);
+    padding: 2rem;
+    border-radius: 20px;
+    border: 3px solid gold;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.7);
+    text-align: center;
+    animation: pulseBonus 1.5s infinite;
+    max-width: 90%;
+    width: 400px;
+}
+
+.bonus-round-content {
+    color: white;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+}
+
+.bonus-round-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #ffd700;
+    text-shadow: 0 0 15px rgba(255, 215, 0, 0.9);
+}
+
+.bonus-round-text {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.bonus-round-emoji {
+    font-size: 2.5rem;
+    margin-top: 1rem;
+    animation: float 2s ease-in-out infinite;
+}
+
+.bonus-round-message.fade-out {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+    transition: all 0.5s ease;
+}
+
+@keyframes pulseBonus {
+    0% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.7); }
+    50% { box-shadow: 0 0 50px rgba(255, 215, 0, 0.9); }
+    100% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.7); }
+}
 /* ================== GAME ACTIVE STATES ================== */
 .game-container.active ~ h1 {
     font-size: 1.5em;
@@ -503,6 +556,46 @@ body:has(.game-container:not(.hidden)) h1 {
     display: flex;
 }
 
+/* ================== EU PRIVACY ================== */
+#eu-privacy {
+    margin: 1rem 0;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+#eu-privacy a {
+    color: var(--text-color);
+    text-decoration: none;
+    margin: 0 0.3rem;
+    transition: color 0.2s;
+}
+
+#eu-privacy a:hover {
+    color: var(--accent-color);
+    text-decoration: underline;
+}
+
+#eu-privacy .cmpfooterlink .cmpfooterlinkcmp{
+    color: var(--text-color);
+    text-decoration: none;
+    margin: 0 0.3rem;
+    transition: color 0.2s;
+}
+
+#eu-privacy .cmpfooterlink:hover .cmpfooterlinkcmp {
+    color: var(--accent-color);
+    text-decoration: underline;
+}
+
+.feedback-form-container {
+    background: var(--bg-color);
+    padding: 2rem;
+    border-radius: 10px;
+    max-width: 600px;
+    margin: 2rem auto;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
 /* ================== FEEDBACK SYSTEM ================== */
 #answerFeedback {
     opacity: 0;
@@ -580,6 +673,7 @@ body:has(.game-container:not(.hidden)) h1 {
 
 /* ================== FEEDBACK FORM STYLES ================== */
 .feedback-form-container {
+    position: relative;
     background: rgba(255, 255, 255, 0.95);
     padding: 2rem;
     border-radius: 20px;
@@ -716,6 +810,7 @@ body:has(.game-container:not(.hidden)) h1 {
 }
 
 .feedback-success.visible {
+    display: block;
     opacity: 1;
     height: auto;
     padding: 1rem 0 2rem;
@@ -728,17 +823,6 @@ body:has(.game-container:not(.hidden)) h1 {
     padding: 0;
 }
 
-#playAgainFromFeedback {
-    background: linear-gradient(145deg, #6c5ce7, #a29bfe);
-    color: white;
-    padding: 0.8rem 1.5rem;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
 .visually-hidden {
     position: absolute;
     width: 1px;
@@ -748,6 +832,48 @@ body:has(.game-container:not(.hidden)) h1 {
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
     border: 0;
+}
+
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #6c5ce7;
+    z-index: 10;
+}
+
+.close-btn:hover {
+    transform: scale(1.2);
+}
+
+.close-feedback-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #e84393;
+    padding: 5px;
+    z-index: 10; /* Ensure it stays above other elements */
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.close-feedback-btn:hover {
+    color: #fff;
+    background-color: #e84393;
+    transform: scale(1.1);
 }
 /* ================== DARK MODE STYLES ================== */
 body[data-theme="dark"] {
@@ -893,6 +1019,17 @@ body[data-theme="dark"] {
     text-shadow: 0 0 2px rgba(0, 0, 0, 0.7);
 }
 
+/* Dark mode bonus message */
+[data-theme="dark"] .bonus-round-message {
+    background: rgba(44, 62, 80, 0.98);
+    border-color: #f1c40f;
+    box-shadow: 0 0 30px rgba(241, 196, 15, 0.7);
+}
+
+[data-theme="dark"] .bonus-round-title {
+    color: #f1c40f;
+}
+
 [data-theme="dark"] .mute-btn,
 [data-theme="dark"] #pauseBtn {
     background: rgba(44, 62, 80, 0.9);
@@ -901,6 +1038,14 @@ body[data-theme="dark"] {
 
 [data-theme="dark"] #pauseBtn.paused {
     background: #f1c40f;
+}
+
+[data-theme="dark"] #eu-privacy .cmpfooterlink {
+    color: #ecf0f1;
+}
+
+[data-theme="dark"] #eu-privacy .cmpfooterlink:hover {
+    color: #2ecc71;
 }
 
 [data-theme="dark"] .feedback-form-container {
@@ -947,16 +1092,17 @@ body[data-theme="dark"] {
     color: #2ecc71;
 }
 
-#playAgainFromFeedback:hover {
-    background: linear-gradient(145deg, #a29bfe, #6c5ce7);
+[data-theme="dark"] .close-btn {
+    color: #3498db;
 }
 
-[data-theme="dark"] #playAgainFromFeedback {
-    background: linear-gradient(145deg, #3498db, #2980b9);
+[data-theme="dark"] .close-feedback-btn {
+    color: #3498db;
 }
 
-[data-theme="dark"] #playAgainFromFeedback:hover {
-    background: linear-gradient(145deg, #2980b9, #3498db);
+[data-theme="dark"] .close-feedback-btn:hover {
+    color: #fff;
+    background-color: #3498db;
 }
 /* ================== RESPONSIVE DESIGN ================== */
 @media (max-width: 768px) {
@@ -1127,6 +1273,23 @@ body[data-theme="dark"] {
     .score-board {
         padding: 8px 15px;
         font-size: 1em;
+    }
+
+    .bonus-round-message {
+        width: 90%;
+        padding: 1.5rem;
+    }
+    
+    .bonus-round-title {
+        font-size: 1.5rem;
+    }
+    
+    .bonus-round-text {
+        font-size: 1.2rem;
+    }
+    
+    .bonus-round-emoji {
+        font-size: 2rem;
     }
 }
 /* ================== UTILITY CLASSES ================== */
