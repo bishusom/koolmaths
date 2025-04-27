@@ -1007,3 +1007,72 @@ function showBonusRoundMessage() {
         }, 1000);
     }, 3000);
 }
+
+// Add to your JavaScript
+document.addEventListener('DOMContentLoaded', function() {
+    const consentBanner = document.getElementById('consent-banner');
+    const consentModal = document.getElementById('consent-modal');
+    const acceptAllBtn = document.getElementById('accept-all');
+    const settingsBtn = document.getElementById('settings-btn');
+    const rejectAllBtn = document.getElementById('reject-all');
+    const saveBtn = document.getElementById('save-preferences');
+    const closeBtn = document.getElementById('modal-close');
+    const consentForm = document.getElementById('consent-form');
+  
+    // Check if consent was already given
+    if (!localStorage.getItem('cookieConsent')) {
+      setTimeout(() => {
+        consentBanner.classList.remove('hidden');
+      }, 1000);
+    }
+  
+    // Button handlers
+    acceptAllBtn.addEventListener('click', () => {
+      setConsent({ necessary: true, analytics: true, marketing: true });
+      consentBanner.classList.add('hidden');
+    });
+  
+    settingsBtn.addEventListener('click', () => {
+      consentModal.classList.remove('hidden');
+    });
+  
+    rejectAllBtn.addEventListener('click', () => {
+      setConsent({ necessary: true, analytics: false, marketing: false });
+      consentBanner.classList.add('hidden');
+    });
+  
+    saveBtn.addEventListener('click', () => {
+      const formData = new FormData(consentForm);
+      const consent = {
+        necessary: true, // Always true
+        analytics: formData.get('analytics') === 'on',
+        marketing: formData.get('marketing') === 'on'
+      };
+      setConsent(consent);
+      consentModal.classList.add('hidden');
+      consentBanner.classList.add('hidden');
+    });
+  
+    closeBtn.addEventListener('click', () => {
+      consentModal.classList.add('hidden');
+    });
+  
+    function setConsent(consent) {
+      localStorage.setItem('cookieConsent', JSON.stringify(consent));
+      // Implement your cookie setting logic here
+      console.log('Consent set:', consent);
+      
+      // Example: Load Google Analytics only if consented
+      if (consent.analytics) {
+        loadAnalytics();
+      }
+    }
+  
+    function loadAnalytics() {
+        console.log('Loading analytics...');
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-SHMYVQ4TGH');
+    }
+});

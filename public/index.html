@@ -10,8 +10,6 @@
 
     gtag('config', 'G-SHMYVQ4TGH');
     </script>
-    <!-- Consent Manager -->
-    <script type="text/javascript" data-cmp-ab="1" src="https://cdn.consentmanager.net/delivery/autoblocking/177c01a4e2ab0.js" data-cmp-host="c.delivery.consentmanager.net" data-cmp-cdn="cdn.consentmanager.net" data-cmp-codesrc="16"></script>
     <!-- Basic Meta Tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -136,6 +134,59 @@
             </div>
             <div class="performance-message" id="performanceMessage"></div>
             <button id="playAgainBtn">Play Again? 🔄</button>
+        </div>
+
+        <!-- Consent Manager -->
+        <div id="consent-banner" class="consent-banner hidden">
+            <div class="consent-content">
+            <p>We use cookies to enhance your experience. By continuing, you agree to our 
+                <a href="/cookie-policy">Cookie Policy</a>.
+            </p>
+            <div class="consent-buttons">
+                <button id="accept-all" class="consent-btn accept">Accept All</button>
+                <button id="settings-btn" class="consent-btn settings">Cookie Settings</button>
+                <button id="reject-all" class="consent-btn reject">Reject All</button>
+            </div>
+            </div>
+        </div>
+  
+        <div id="consent-modal" class="consent-modal hidden">
+            <div class="modal-content">
+            <h3>Cookie Preferences</h3>
+            <form id="consent-form">
+                <div class="consent-category">
+                <label>
+                    <input type="checkbox" name="necessary" checked disabled>
+                    Necessary Cookies
+                    <span class="toggle"></span>
+                </label>
+                <p>Essential for the website to function.</p>
+                </div>
+                
+                <div class="consent-category">
+                <label>
+                    <input type="checkbox" name="analytics">
+                    Analytics
+                    <span class="toggle"></span>
+                </label>
+                <p>Help us improve our website.</p>
+                </div>
+                
+                <div class="consent-category">
+                <label>
+                    <input type="checkbox" name="marketing">
+                    Marketing
+                    <span class="toggle"></span>
+                </label>
+                <p>Used for personalized ads.</p>
+                </div>
+                
+                <div class="consent-actions">
+                <button type="button" id="save-preferences" class="save-btn">Save Preferences</button>
+                <button type="button" id="modal-close" class="close-btn">×</button>
+                </div>
+            </form>
+            </div>
         </div>
 
         <div class="feedback-form-container hidden" id="feedbackForm">

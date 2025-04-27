@@ -575,18 +575,112 @@ body:has(.game-container:not(.hidden)) h1 {
     text-decoration: underline;
 }
 
-#eu-privacy .cmpfooterlink .cmpfooterlinkcmp{
-    color: var(--text-color);
-    text-decoration: none;
-    margin: 0 0.3rem;
-    transition: color 0.2s;
-}
-
-#eu-privacy .cmpfooterlink:hover .cmpfooterlinkcmp {
-    color: var(--accent-color);
-    text-decoration: underline;
-}
-
+/* Consent */
+.consent-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    padding: 1rem;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .consent-content {
+    max-width: 800px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .consent-buttons {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .consent-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+    font-weight: bold;
+  }
+  
+  .consent-btn.accept {
+    background: #4CAF50;
+    color: white;
+  }
+  
+  .consent-btn.settings {
+    background: #2196F3;
+    color: white;
+  }
+  
+  .consent-btn.reject {
+    background: #f44336;
+    color: white;
+  }
+  
+  .consent-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+  }
+  
+  .modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 90%;
+  }
+  
+  .consent-category {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .consent-category label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .consent-category input[type="checkbox"] {
+    margin-right: 1rem;
+  }
+  
+  .consent-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+  }
+  
+  .save-btn {
+    padding: 0.5rem 1rem;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .hidden {
+    display: none;
+  }
+/* ================== FEEDBACK SYSTEM ================== */
 .feedback-form-container {
     background: var(--bg-color);
     padding: 2rem;
@@ -596,7 +690,6 @@ body:has(.game-container:not(.hidden)) h1 {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-/* ================== FEEDBACK SYSTEM ================== */
 #answerFeedback {
     opacity: 0;
     transition: opacity 0.3s;
@@ -1040,12 +1133,14 @@ body[data-theme="dark"] {
     background: #f1c40f;
 }
 
-[data-theme="dark"] #eu-privacy .cmpfooterlink {
+[data-theme="dark"] .consent-banner,
+  [data-theme="dark"] .modal-content {
+    background: #34495e;
     color: #ecf0f1;
 }
-
-[data-theme="dark"] #eu-privacy .cmpfooterlink:hover {
-    color: #2ecc71;
+  
+  [data-theme="dark"] .consent-category {
+    border-bottom-color: #7f8c8d;
 }
 
 [data-theme="dark"] .feedback-form-container {
