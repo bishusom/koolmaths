@@ -1010,11 +1010,7 @@ function showBonusRoundMessage() {
 
 document.getElementById('open-cookie-settings')?.addEventListener('click', function(e) {
     e.preventDefault();
-    // Show your cookie consent modal
-    window.cookieconsent.open();
-    
-    // Or if using your custom solution:
-    // document.getElementById('consent-modal').classList.remove('hidden');
+    document.getElementById('consent-modal').classList.remove('hidden');
 });
 
 // Add to your JavaScript
