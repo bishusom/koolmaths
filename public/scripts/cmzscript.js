@@ -1008,6 +1008,15 @@ function showBonusRoundMessage() {
     }, 3000);
 }
 
+document.getElementById('open-cookie-settings')?.addEventListener('click', function(e) {
+    e.preventDefault();
+    // Show your cookie consent modal
+    window.cookieconsent.open();
+    
+    // Or if using your custom solution:
+    // document.getElementById('consent-modal').classList.remove('hidden');
+});
+
 // Add to your JavaScript
 document.addEventListener('DOMContentLoaded', function() {
     const consentBanner = document.getElementById('consent-banner');
