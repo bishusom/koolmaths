@@ -8,7 +8,7 @@ body:not([data-theme]) { /* Fallback for when no theme is set */
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(135deg, #2a9d8f, #e76f51, #f4a261, #264653);
+    background: linear-gradient(135deg, #1e90ff, #87ceeb, #e6e6fa, #4682b4);
     animation: rainbowBackground 15s ease infinite;
     background-size: 400% 400%;
     margin: 0;
@@ -29,12 +29,12 @@ body:not([data-theme]) { /* Fallback for when no theme is set */
     position: relative; /* Add this */
     text-align: center;
     padding: 1rem 2rem;
-    background: linear-gradient(135deg, #264653, #f4a261);
+    background: linear-gradient(135deg, #4682b4, #e6e6fa);
     border-radius: 20px;
     box-shadow: 0 0 30px rgba(255, 255, 255, 0.8), 
-                0 0 20px rgba(231, 111, 81, 0.6), /* Coral shadow */
-                0 0 10px rgba(42, 157, 143, 0.4); /* Teal shadow */
-    border: 3px solid #e76f51; /* Coral border */
+                0 0 20px rgba(30, 144, 255, 0.6), /* Vibrant blue shadow */
+                0 0 10px rgba(70, 130, 180, 0.4); /* Steel blue shadow */
+    border: 3px solid #1e90ff; /* Vibrant blue border */
 }
 
 /* ================== HEADER & TITLE ================== */
@@ -66,6 +66,7 @@ h1 {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-10px); }
 }
+
 /* ================== TAGLINE ================== */
 .tagline {
     font-family: Roboto;
@@ -82,9 +83,9 @@ h1 {
 }
 
 .tagline span {
-    color: #2a9d8f !important; /* Teal */
+    color: #1e90ff !important; /* Vibrant blue */
     font-weight: bold;
-    text-shadow: 1px 1px 0 rgba(244, 162, 97, 0.6); /* Coral shadow */
+    text-shadow: 1px 1px 0 rgba(230, 230, 250, 0.6); /* Lavender shadow */
 }
 
 .tagline.reappear {
@@ -112,7 +113,7 @@ h1 {
 .performance-bar {
     height: 100%;
     width: 50%;
-    background: linear-gradient(90deg, #2a9d8f, #f4a261); /* Teal to coral */
+    background: linear-gradient(90deg, #1e90ff, #e6e6fa); /* Vibrant blue to lavender */
     border-radius: 15px;
     transition: width 0.5s ease, background-color 0.5s ease;
     position: relative;
@@ -154,8 +155,8 @@ h1 {
     background: rgba(0, 0, 0, 0.9);
     padding: 2rem;
     border-radius: 20px;
-    border: 3px solid #e76f51; /* Coral border */
-    box-shadow: 0 0 30px rgba(231, 111, 81, 0.7); /* Coral shadow */
+    border: 3px solid #1e90ff; /* Vibrant blue border */
+    box-shadow: 0 0 30px rgba(30, 144, 255, 0.7); /* Vibrant blue shadow */
     text-align: center;
     animation: pulseBonus 1.5s infinite;
     max-width: 90%;
@@ -171,8 +172,8 @@ h1 {
     font-size: 2rem;
     font-weight: bold;
     margin-bottom: 1rem;
-    color: #f4a261; /* Coral */
-    text-shadow: 0 0 15px rgba(244, 162, 97, 0.9); /* Coral shadow */
+    color: #e6e6fa; /* Lavender */
+    text-shadow: 0 0 15px rgba(230, 230, 250, 0.9); /* Lavender shadow */
 }
 
 .bonus-round-text {
@@ -193,10 +194,11 @@ h1 {
 }
 
 @keyframes pulseBonus {
-    0% { box-shadow: 0 0 30px rgba(231, 111, 81, 0.7); }
-    50% { box-shadow: 0 0 50px rgba(231, 111, 81, 0.9); }
-    100% { box-shadow: 0 0 30px rgba(231, 111, 81, 0.7); }
+    0% { box-shadow: 0 0 30px rgba(30, 144, 255, 0.7); }
+    50% { box-shadow: 0 0 50px rgba(30, 144, 255, 0.9); }
+    100% { box-shadow: 0 0 30px rgba(30, 144, 255, 0.7); }
 }
+
 /* ================== GAME ACTIVE STATES ================== */
 .game-container.active ~ h1 {
     font-size: 1.5em;
@@ -212,6 +214,7 @@ h1 {
     height: 60px;
     width: 225px;
 }
+
 /* ================== ENHANCED BUTTON STYLES ================== */
 .level-btn, #startBtn, .game-over button, .answer-btn {
     position: relative;
@@ -248,7 +251,7 @@ h1 {
 }
 
 .level-btn {
-    background: linear-gradient(145deg, #2a9d8f, #f4a261, #e76f51); /* Teal to coral */
+    background: linear-gradient(145deg, #1e90ff, #e6e6fa, #87ceeb); /* Vibrant blue to lavender to sky blue */
     color: #2d3436;
     border: 2px solid rgba(255,255,255,0.5);
     padding: 1.2rem;
@@ -301,13 +304,60 @@ h1 {
     white-space: normal;
 }
 
+.level-btn[data-tooltip], #startBtn[data-tooltip] {
+    position: relative;
+}
+
+.level-btn[data-tooltip]::before, #startBtn[data-tooltip]::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1e90ff; /* Vibrant blue */
+    color: #fff;
+    font-family: 'Bubblegum Sans';
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 10;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.level-btn[data-tooltip]::after, #startBtn[data-tooltip]::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #1e90ff; /* Vibrant blue */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.level-btn:hover[data-tooltip]::before, #startBtn:hover[data-tooltip]::before {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-10px);
+}
+
+.level-btn:hover[data-tooltip]::after, #startBtn:hover[data-tooltip]::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-10px);
+}
+
 .level-btn.active {
-    background: linear-gradient(145deg, #2a9d8f, #264653); /* Teal to deep teal */
+    background: linear-gradient(145deg, #1e90ff, #4682b4); /* Vibrant blue to steel blue */
     color: white;
-    border: 2px solid #2a9d8f; /* Teal border */
+    border: 2px solid #1e90ff; /* Vibrant blue border */
     animation: pulseActive 2s infinite;
     box-shadow: 
-        0 0 20px rgba(42, 157, 143, 0.5), /* Teal shadow */
+        0 0 20px rgba(30, 144, 255, 0.5), /* Vibrant blue shadow */
         0 8px 16px rgba(0,0,0,0.15);
 }
 
@@ -318,7 +368,7 @@ h1 {
 }
 
 #startBtn, .game-over button {
-    background: linear-gradient(145deg, #2a9d8f, #264653); /* Teal to deep teal */
+    background: linear-gradient(145deg, #1e90ff, #4682b4); /* Vibrant blue to steel blue */
     color: white;
     padding: 18px 36px;
     border: none;
@@ -387,7 +437,7 @@ h1 {
 }
 
 #pauseBtn.paused {
-    background: #f4a261; /* Coral */
+    background: #e6e6fa; /* Lavender */
 }
 
 .mute-btn:hover, #pauseBtn:hover {
@@ -450,6 +500,7 @@ h1 {
     gap: 1rem;
     margin: 1.5rem 0;
 }
+
 /* ================== GAME CONTAINER ================== */
 .game-container {
     background: rgba(255, 255, 255, 0.95);
@@ -460,9 +511,9 @@ h1 {
     flex-direction: column;
     gap: 15px;
     margin-top: 0.5rem;
-    border: 3px dashed #2a9d8f; /* Teal border */
+    border: 3px dashed #1e90ff; /* Vibrant blue border */
     background-color: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 0 20px rgba(42, 157, 143, 0.5); /* Teal shadow */
+    box-shadow: 0 0 20px rgba(30, 144, 255, 0.5); /* Vibrant blue shadow */
 }
 
 body:has(.game-container:not(.hidden)) h1 {
@@ -476,8 +527,8 @@ body:has(.game-container:not(.hidden)) h1 {
     align-items: center;
     gap: 15px;
     padding: 12px 20px;
-    margin-bottom sembrar 20px;
-    background: linear-gradient(90deg, #2a9d8f, #f4a261); /* Teal to coral */
+    margin-bottom: 20px;
+    background: linear-gradient(90deg, #1e90ff, #e6e6fa); /* Vibrant blue to lavender */
     color: white;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -491,8 +542,8 @@ body:has(.game-container:not(.hidden)) h1 {
     padding: 25px;
     line-height: 1.3;
     word-wrap: break-word;
-    color: #2a9d8f; /* Teal */
-    text-shadow: 2px 2px 0 #f4a261; /* Coral shadow */
+    color: #1e90ff; /* Vibrant blue */
+    text-shadow: 2px 2px 0 #e6e6fa; /* Lavender shadow */
 }
 
 .emoji-visual {
@@ -515,7 +566,7 @@ body:has(.game-container:not(.hidden)) h1 {
 }
 
 .answer-btn {
-    background: linear-gradient(145deg, #2a9d8f, #264653); /* Teal to deep teal */
+    background: linear-gradient(145deg, #1e90ff, #4682b4); /* Vibrant blue to steel blue */
     color: white;
     padding: 1.8rem;
     font-size: 1.6rem;
@@ -526,13 +577,13 @@ body:has(.game-container:not(.hidden)) h1 {
 }
 
 .answer-btn:hover {
-    background: linear-gradient(145deg, #264653, #1a6860); /* Deep teal */
+    background: linear-gradient(145deg, #4682b4, #2a52be); /* Steel blue to darker blue */
 }
 
 .answer-btn.correct {
-    background: linear-gradient(145deg, #2a9d8f, #f4a261) !important; /* Teal to coral */
+    background: linear-gradient(145deg, #1e90ff, #e6e6fa) !important; /* Vibrant blue to lavender */
     animation: celebrate 0.5s ease;
-    box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.5) !important /* Teal shadow */
+    box-shadow: 0 0 0 3px rgba(30, 144, 255, 0.5) !important; /* Vibrant blue shadow */
 }
 
 @keyframes celebrate {
@@ -611,12 +662,12 @@ body:has(.game-container:not(.hidden)) h1 {
 }
 
 .consent-btn.accept {
-    background: #2a9d8f; /* Teal */
+    background: #1e90ff; /* Vibrant blue */
     color: white;
 }
 
 .consent-btn.settings {
-    background: #264653; /* Deep teal */
+    background: #4682b4; /* Steel blue */
     color: white;
 }
 
@@ -670,7 +721,7 @@ body:has(.game-container:not(.hidden)) h1 {
 
 .save-btn {
     padding: 0.5rem 1rem;
-    background: #2a9d8f; /* Teal */
+    background: #1e90ff; /* Vibrant blue */
     color: white;
     border: none;
     border-radius: 4px;
@@ -680,6 +731,7 @@ body:has(.game-container:not(.hidden)) h1 {
 .hidden {
     display: none;
 }
+
 /* ================== FEEDBACK SYSTEM ================== */
 .feedback-form-container {
     background: var(--bg-color);
@@ -706,7 +758,7 @@ body:has(.game-container:not(.hidden)) h1 {
 }
 
 #answerFeedback.correct {
-    background: #2a9d8f; /* Teal */
+    background: #1e90ff; /* Vibrant blue */
     color: white;
 }
 
@@ -716,12 +768,12 @@ body:has(.game-container:not(.hidden)) h1 {
 }
 
 #feedback strong {
-    color: #f4a261; /* Coral */
+    color: #e6e6fa; /* Lavender */
     margin: 0 5px;
 }
 
 .streak-feedback {
-    color: #e76f51; /* Coral */
+    color: #87ceeb; /* Sky blue */
     font-weight: bold;
     margin-top: 8px;
     animation: streak-pop 0.3s ease;
@@ -744,19 +796,19 @@ body:has(.game-container:not(.hidden)) h1 {
 }
 
 .game-over h2 {
-    color: #f4a261; /* Coral */
+    color: #e6e6fa; /* Lavender */
 }
 
 .final-score {
     font-size: 2em;
-    color: #2a9d8f; /* Teal */
+    color: #1e90ff; /* Vibrant blue */
     margin: 1rem 0;
 }
 
 .performance-message {
     font-size: 1.5em;
     margin: 1rem 0;
-    color: #264653; /* Deep teal */
+    color: #4682b4; /* Steel blue */
 }
 
 .performance-message .empty-state {
@@ -778,7 +830,7 @@ body:has(.game-container:not(.hidden)) h1 {
 }
 
 .feedback-form-container h2 {
-    color: #2a9d8f; /* Teal */
+    color: #1e90ff; /* Vibrant blue */
     margin-bottom: 1.5rem;
     text-align: center;
 }
@@ -810,7 +862,7 @@ body:has(.game-container:not(.hidden)) h1 {
 
 .form-group input:focus,
 .form-group textarea:focus {
-    border-color: #2a9d8f; /* Teal */
+    border-color: #1e90ff; /* Vibrant blue */
     outline: none;
 }
 
@@ -843,11 +895,11 @@ body:has(.game-container:not(.hidden)) h1 {
 .star-rating input:checked ~ label,
 .star-rating label:hover,
 .star-rating label:hover ~ label {
-    color: #f4a261; /* Coral */
+    color: #e6e6fa; /* Lavender */
 }
 
 .star-rating input:checked + label {
-    color: #f4a261; /* Coral */
+    color: #e6e6fa; /* Lavender */
 }
 
 /* Hide the radio buttons but keep them accessible */
@@ -873,7 +925,7 @@ body:has(.game-container:not(.hidden)) h1 {
 }
 
 .submit-btn {
-    background: linear-gradient(145deg, #2a9d8f, #264653); /* Teal to deep teal */
+    background: linear-gradient(145deg, #1e90ff, #4682b4); /* Vibrant blue to steel blue */
     color: white;
 }
 
@@ -883,7 +935,7 @@ body:has(.game-container:not(.hidden)) h1 {
 }
 
 .submit-btn:hover {
-    background: linear-gradient(145deg, #264653, #1a6860); /* Deep teal */
+    background: linear-gradient(145deg, #4682b4, #2a52be); /* Steel blue to darker blue */
 }
 
 .cancel-btn:hover {
@@ -894,7 +946,7 @@ body:has(.game-container:not(.hidden)) h1 {
 .feedback-success {
     text-align: center;
     padding: 1rem 0;
-    color: #2a9d8f; /* Teal */
+    color: #1e90ff; /* Vibrant blue */
     font-size: 1.2rem;
     opacity: 0;
     height: 0;
@@ -935,7 +987,7 @@ body:has(.game-container:not(.hidden)) h1 {
     border: none;
     font-size: 1.5rem;
     cursor: pointer;
-    color: #2a9d8f; /* Teal */
+    color: #1e90ff; /* Vibrant blue */
     z-index: 10;
 }
 
@@ -951,7 +1003,7 @@ body:has(.game-container:not(.hidden)) h1 {
     border: none;
     font-size: 28px;
     cursor: pointer;
-    color: #2a9d8f; /* Teal */
+    color: #1e90ff; /* Vibrant blue */
     padding: 5px;
     z-index: 10; /* Ensure it stays above other elements */
     width: 40px;
@@ -965,7 +1017,7 @@ body:has(.game-container:not(.hidden)) h1 {
 
 .close-feedback-btn:hover {
     color: #fff;
-    background-color: #2a9d8f; /* Teal */
+    background-color: #1e90ff; /* Vibrant blue */
 }
 
 /* ================== DARK MODE STYLES ================== */
@@ -1027,10 +1079,28 @@ body[data-theme="dark"] {
         0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
+[data-theme="dark"] .level-btn[data-tooltip]::before {
+    background: #3498db; /* Dark mode vibrant blue */
+    color: #ecf0f1;
+}
+
+[data-theme="dark"] .level-btn[data-tooltip]::after {
+    border-top-color: #3498db; /* Dark mode vibrant blue */
+}
+
 [data-theme="dark"] #startBtn,
 [data-theme="dark"] .game-over button {
     background: linear-gradient(145deg, #27ae60, #2ecc71);
     border: 2px solid rgba(236, 240, 241, 0.3);
+}
+
+[data-theme="dark"] #startBtn[data-tooltip]::before {
+    background: #3498db; /* Dark mode vibrant blue */
+    color: #ecf0f1;
+}
+
+[data-theme="dark"] #startBtn[data-tooltip]::after {
+    border-top-color: #3498db; /* Dark mode vibrant blue */
 }
 
 [data-theme="dark"] .game-container {
@@ -1199,6 +1269,7 @@ body[data-theme="dark"] {
     color: #fff;
     background-color: #3498db;
 }
+
 /* ================== RESPONSIVE DESIGN ================== */
 @media (max-width: 768px) {
     .main-container {
@@ -1257,9 +1328,29 @@ body[data-theme="dark"] {
         white-space: normal;
     }
 
+    .level-btn[data-tooltip]::before {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+        top: -45px;
+    }
+
+    .level-btn[data-tooltip]::after {
+        top: -8px;
+    }
+
     #startBtn, .game-over button {
         padding: 1rem 1.5rem;
         font-size: 1.1rem;
+    }
+
+    #startBtn[data-tooltip]::before {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+        top: -45px;
+    }
+
+    #startBtn[data-tooltip]::after {
+        top: -8px;
     }
 
     .answer-btn {
@@ -1288,7 +1379,7 @@ body[data-theme="dark"] {
 
 @media (max-width: 480px) {
     h1 {
-        font-size: 1.apersem8em;
+        font-size: 1.8em;
         gap: 8px;
         margin: 0 0 0.3rem;
     }
@@ -1325,6 +1416,16 @@ body[data-theme="dark"] {
 
     .level-btn::after {
         font-size: 0.85rem;
+    }
+
+    .level-btn[data-tooltip]::before {
+        font-size: 0.7rem;
+        padding: 0.3rem 0.6rem;
+        top: -40px;
+    }
+
+    .level-btn[data-tooltip]::after {
+        top: -7px;
     }
 
     .game-container {
@@ -1386,7 +1487,18 @@ body[data-theme="dark"] {
     .bonus-round-emoji {
         font-size: 2rem;
     }
+
+    #startBtn[data-tooltip]::before {
+        font-size: 0.7rem;
+        padding: 0.3rem 0.6rem;
+        top: -40px;
+    }
+
+    #startBtn[data-tooltip]::after {
+        top: -7px;
+    }
 }
+
 /* ================== UTILITY CLASSES ================== */
 .hidden {
     display: none !important;
