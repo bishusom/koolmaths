@@ -317,13 +317,16 @@ h1 {
     background: #1e90ff; /* Vibrant blue */
     color: #fff;
     font-family: 'Bubblegum Sans';
-    font-size: 0.9rem;
-    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    padding: 0.6rem 1.2rem;
     border-radius: 8px;
-    white-space: nowrap;
+    white-space: normal;
+    max-width: 200px;
+    text-align: center;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition: opacity 0.5s ease;
+    transition-delay: 0s;
     z-index: 10;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
@@ -338,17 +341,23 @@ h1 {
     border-top-color: #1e90ff; /* Vibrant blue */
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition: opacity 0.5s ease;
+    transition-delay: 0s;
 }
 
 .level-btn:hover[data-tooltip]::before, #startBtn:hover[data-tooltip]::before {
     opacity: 1;
-    transform: translateX(-50%) translateY(-10px);
+    transition-delay: 0s;
 }
 
 .level-btn:hover[data-tooltip]::after, #startBtn:hover[data-tooltip]::after {
     opacity: 1;
-    transform: translateX(-50%) translateY(-10px);
+    transition-delay: 0s;
+}
+
+.level-btn:not(:hover)[data-tooltip]::before, #startBtn:not(:hover)[data-tooltip]::before,
+.level-btn:not(:hover)[data-tooltip]::after, #startBtn:not(:hover)[data-tooltip]::after {
+    transition-delay: 0.2s;
 }
 
 .level-btn.active {
@@ -1082,6 +1091,9 @@ body[data-theme="dark"] {
 [data-theme="dark"] .level-btn[data-tooltip]::before {
     background: #3498db; /* Dark mode vibrant blue */
     color: #ecf0f1;
+    font-size: 1rem;
+    padding: 0.6rem 1.2rem;
+    max-width: 200px;
 }
 
 [data-theme="dark"] .level-btn[data-tooltip]::after {
@@ -1097,6 +1109,9 @@ body[data-theme="dark"] {
 [data-theme="dark"] #startBtn[data-tooltip]::before {
     background: #3498db; /* Dark mode vibrant blue */
     color: #ecf0f1;
+    font-size: 1rem;
+    padding: 0.6rem 1.2rem;
+    max-width: 200px;
 }
 
 [data-theme="dark"] #startBtn[data-tooltip]::after {
@@ -1329,9 +1344,10 @@ body[data-theme="dark"] {
     }
 
     .level-btn[data-tooltip]::before {
-        font-size: 0.8rem;
-        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
         top: -45px;
+        max-width: 180px;
     }
 
     .level-btn[data-tooltip]::after {
@@ -1344,9 +1360,10 @@ body[data-theme="dark"] {
     }
 
     #startBtn[data-tooltip]::before {
-        font-size: 0.8rem;
-        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
         top: -45px;
+        max-width: 180px;
     }
 
     #startBtn[data-tooltip]::after {
@@ -1419,9 +1436,10 @@ body[data-theme="dark"] {
     }
 
     .level-btn[data-tooltip]::before {
-        font-size: 0.7rem;
-        padding: 0.3rem 0.6rem;
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
         top: -40px;
+        max-width: 160px;
     }
 
     .level-btn[data-tooltip]::after {
@@ -1489,9 +1507,10 @@ body[data-theme="dark"] {
     }
 
     #startBtn[data-tooltip]::before {
-        font-size: 0.7rem;
-        padding: 0.3rem 0.6rem;
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
         top: -40px;
+        max-width: 160px;
     }
 
     #startBtn[data-tooltip]::after {
