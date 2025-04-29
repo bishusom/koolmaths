@@ -8,7 +8,7 @@ body:not([data-theme]) { /* Fallback for when no theme is set */
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(135deg, #d07dd3, #e183e4, #fface8, #b96fbb);
+    background: linear-gradient(135deg, #2a9d8f, #e76f51, #f4a261, #264653);
     animation: rainbowBackground 15s ease infinite;
     background-size: 400% 400%;
     margin: 0;
@@ -29,12 +29,12 @@ body:not([data-theme]) { /* Fallback for when no theme is set */
     position: relative; /* Add this */
     text-align: center;
     padding: 1rem 2rem;
-    background: linear-gradient(135deg, #b96fbb, #fface8);
+    background: linear-gradient(135deg, #264653, #f4a261);
     border-radius: 20px;
     box-shadow: 0 0 30px rgba(255, 255, 255, 0.8), 
-                0 0 20px rgba(255, 215, 0, 0.6),
-                0 0 10px rgba(255, 105, 180, 0.4);
-    border: 3px solid #ffcc00;
+                0 0 20px rgba(231, 111, 81, 0.6), /* Coral shadow */
+                0 0 10px rgba(42, 157, 143, 0.4); /* Teal shadow */
+    border: 3px solid #e76f51; /* Coral border */
 }
 
 /* ================== HEADER & TITLE ================== */
@@ -82,9 +82,9 @@ h1 {
 }
 
 .tagline span {
-    color: #8e24aa !important; /* Dark Magenta */
+    color: #2a9d8f !important; /* Teal */
     font-weight: bold;
-    text-shadow: 1px 1px 0 rgba(255, 209, 220, 0.6); /* Pale Pink */
+    text-shadow: 1px 1px 0 rgba(244, 162, 97, 0.6); /* Coral shadow */
 }
 
 .tagline.reappear {
@@ -112,7 +112,7 @@ h1 {
 .performance-bar {
     height: 100%;
     width: 50%;
-    background: linear-gradient(90deg, #ff7675, #fdcb6e);
+    background: linear-gradient(90deg, #2a9d8f, #f4a261); /* Teal to coral */
     border-radius: 15px;
     transition: width 0.5s ease, background-color 0.5s ease;
     position: relative;
@@ -154,8 +154,8 @@ h1 {
     background: rgba(0, 0, 0, 0.9);
     padding: 2rem;
     border-radius: 20px;
-    border: 3px solid gold;
-    box-shadow: 0 0 30px rgba(255, 215, 0, 0.7);
+    border: 3px solid #e76f51; /* Coral border */
+    box-shadow: 0 0 30px rgba(231, 111, 81, 0.7); /* Coral shadow */
     text-align: center;
     animation: pulseBonus 1.5s infinite;
     max-width: 90%;
@@ -171,8 +171,8 @@ h1 {
     font-size: 2rem;
     font-weight: bold;
     margin-bottom: 1rem;
-    color: #ffd700;
-    text-shadow: 0 0 15px rgba(255, 215, 0, 0.9);
+    color: #f4a261; /* Coral */
+    text-shadow: 0 0 15px rgba(244, 162, 97, 0.9); /* Coral shadow */
 }
 
 .bonus-round-text {
@@ -193,9 +193,9 @@ h1 {
 }
 
 @keyframes pulseBonus {
-    0% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.7); }
-    50% { box-shadow: 0 0 50px rgba(255, 215, 0, 0.9); }
-    100% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.7); }
+    0% { box-shadow: 0 0 30px rgba(231, 111, 81, 0.7); }
+    50% { box-shadow: 0 0 50px rgba(231, 111, 81, 0.9); }
+    100% { box-shadow: 0 0 30px rgba(231, 111, 81, 0.7); }
 }
 /* ================== GAME ACTIVE STATES ================== */
 .game-container.active ~ h1 {
@@ -248,7 +248,7 @@ h1 {
 }
 
 .level-btn {
-    background: linear-gradient(145deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee, #a18cd1);
+    background: linear-gradient(145deg, #2a9d8f, #f4a261, #e76f51); /* Teal to coral */
     color: #2d3436;
     border: 2px solid rgba(255,255,255,0.5);
     padding: 1.2rem;
@@ -302,12 +302,12 @@ h1 {
 }
 
 .level-btn.active {
-    background: linear-gradient(145deg, #00cec9, #00b5ad);
+    background: linear-gradient(145deg, #2a9d8f, #264653); /* Teal to deep teal */
     color: white;
-    border: 2px solid #00a693;
+    border: 2px solid #2a9d8f; /* Teal border */
     animation: pulseActive 2s infinite;
     box-shadow: 
-        0 0 20px rgba(0,206,201,0.5),
+        0 0 20px rgba(42, 157, 143, 0.5), /* Teal shadow */
         0 8px 16px rgba(0,0,0,0.15);
 }
 
@@ -318,7 +318,7 @@ h1 {
 }
 
 #startBtn, .game-over button {
-    background: linear-gradient(145deg, #4CAF50, #3e8e41);
+    background: linear-gradient(145deg, #2a9d8f, #264653); /* Teal to deep teal */
     color: white;
     padding: 18px 36px;
     border: none;
@@ -387,7 +387,7 @@ h1 {
 }
 
 #pauseBtn.paused {
-    background: #ffeb3b;
+    background: #f4a261; /* Coral */
 }
 
 .mute-btn:hover, #pauseBtn:hover {
@@ -460,9 +460,9 @@ h1 {
     flex-direction: column;
     gap: 15px;
     margin-top: 0.5rem;
-    border: 3px dashed #74b9ff;
+    border: 3px dashed #2a9d8f; /* Teal border */
     background-color: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 0 20px rgba(116, 185, 255, 0.5);
+    box-shadow: 0 0 20px rgba(42, 157, 143, 0.5); /* Teal shadow */
 }
 
 body:has(.game-container:not(.hidden)) h1 {
@@ -476,8 +476,8 @@ body:has(.game-container:not(.hidden)) h1 {
     align-items: center;
     gap: 15px;
     padding: 12px 20px;
-    margin-bottom: 20px;
-    background: linear-gradient(90deg, #a18cd1, #fbc2eb);
+    margin-bottom sembrar 20px;
+    background: linear-gradient(90deg, #2a9d8f, #f4a261); /* Teal to coral */
     color: white;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -491,8 +491,8 @@ body:has(.game-container:not(.hidden)) h1 {
     padding: 25px;
     line-height: 1.3;
     word-wrap: break-word;
-    color: #6c5ce7;
-    text-shadow: 2px 2px 0 #a29bfe;
+    color: #2a9d8f; /* Teal */
+    text-shadow: 2px 2px 0 #f4a261; /* Coral shadow */
 }
 
 .emoji-visual {
@@ -515,7 +515,7 @@ body:has(.game-container:not(.hidden)) h1 {
 }
 
 .answer-btn {
-    background: linear-gradient(145deg, #6da9e4, #5c97d1);
+    background: linear-gradient(145deg, #2a9d8f, #264653); /* Teal to deep teal */
     color: white;
     padding: 1.8rem;
     font-size: 1.6rem;
@@ -526,13 +526,13 @@ body:has(.game-container:not(.hidden)) h1 {
 }
 
 .answer-btn:hover {
-    background: linear-gradient(145deg, #1565C0, #0d47a1);
+    background: linear-gradient(145deg, #264653, #1a6860); /* Deep teal */
 }
 
 .answer-btn.correct {
-    background: linear-gradient(145deg, #00b894, #55efc4) !important;
+    background: linear-gradient(145deg, #2a9d8f, #f4a261) !important; /* Teal to coral */
     animation: celebrate 0.5s ease;
-    box-shadow: 0 0 0 3px rgba(0,184,148,0.5) !important
+    box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.5) !important /* Teal shadow */
 }
 
 @keyframes celebrate {
@@ -542,7 +542,7 @@ body:has(.game-container:not(.hidden)) h1 {
 }
 
 .answer-btn.wrong {
-    background: #d63031 !important;
+    background: #d63031 !important; /* Keep red for error */
     animation: none !important;
     transform: none !important;
     box-shadow: 0 0 0 3px rgba(214,48,49,0.5) !important;
@@ -587,45 +587,45 @@ body:has(.game-container:not(.hidden)) h1 {
     z-index: 9999;
     display: flex;
     justify-content: center;
-  }
-  
-  .consent-content {
+}
+
+.consent-content {
     max-width: 800px;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 1rem;
-  }
-  
-  .consent-buttons {
+}
+
+.consent-buttons {
     display: flex;
     gap: 0.5rem;
-  }
-  
-  .consent-btn {
+}
+
+.consent-btn {
     padding: 0.5rem 1rem;
     border-radius: 4px;
     cursor: pointer;
     border: none;
     font-weight: bold;
-  }
-  
-  .consent-btn.accept {
-    background: #4CAF50;
+}
+
+.consent-btn.accept {
+    background: #2a9d8f; /* Teal */
     color: white;
-  }
-  
-  .consent-btn.settings {
-    background: #2196F3;
+}
+
+.consent-btn.settings {
+    background: #264653; /* Deep teal */
     color: white;
-  }
-  
-  .consent-btn.reject {
-    background: #f44336;
+}
+
+.consent-btn.reject {
+    background: #d63031; /* Keep red */
     color: white;
-  }
-  
-  .consent-modal {
+}
+
+.consent-modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -636,50 +636,50 @@ body:has(.game-container:not(.hidden)) h1 {
     justify-content: center;
     align-items: center;
     z-index: 10000;
-  }
-  
-  .modal-content {
+}
+
+.modal-content {
     background: white;
     padding: 2rem;
     border-radius: 8px;
     max-width: 500px;
     width: 90%;
-  }
-  
-  .consent-category {
+}
+
+.consent-category {
     margin-bottom: 1rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid #eee;
-  }
-  
-  .consent-category label {
+}
+
+.consent-category label {
     display: flex;
     align-items: center;
     cursor: pointer;
-  }
-  
-  .consent-category input[type="checkbox"] {
+}
+
+.consent-category input[type="checkbox"] {
     margin-right: 1rem;
-  }
-  
-  .consent-actions {
+}
+
+.consent-actions {
     display: flex;
     justify-content: flex-end;
     margin-top: 1rem;
-  }
-  
-  .save-btn {
+}
+
+.save-btn {
     padding: 0.5rem 1rem;
-    background: #4CAF50;
+    background: #2a9d8f; /* Teal */
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-  }
-  
-  .hidden {
+}
+
+.hidden {
     display: none;
-  }
+}
 /* ================== FEEDBACK SYSTEM ================== */
 .feedback-form-container {
     background: var(--bg-color);
@@ -706,22 +706,22 @@ body:has(.game-container:not(.hidden)) h1 {
 }
 
 #answerFeedback.correct {
-    background: #007304;
+    background: #2a9d8f; /* Teal */
     color: white;
 }
 
 #answerFeedback.wrong {
-    background: #f44336;
+    background: #d63031; /* Keep red */
     color: white;
 }
 
 #feedback strong {
-    color: #ffd700;
+    color: #f4a261; /* Coral */
     margin: 0 5px;
 }
 
 .streak-feedback {
-    color: #ff9f43;
+    color: #e76f51; /* Coral */
     font-weight: bold;
     margin-top: 8px;
     animation: streak-pop 0.3s ease;
@@ -744,23 +744,23 @@ body:has(.game-container:not(.hidden)) h1 {
 }
 
 .game-over h2 {
-    color: #ffd700;
+    color: #f4a261; /* Coral */
 }
 
 .final-score {
     font-size: 2em;
-    color: #e84393;
+    color: #2a9d8f; /* Teal */
     margin: 1rem 0;
 }
 
 .performance-message {
     font-size: 1.5em;
     margin: 1rem 0;
-    color: #02866b;
+    color: #264653; /* Deep teal */
 }
 
 .performance-message .empty-state {
-    color: #af4949;
+    color: #d63031; /* Keep red */
     font-size: 1.1em;
 }
 
@@ -778,7 +778,7 @@ body:has(.game-container:not(.hidden)) h1 {
 }
 
 .feedback-form-container h2 {
-    color: #e84393;
+    color: #2a9d8f; /* Teal */
     margin-bottom: 1.5rem;
     text-align: center;
 }
@@ -810,7 +810,7 @@ body:has(.game-container:not(.hidden)) h1 {
 
 .form-group input:focus,
 .form-group textarea:focus {
-    border-color: #6c5ce7;
+    border-color: #2a9d8f; /* Teal */
     outline: none;
 }
 
@@ -843,11 +843,11 @@ body:has(.game-container:not(.hidden)) h1 {
 .star-rating input:checked ~ label,
 .star-rating label:hover,
 .star-rating label:hover ~ label {
-    color: #ffd700;
+    color: #f4a261; /* Coral */
 }
 
 .star-rating input:checked + label {
-    color: #ffd700;
+    color: #f4a261; /* Coral */
 }
 
 /* Hide the radio buttons but keep them accessible */
@@ -873,28 +873,28 @@ body:has(.game-container:not(.hidden)) h1 {
 }
 
 .submit-btn {
-    background: linear-gradient(145deg, #4CAF50, #3e8e41);
+    background: linear-gradient(145deg, #2a9d8f, #264653); /* Teal to deep teal */
     color: white;
 }
 
 .cancel-btn {
-    background: linear-gradient(145deg, #f44336, #d32f2f);
+    background: linear-gradient(145deg, #d63031, #b71c1c); /* Keep red */
     color: white;
 }
 
 .submit-btn:hover {
-    background: linear-gradient(145deg, #3e8e41, #2e7d32);
+    background: linear-gradient(145deg, #264653, #1a6860); /* Deep teal */
 }
 
 .cancel-btn:hover {
-    background: linear-gradient(145deg, #d32f2f, #b71c1c);
+    background: linear-gradient(145deg, #b71c1c, #9a0007); /* Darker red */
 }
 
 /* Success message */
 .feedback-success {
     text-align: center;
     padding: 1rem 0;
-    color: #4CAF50;
+    color: #2a9d8f; /* Teal */
     font-size: 1.2rem;
     opacity: 0;
     height: 0;
@@ -935,7 +935,7 @@ body:has(.game-container:not(.hidden)) h1 {
     border: none;
     font-size: 1.5rem;
     cursor: pointer;
-    color: #6c5ce7;
+    color: #2a9d8f; /* Teal */
     z-index: 10;
 }
 
@@ -951,7 +951,7 @@ body:has(.game-container:not(.hidden)) h1 {
     border: none;
     font-size: 28px;
     cursor: pointer;
-    color: #e84393;
+    color: #2a9d8f; /* Teal */
     padding: 5px;
     z-index: 10; /* Ensure it stays above other elements */
     width: 40px;
@@ -965,9 +965,9 @@ body:has(.game-container:not(.hidden)) h1 {
 
 .close-feedback-btn:hover {
     color: #fff;
-    background-color: #e84393;
-    transform: scale(1.1);
+    background-color: #2a9d8f; /* Teal */
 }
+
 /* ================== DARK MODE STYLES ================== */
 body[data-theme="dark"] {
     min-height: 85vh; /* Match light theme */
@@ -1134,12 +1134,12 @@ body[data-theme="dark"] {
 }
 
 [data-theme="dark"] .consent-banner,
-  [data-theme="dark"] .modal-content {
+[data-theme="dark"] .modal-content {
     background: #34495e;
     color: #ecf0f1;
 }
-  
-  [data-theme="dark"] .consent-category {
+
+[data-theme="dark"] .consent-category {
     border-bottom-color: #7f8c8d;
 }
 
@@ -1288,7 +1288,7 @@ body[data-theme="dark"] {
 
 @media (max-width: 480px) {
     h1 {
-        font-size: 1.8em;
+        font-size: 1.apersem8em;
         gap: 8px;
         margin: 0 0 0.3rem;
     }
