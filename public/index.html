@@ -35,7 +35,7 @@
      
     <!-- Fav icon URL -->
      <link rel="icon" href="/favicon.ico" type="image/x-icon">
-
+    
     <!-- Schema.org Structured Data -->
     <script type="application/ld+json">
     {
@@ -158,8 +158,11 @@
     </script>
 
     <title>Cool Maths Zone ✖️➗➕➖🟰 | Fun Math Games for Kids & Number Puzzles</title>
-    <link href='https://fonts.googleapis.com/css?family=Bubblegum Sans' rel='stylesheet'>
-    <link rel="stylesheet" href="/styles/cmzstyle.css">
+    <link rel="preload" href="https://fonts.googleapis.com/icon?family==Bubblegum Sans" as="style" onload="this.rel='stylesheet'">
+    <link rel="preload" href="/styles/cmzstyles.min.css" as="style">
+    <link rel="stylesheet" href="/styles/cmzstyles.min.css">
+    <link rel="preload" href="/imgs/cmz-logo-light.webp" as="image" fetchpriority="high">
+    <link rel="preload" href="/imgs/cmz-logo-dark.webp" as="image" fetchpriority="high">
 </head>
 <body>
     <div class="main-container">
@@ -325,6 +328,6 @@
     <audio id="bonusSound" src="/sounds/bonus.mp3"></audio>
     <audio id="tickSound" src="/sounds/tick.mp3"></audio>
     <audio id="gameOverSound" src="/sounds/game-over.mp3"></audio>
-    <script src="/scripts/cmzscript.js"></script>
+    <script src="/scripts/cmzscript.min.js"></script>
 </body>
 </html>

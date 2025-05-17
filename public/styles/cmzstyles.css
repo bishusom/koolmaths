@@ -58,7 +58,7 @@ h1 {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    background-image: url('/images/cmz-logo-light.png');
+    background-image: url('/images/cmz-logo-light.webp');
     margin: 0 auto; /* Add this to center the logo */
 }
 
@@ -1003,7 +1003,7 @@ body[data-theme="dark"] {
 }
 
 [data-theme="dark"] .site-logo {
-    background-image: url('/images/cmz-logo-dark.png');
+    background-image: url('/images/cmz-logo-dark.webp');
     margin: 0 auto; /* Ensure centering in dark mode too */
 }
 
