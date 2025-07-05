@@ -109,6 +109,8 @@ const elements = {
     gameContainer: document.querySelector('.game-container'),
     levelSelector: document.querySelector('.level-selector'),
     levelBtns: document.querySelectorAll('.level-btn'),
+    mathResources: document.querySelector('.math-resources'),
+    aboutSection: document.querySelector('.about-section'),
     muteBtn: document.getElementById('muteBtn'),
     pauseBtn: document.getElementById('pauseBtn'),
     scoreElement: document.getElementById('score'),
@@ -186,6 +188,8 @@ elements.playAgainBtn.addEventListener('click', () => {
     elements.startBtn.classList.remove('hidden');
     elements.euPrivacy.classList.remove('hidden');
     elements.gameContainer.classList.add('hidden');
+    elements.mathResources.classList.remove('hidden');
+    elements.aboutSection.classList.remove('hidden');
     
     // Hide the control buttons
     elements.muteBtn.style.display = 'none';
@@ -657,6 +661,8 @@ function startGame() {
     elements.gameContainer.classList.remove('hidden');
     elements.tagLine.classList.add('hidden');
     elements.euPrivacy.classList.add('hidden');
+    elements.mathResources.classList.add('hidden');
+    elements.aboutSection.classList.add('hidden');
 
     // Track game start
     trackEvent('Gameplay', 'Game Started', config[currentLevel].name, 0);

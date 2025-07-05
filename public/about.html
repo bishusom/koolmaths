@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-24LDGPFLX4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-24LDGPFLX4');
+    </script>
+    <!-- Basic Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="About Cool Maths Zone - Our mission to make math fun and accessible for kids. Learn about our educational approach, game design philosophy, and team.">
+    <meta name="keywords" content="about cool math games, math education, learning through play, educational games, math for kids">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://coolmathszone.com/about">
+    <meta property="og:title" content="About Cool Maths Zone | Making Math Fun for Kids">
+    <meta property="og:description" content="Learn about our mission to make math engaging through fun games and educational resources for children of all skill levels.">
+    <meta property="og:image" content="https://coolmathszone.com/images/about-og-image.jpg">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="About Cool Maths Zone | Making Math Fun for Kids">
+    <meta name="twitter:description" content="Learn about our mission to make math engaging through fun games and educational resources for children of all skill levels.">
+    <meta name="twitter:image" content="https://coolmathszone.com/images/about-twitter-card.jpg">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://coolmathszone.com/about" />
+     
+    <!-- Fav icon URL -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "AboutPage",
+        "name": "About Cool Maths Zone",
+        "description": "Information about the Cool Maths Zone educational game platform and its creators",
+        "url": "https://coolmathszone.com/about",
+        "publisher": {
+            "@type": "Organization",
+            "name": "Cool Maths Zone",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://coolmathszone.com/images/cmz-logo-light.png"
+            }
+        },
+        "creator": {
+            "@type": "Organization",
+            "name": "Cool Maths Zone Team",
+            "description": "A team of educators and game developers passionate about math education"
+        }
+    }
+    </script>
+
+    <title>About Cool Maths Zone | Making Math Fun for Kids</title>
+    <link rel="preload" href="https://fonts.googleapis.com/icon?family==Bubblegum+Sans" as="style" onload="this.rel='stylesheet'">
+    <link rel="preload" href="/styles/cmzstyles.min.css" as="style">
+    <link rel="stylesheet" href="/styles/cmzstyles.min.css">
+    <link rel="preload" href="/images/cmz-logo-light.webp" as="image" fetchpriority="high">
+    <link rel="preload" href="/images/cmz-logo-dark.webp" as="image" fetchpriority="high">
+    <style>
+        /* About Page Specific Styles */
+        .about-hero {
+            background: linear-gradient(135deg, #1e90ff, #87ceeb);
+            color: white;
+            padding: 3rem 1rem;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 2rem;
+        }
+        
+        .about-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .about-hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .mission-section, .team-section, .educational-approach {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem auto;
+            max-width: 1000px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .section-title {
+            color: #1e90ff;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: #1e90ff;
+            margin: 0.5rem auto 0;
+            border-radius: 2px;
+        }
+        
+        .mission-statement {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-style: italic;
+        }
+        
+        .mission-points {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .mission-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 5px solid #1e90ff;
+        }
+        
+        .mission-card h3 {
+            color: #1e90ff;
+            margin-bottom: 1rem;
+        }
+        
+        .team-members {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .team-member {
+            text-align: center;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+        
+        .team-member:hover {
+            transform: translateY(-5px);
+        }
+        
+        .member-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 1rem;
+            border: 3px solid #1e90ff;
+        }
+        
+        .member-name {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #2d3436;
+        }
+        
+        .member-role {
+            color: #1e90ff;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .educational-principles {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .principle-card {
+            padding: 1.5rem;
+            background: #f0f8ff;
+            border-radius: 10px;
+            border-top: 5px solid #87ceeb;
+        }
+        
+        .principle-card h3 {
+            color: #2d3436;
+            margin-bottom: 1rem;
+        }
+        
+        .cta-section {
+            text-align: center;
+            padding: 3rem 1rem;
+            background: linear-gradient(135deg, #4682b4, #1e90ff);
+            color: white;
+            border-radius: 15px;
+            margin: 3rem auto;
+            max-width: 1000px;
+        }
+        
+        .cta-section h2 {
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+        
+        .cta-btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .primary-btn {
+            background: white;
+            color: #1e90ff;
+        }
+        
+        .secondary-btn {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .about-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .mission-points, .team-members, .educational-principles {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .cta-btn {
+                width: 100%;
+                max-width: 300px;
+                margin-bottom: 1rem;
+            }
+        }
+        
+        [data-theme="dark"] .mission-section,
+        [data-theme="dark"] .team-section,
+        [data-theme="dark"] .educational-approach,
+        [data-theme="dark"] .mission-card,
+        [data-theme="dark"] .team-member,
+        [data-theme="dark"] .principle-card {
+            background: #34495e;
+            color: #ecf0f1;
+        }
+        
+        [data-theme="dark"] .mission-card h3,
+        [data-theme="dark"] .member-name,
+        [data-theme="dark"] .principle-card h3 {
+            color: #87ceeb;
+        }
+        
+        [data-theme="dark"] .member-role {
+            color: #f1c40f;
+        }
+        
+        [data-theme="dark"] .mission-card,
+        [data-theme="dark"] .principle-card {
+            border-color: #f1c40f;
+        }
+        
+        [data-theme="dark"] .team-member {
+            border: 1px solid #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Navigation -->
+        <nav class="about-nav">
+            <a href="/" class="home-link">← Back to Cool Maths Zone</a>
+        </nav>
+        
+        <!-- Hero Section -->
+        <section class="about-hero">
+            <h1>About Cool Maths Zone</h1>
+            <p>Making mathematics fun, accessible, and rewarding for children of all ages and skill levels</p>
+        </section>
+        
+        <!-- Mission Section -->
+        <section class="mission-section">
+            <h2 class="section-title">Our Mission</h2>
+            <p class="mission-statement">"To transform math learning from a chore into an exciting adventure, where every child can discover their inner math superhero!"</p>
+            
+            <div class="mission-points">
+                <div class="mission-card">
+                    <h3>Engagement Through Play</h3>
+                    <p>We believe children learn best when they're having fun. Our games turn math practice into an enjoyable challenge rather than a tedious task.</p>
+                </div>
+                
+                <div class="mission-card">
+                    <h3>Progressive Learning</h3>
+                    <p>From basic counting to algebraic thinking, our carefully scaffolded levels meet children where they are and help them grow.</p>
+                </div>
+                
+                <div class="mission-card">
+                    <h3>Confidence Building</h3>
+                    <p>By providing immediate feedback and celebrating small wins, we help build mathematical confidence that extends beyond the screen.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Educational Approach -->
+        <section class="educational-approach">
+            <h2 class="section-title">Our Educational Approach</h2>
+            
+            <div class="educational-principles">
+                <div class="principle-card">
+                    <h3>Game-Based Learning</h3>
+                    <p>We incorporate proven game design elements that motivate continued practice while maintaining educational integrity.</p>
+                </div>
+                
+                <div class="principle-card">
+                    <h3>Spaced Repetition</h3>
+                    <p>Our algorithms ensure concepts are revisited at optimal intervals to promote long-term retention.</p>
+                </div>
+                
+                <div class="principle-card">
+                    <h3>Growth Mindset</h3>
+                    <p>We emphasize effort and improvement over perfection, helping children develop resilient problem-solving skills.</p>
+                </div>
+            </div>
+            
+            <h3 style="text-align: center; margin-top: 2rem; color: #1e90ff;">Alignment with Educational Standards</h3>
+            <p style="text-align: center; max-width: 800px; margin: 1rem auto;">All Cool Maths Zone activities align with Common Core State Standards (CCSS) and other international math curricula, ensuring they complement classroom learning.</p>
+        </section>
+        
+        <!-- Team Section -->
+        <section class="team-section">
+            <h2 class="section-title">One Person, Many Roles</h2>
+            <div class="skills-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 2rem 0;">
+                <div class="skill-card" style="background: #f0f8ff; padding: 1rem; border-radius: 8px; text-align: center;">
+                    <div style="font-size: 2rem;">🎮</div>
+                    <h3 style="color: #1e90ff;">Game Design</h3>
+                </div>
+                <div class="skill-card" style="background: #f0f8ff; padding: 1rem; border-radius: 8px; text-align: center;">
+                    <div style="font-size: 2rem;">✏️</div>
+                    <h3 style="color: #1e90ff;">Content Creation</h3>
+                </div>
+                <div class="skill-card" style="background: #f0f8ff; padding: 1rem; border-radius: 8px; text-align: center;">
+                    <div style="font-size: 2rem;">💻</div>
+                    <h3 style="color: #1e90ff;">Development</h3>
+                </div>
+            </div>
+            <p style="text-align: center;">Cool Maths Zone is a passion project created and maintained by a single developer dedicated to making math fun.</p>
+        </section>
+        
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <h2>Ready to Start Your Math Adventure?</h2>
+            <p>Join thousands of children who have discovered the joy of math through our games and resources.</p>
+            
+            <div class="cta-buttons">
+                <a href="/" class="cta-btn primary-btn">Play Now</a>
+                <a href="/resources" class="cta-btn secondary-btn">Explore Learning Resources</a>
+            </div>
+        </section>
+        
+        <div id="eu-privacy">
+            <a href="/privacy" class="privacy-link">Privacy Policy</a> | 
+            <a href="/terms" class="terms-link">Terms of Service</a> |
+            <a href="/cookie-policy">Cookie Policy</a> |
+            <a href="#" id="open-cookie-settings" class="cookie-settings-link">Cookie Settings</a> |  
+            <a href="/contact" class="feedback-link">Contact Us</a>
+        </div>
+    </div>
+    
+    <script src="/scripts/cmzscript.min.js"></script>
+</body>
+</html>
