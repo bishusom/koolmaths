@@ -1,10 +1,162 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://www.coolmathszone.com/.com/</loc>
-    <lastmod>2025-04-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <!-- Add other pages -->
-</urlset>  
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+
+<url>
+  <loc>https://coolmathszone.com/</loc>
+  <lastmod>2025-07-12T06:06:48+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://coolmathszone.com/resources/addition-strategies</loc>
+  <lastmod>2025-07-12T06:06:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://coolmathszone.com/resources/subtraction-strategies</loc>
+  <lastmod>2025-07-12T06:06:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://coolmathszone.com/resources/multiplication-strategies</loc>
+  <lastmod>2025-07-12T06:06:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://coolmathszone.com/downloads/</loc>
+  <lastmod>2025-07-12T06:06:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://coolmathszone.com/parent-guide/</loc>
+  <lastmod>2025-07-12T06:06:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://coolmathszone.com/about</loc>
+  <lastmod>2025-07-12T06:06:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://coolmathszone.com/privacy</loc>
+  <lastmod>2025-07-12T06:06:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://coolmathszone.com/terms</loc>
+  <lastmod>2025-07-12T06:06:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://coolmathszone.com/cookie-policy</loc>
+  <lastmod>2025-07-12T06:06:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://coolmathszone.com/downloads/kindergarten-counting.pdf</loc>
+  <lastmod>2025-07-12T06:06:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://coolmathszone.com/downloads/kindergarten-addition.pdf</loc>
+  <lastmod>2025-07-12T06:06:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://coolmathszone.com/downloads/kindergarten-shapes.pdf</loc>
+  <lastmod>2025-07-12T06:06:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://coolmathszone.com/downloads/grade-1-3-addition.pdf</loc>
+  <lastmod>2025-07-12T06:06:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://coolmathszone.com/downloads/grade-1-3-subtraction.pdf</loc>
+  <lastmod>2025-07-12T06:06:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://coolmathszone.com/downloads/grade-3-multiplication.pdf</loc>
+  <lastmod>2025-07-12T06:06:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://coolmathszone.com/downloads/grade-5-fractions.pdf</loc>
+  <lastmod>2025-07-12T06:06:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://coolmathszone.com/downloads/grade-6-wordproblems.pdf</loc>
+  <lastmod>2025-07-12T06:06:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://coolmathszone.com/downloads/numbers-1-20.pdf</loc>
+  <lastmod>2025-07-12T06:06:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://coolmathszone.com/downloads/place-value.pdf</loc>
+  <lastmod>2025-07-12T06:06:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://coolmathszone.com/downloads/rounding.pdf</loc>
+  <lastmod>2025-07-12T06:06:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://coolmathszone.com/downloads/addition-facts.pdf</loc>
+  <lastmod>2025-07-12T06:06:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://coolmathszone.com/downloads/subtraction-facts.pdf</loc>
+  <lastmod>2025-07-12T06:06:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://coolmathszone.com/downloads/multiplication-tables.pdf</loc>
+  <lastmod>2025-07-12T06:06:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://coolmathszone.com/downloads/word-problems-easy.pdf</loc>
+  <lastmod>2025-07-12T06:06:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://coolmathszone.com/downloads/logic-puzzles.pdf</loc>
+  <lastmod>2025-07-12T06:06:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://coolmathszone.com/downloads/math-challenges.pdf</loc>
+  <lastmod>2025-07-12T06:06:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://coolmathszone.com/downloads/parent-guide.pdf</loc>
+  <lastmod>2025-07-12T06:06:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://coolmathszone.com/resources/</loc>
+  <lastmod>2025-07-12T06:06:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://coolmathszone.com/privacy?cmpscreen</loc>
+  <lastmod>2025-07-12T06:06:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+
+
+</urlset>
