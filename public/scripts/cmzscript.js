@@ -1019,6 +1019,54 @@ document.getElementById('open-cookie-settings')?.addEventListener('click', funct
     document.getElementById('consent-modal').classList.remove('hidden');
 });
 
+// Ad functionality for horizontal ad
+document.addEventListener('DOMContentLoaded', function() {
+  const adContainer = document.getElementById('googleAdContainer');
+  const closeAdBtn = document.getElementById('closeAdBtn');
+  
+  // Check if user previously closed the ad
+  const adClosed = localStorage.getItem('adClosed');
+  
+  if (adClosed) {
+    adContainer.classList.add('hidden');
+  }
+  
+  // Close ad button functionality
+  if (closeAdBtn) {
+    closeAdBtn.addEventListener('click', function() {
+      adContainer.classList.add('hidden');
+      localStorage.setItem('adClosed', 'true');
+      
+      // Optional: Send event to analytics
+      if (typeof gtag === 'function') {
+        gtag('event', 'ad_closed', {
+          'event_category': 'ad_interaction'
+        });
+      }
+    });
+  }
+  
+  // Optional: Show ad again after a certain time (e.g., 24 hours)
+  function resetAdPreference() {
+    localStorage.removeItem('adClosed');
+  }
+  
+  // Uncomment the line below if you want ads to reappear after 24 hours
+  // setTimeout(resetAdPreference, 24 * 60 * 60 * 1000);
+  
+  // Optional: Show ad after game completion
+  function showAdAfterGame() {
+    const adClosed = localStorage.getItem('adClosed');
+    if (!adClosed) {
+      adContainer.classList.remove('hidden');
+    }
+  }
+  
+  // Call this function when the game ends if you want ads to show after gameplay
+  // For example, in your game over logic:
+   showAdAfterGame();
+});
+
 // Add to your JavaScript
 document.addEventListener('DOMContentLoaded', function() {
     const consentBanner = document.getElementById('consent-banner');

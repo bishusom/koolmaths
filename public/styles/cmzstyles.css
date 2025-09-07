@@ -1734,3 +1734,99 @@ body[data-theme="dark"] {
 .back-btn:hover {
     background: #2980b9;
 }
+/* ================== AD CONTAINER STYLES ================== */
+/* ================== HORIZONTAL AD CONTAINER STYLES ================== */
+.ad-container-horizontal {
+  width: 100%;
+  max-width: 728px;
+  margin: 1rem auto;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.ad-container-horizontal.hidden {
+  display: none;
+}
+
+.ad-container-horizontal .ad-content {
+  position: relative;
+  padding: 15px;
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ad-container-horizontal .close-ad-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 101;
+  transition: background 0.2s ease;
+}
+
+.ad-container-horizontal .close-ad-btn:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* Dark mode styles for horizontal ad container */
+[data-theme="dark"] .ad-container-horizontal {
+  background: rgba(44, 62, 80, 0.95);
+  border: 1px solid #7f8c8d;
+}
+
+[data-theme="dark"] .ad-container-horizontal .close-ad-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ecf0f1;
+}
+
+[data-theme="dark"] .ad-container-horizontal .close-ad-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .ad-container-horizontal {
+    margin: 0.8rem auto;
+    border-radius: 8px;
+  }
+  
+  .ad-container-horizontal .ad-content {
+    padding: 12px;
+    min-height: 70px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ad-container-horizontal {
+    margin: 0.5rem auto;
+    border-radius: 6px;
+  }
+  
+  .ad-container-horizontal .ad-content {
+    padding: 10px;
+    min-height: 60px;
+  }
+  
+  .ad-container-horizontal .close-ad-btn {
+    width: 20px;
+    height: 20px;
+    font-size: 14px;
+  }
+}
