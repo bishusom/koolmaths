@@ -1029,6 +1029,9 @@ document.addEventListener('DOMContentLoaded', function() {
   
   if (adClosed) {
     adContainer.classList.add('hidden');
+  } else {
+    // Only load ad if container is visible
+    loadAdWhenVisible();
   }
   
   // Close ad button functionality
@@ -1046,26 +1049,74 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   
-  // Optional: Show ad again after a certain time (e.g., 24 hours)
-  function resetAdPreference() {
-    localStorage.removeItem('adClosed');
+  // Function to load ad only when container is visible
+  function loadAdWhenVisible() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Container is visible, load the ad
+          loadGoogleAd();
+          observer.disconnect(); // Stop observing after loading
+        }
+      });
+    }, { threshold: 0.1 }); // Trigger when at least 10% visible
+    
+    observer.observe(adContainer);
   }
   
-  // Uncomment the line below if you want ads to reappear after 24 hours
-  // setTimeout(resetAdPreference, 24 * 60 * 60 * 1000);
-  
-  // Optional: Show ad after game completion
-  function showAdAfterGame() {
-    const adClosed = localStorage.getItem('adClosed');
-    if (!adClosed) {
-      adContainer.classList.remove('hidden');
+  // Function to properly load Google Ad
+  function loadGoogleAd() {
+    // Check if ad script is already loaded
+    if (typeof adsbygoogle !== 'undefined') {
+      try {
+        // Force ad reload with proper dimensions
+        (adsbygoogle = window.adsbygoogle || []).push({});
+        
+        // Add a small delay to ensure container is properly sized
+        setTimeout(() => {
+          if (typeof adsbygoogle !== 'undefined') {
+            (adsbygoogle = window.adsbygoogle || []).push({});
+          }
+        }, 500);
+      } catch (error) {
+        console.log('Ad loading error:', error);
+      }
     }
   }
   
-  // Call this function when the game ends if you want ads to show after gameplay
-  // For example, in your game over logic:
-   showAdAfterGame();
+  // Optional: Show ad again after a certain time (e.g., 24 hours)
+  function resetAdPreference() {
+    localStorage.removeItem('adClosed');
+    adContainer.classList.remove('hidden');
+    loadGoogleAd();
+  }
+  
+  // Uncomment the line below if you want ads to reappear after 24 hours
+  setTimeout(resetAdPreference, 24 * 60 * 60 * 1000);
 });
+
+// Add this function to manually trigger ad refresh if needed
+function refreshAd() {
+  if (typeof adsbygoogle !== 'undefined' && !localStorage.getItem('adClosed')) {
+    try {
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (error) {
+      console.log('Ad refresh error:', error);
+    }
+  }
+}
+
+// Call this when the game ends to potentially show ads
+function showAdAfterGame() {
+  const adClosed = localStorage.getItem('adClosed');
+  if (!adClosed) {
+    const adContainer = document.getElementById('googleAdContainer');
+    adContainer.classList.remove('hidden');
+    
+    // Refresh the ad after a short delay to ensure proper rendering
+    setTimeout(refreshAd, 100);
+  }
+}
 
 // Add to your JavaScript
 document.addEventListener('DOMContentLoaded', function() {
