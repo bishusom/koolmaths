@@ -29,7 +29,7 @@ const config = {
     },
     primary2: {
         name: "Grade 4-6 Math Mavericks 🤠🔢",
-        operations: ['BODMAS', '÷', , '×','²'],
+        operations: ['BODMAS', '÷', '×','²'],
         maxNumber: 100,
         time: 120,
         emoji: '🧮',
@@ -85,6 +85,7 @@ const config = {
     }
 };
 
+// [Keep all existing variables]
 let score = 0;
 let timeLeft = 0;
 let gameActive = false;
@@ -98,13 +99,13 @@ let problemHistory = [];
 let pendingTimeout = null;
 let isPaused = false;
 let isMuted = localStorage.getItem('muteState') === 'true';
-let currentLevel = localStorage.getItem('lastLevel') || 'kinder'; // Default to kinder if nothing stored
-let lastSelectedLevel = currentLevel; // Initialize with currentLevel
+let currentLevel = localStorage.getItem('lastLevel') || 'kinder';
+let lastSelectedLevel = currentLevel;
 
 const elements = {
-    tagLine : document.querySelector('.tagline'),
+    tagLine: document.querySelector('.tagline'),
     themeToggleBtn: document.getElementById('themeToggleBtn'),
-    startBtn: document.getElementById('startBtn'),
+    startBtn: document.getElementById('startBtn'), // ADDED BACK - was missing
     euPrivacy: document.getElementById('eu-privacy'),
     gameContainer: document.querySelector('.game-container'),
     levelSelector: document.querySelector('.level-selector'),
@@ -121,6 +122,7 @@ const elements = {
     gameOverScreen: document.querySelector('.game-over'),
     finalScore: document.getElementById('finalScore'),
     performanceMessage: document.getElementById('performanceMessage'),
+    homeBtn: document.getElementById('HomeBtn'),
     playAgainBtn: document.getElementById('playAgainBtn'),
     correctSound: document.getElementById('correctSound'),
     wrongSound: document.getElementById('wrongSound'),
@@ -128,70 +130,118 @@ const elements = {
     bonusSound: document.getElementById('bonusSound'),
     gameOverSound: document.getElementById('gameOverSound'),
     currentLevelEmoji: document.getElementById('currentLevelEmoji'),
-    currentLevelName: document.getElementById('currentLevelName'),
+    currentLevelName: document.getElementById('currentLevelName'), // ADDED BACK - was missing
     performanceMeter: document.createElement('div'),
     performanceBar: document.createElement('div'),
     feedbackForm: document.getElementById('feedbackForm'),
     cancelFeedback: document.getElementById('cancelFeedback'),
     closeFeedbackBtn: document.getElementById('closeFeedbackBtn'),
     formContent: document.querySelector('.form-content'),
-    feedbackSuccess: document.querySelector('.feedback-success')
+    feedbackSuccess: document.querySelector('.feedback-success'),
+    // Ad elements
+    leftAd: document.getElementById('leftAdContainer'),
+    rightAd: document.getElementById('rightAdContainer'),
+    bottomAd: document.getElementById('bottomAdContainer')
 };
 
-//Make sure the buttons are hidden initially
+// Initialize
 elements.muteBtn.style.display = 'none';
 elements.pauseBtn.style.display = 'none';
 
 const MAX_HISTORY = 10;
-const GA_TRACKING_ID = 'G-SHMYVQ4TGH';
+const GA_TRACKING_ID = 'G-SHMYVQ4TGH'; // ADDED BACK - was missing
 elements.performanceMeter.className = 'performance-meter';
 elements.performanceBar.className = 'performance-bar';
 elements.performanceMeter.appendChild(elements.performanceBar);
 const maxScoreDisplay = document.createElement('div');
 maxScoreDisplay.className = 'max-score-display';
 elements.performanceMeter.appendChild(maxScoreDisplay);
-
 document.querySelector('.container').prepend(elements.performanceMeter);
 
+// DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
-    // Set the active button based on stored level
     const storedLevel = localStorage.getItem('lastLevel');
     if (storedLevel) {
         setLevel(storedLevel);
     }
     elements.themeToggleBtn.addEventListener('click', toggleTheme);
     
-    // Initialize theme - make sure this runs
     const savedTheme = localStorage.getItem('theme') || 'light';
     document.body.setAttribute('data-theme', savedTheme);
     elements.themeToggleBtn.querySelector('.icon').textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+    
+    // Initialize ad visibility
+    showAds();
 });
 
-// Event Listeners
+// Level button click - FIXED: Keep double-click functionality
 document.querySelectorAll('.level-btn').forEach(btn => {
     btn.addEventListener('click', () => setLevel(btn.dataset.level));
-    // Add double-click handler
+    // Add double-click handler - WAS MISSING
     btn.addEventListener('dblclick', () => {
         setLevel(btn.dataset.level);
         startGame();
     });
 });
 
-elements.startBtn.addEventListener('click', startGame);
+// Event Listeners - FIXED: Add back startBtn listener
+elements.startBtn?.addEventListener('click', startGame);
 elements.muteBtn.addEventListener('click', () => toggleMute());
 elements.pauseBtn.addEventListener('click', togglePause);
+
+// Replace the homeBtn event listener with this:
+if (elements.homeBtn) {
+    elements.homeBtn.addEventListener('click', () => {
+        elements.gameOverScreen.classList.add('hidden');
+        elements.tagLine.classList.remove('hidden');
+        elements.levelSelector.classList.remove('hidden');
+        elements.startBtn?.classList.remove('hidden');
+        elements.euPrivacy.classList.remove('hidden');
+        elements.gameContainer.classList.add('hidden');
+        elements.mathResources.classList.remove('hidden'); 
+        elements.aboutSection.classList.remove('hidden');
+        
+        // Show ads when returning to menu 
+        document.body.classList.remove('game-active');
+        showAds();
+        
+        elements.muteBtn.style.display = 'none';
+        elements.pauseBtn.style.display = 'none';
+        elements.themeToggleBtn.style.display = 'flex';
+        
+        score = 0;
+        timeLeft = 0;
+        problemHistory = [];
+        elements.scoreElement.textContent = "0";
+        elements.timerElement.textContent = "0";
+        
+        setLevel(lastSelectedLevel);
+        toggleMute(localStorage.getItem('muteState') === 'true');
+        
+        elements.performanceBar.style.width = "0%";
+        elements.performanceBar.style.background = 'linear-gradient(90deg, #ff7675, #fdcb6e)';
+        
+        // Stop any active game
+        gameActive = false;
+        clearInterval(timerInterval);
+        clearTimeout(pendingTimeout);
+    });
+}
 
 elements.playAgainBtn.addEventListener('click', () => {
     elements.gameOverScreen.classList.add('hidden');
     elements.tagLine.classList.remove('hidden');
     elements.levelSelector.classList.remove('hidden');
-    elements.startBtn.classList.remove('hidden');
+    elements.startBtn?.classList.remove('hidden'); // FIXED: Add optional chaining
     elements.euPrivacy.classList.remove('hidden');
     elements.gameContainer.classList.add('hidden');
     elements.mathResources.classList.remove('hidden');
     elements.aboutSection.classList.remove('hidden');
     
-    // Hide the control buttons
+    // Show ads when returning to menu
+    document.body.classList.remove('game-active');
+    showAds();
+    
     elements.muteBtn.style.display = 'none';
     elements.pauseBtn.style.display = 'none';
     elements.themeToggleBtn.style.display = 'flex';
@@ -205,7 +255,6 @@ elements.playAgainBtn.addEventListener('click', () => {
     setLevel(lastSelectedLevel);
     toggleMute(localStorage.getItem('muteState') === 'true');
     
-    // Explicitly reset the performance meter
     elements.performanceBar.style.width = "0%";
     elements.performanceBar.style.background = 'linear-gradient(90deg, #ff7675, #fdcb6e)';
 });
@@ -276,7 +325,7 @@ function toggleMute(forceState) {
     // Persist state
     localStorage.setItem('muteState', isMuted);
     
-    // Update UI
+    // Update UI - FIXED: Add proper icon toggle
     const icon = elements.muteBtn.querySelector('.icon');
     icon.textContent = isMuted ? '🔇' : '🔊';
     elements.muteBtn.classList.toggle('muted', isMuted);
@@ -654,23 +703,28 @@ function showAnswers() {
 function startGame() {
     clearInterval(timerInterval);
     clearTimeout(pendingTimeout);
+    
+    // Hide ads during game
+    document.body.classList.add('game-active');
+    hideAds();
+    
     elements.currentLevelEmoji.textContent = config[currentLevel].emoji;
+    // FIXED: Add back the commented line for level buttons
     //document.querySelectorAll('.level-btn').forEach(btn => btn.hidden = true);
     elements.levelSelector.classList.add('hidden');
-    elements.startBtn.classList.add('hidden');
+    elements.startBtn?.classList.add('hidden'); // FIXED: Add optional chaining
     elements.gameContainer.classList.remove('hidden');
     elements.tagLine.classList.add('hidden');
     elements.euPrivacy.classList.add('hidden');
     elements.mathResources.classList.add('hidden');
     elements.aboutSection.classList.add('hidden');
 
-    // Track game start
     trackEvent('Gameplay', 'Game Started', config[currentLevel].name, 0);
 
-    // Show the control buttons
+    // Show the control buttons - FIXED: Add back this comment
     elements.muteBtn.style.display = 'flex';
     elements.pauseBtn.style.display = 'flex';
-    elements.themeToggleBtn.style.display = 'none'; // Hide during game
+    elements.themeToggleBtn.style.display = 'none';
     elements.pauseBtn.disabled = false;
     gameActive = true;
     isPaused = false;
@@ -723,7 +777,10 @@ function endGame() {
     clearInterval(timerInterval);
     clearTimeout(pendingTimeout);
  
-    // Reset max score increase for this level
+    // Show ads when game ends
+    document.body.classList.remove('game-active');
+    showAds();
+    
     localStorage.removeItem(`maxScoreIncrease_${currentLevel}`);
     
     elements.gameContainer.classList.add('hidden');
@@ -733,7 +790,7 @@ function endGame() {
     playSound(elements.gameOverSound);
     elements.pauseBtn.disabled = true;
 
-    const finalScore = score + Math.floor(timeLeft * 0.7); // Time bonus for remaining seconds
+    const finalScore = score + Math.floor(timeLeft * 0.7); // FIXED: Add back comment
     const totalAnswered = totalQuestions;
     trackEvent('Gameplay', 'Game Completed', config[currentLevel].name, finalScore);
 
@@ -875,7 +932,38 @@ function checkAnswer(selected) {
         elements.performanceBar.style.background = 'linear-gradient(90deg, #ff7675, #d63031)';
     }
 
-    // Rest of the checkAnswer function remains the same...
+    // ENHANCED VISUAL FEEDBACK FOR ANSWERS
+    document.querySelectorAll('.answer-btn').forEach(btn => {
+        const btnValue = Number(btn.textContent);
+        btn.disabled = true;
+        
+        // Remove any existing classes
+        btn.classList.remove('correct', 'wrong', 'neutral');
+        
+        if (isCorrect) {
+            // If answer is correct: correct answer in green, others greyed out
+            if (btnValue === currentProblem.correctAnswer) {
+                btn.classList.add('correct');
+                btn.innerHTML = `${btn.textContent} ✓`;
+            } else {
+                btn.classList.add('neutral');
+                btn.style.opacity = '0.6';
+            }
+        } else {
+            // If answer is wrong: selected wrong answer in red, correct answer in green, others greyed out
+            if (btnValue === selected) {
+                btn.classList.add('wrong');
+                btn.innerHTML = `${btn.textContent} ✗`;
+            } else if (btnValue === currentProblem.correctAnswer) {
+                btn.classList.add('correct');
+                btn.innerHTML = `${btn.textContent} ✓`;
+            } else {
+                btn.classList.add('neutral');
+                btn.style.opacity = '0.6';
+            }
+        }
+    });
+
     elements.scoreElement.textContent = score;
     elements.feedbackElement.classList.remove('wrong');
     elements.feedbackElement.classList.add('visible', isCorrect ? 'correct' : 'wrong');
@@ -884,17 +972,19 @@ function checkAnswer(selected) {
         : `<div>❌ Wrong! ❌ -${levelConfig.wrongPenalty}</div>
            <div class="correct-answer">Correct: ${currentProblem.correctAnswer}</div>`;
 
-    document.querySelectorAll('.answer-btn').forEach(btn => {
-        btn.disabled = true;
-        btn.classList.add(Number(btn.textContent) === currentProblem.correctAnswer ? 'correct' : 'wrong');
-    });
-
     pendingTimeout = setTimeout(() => {
         if(gameActive) {
             generateProblem();
             elements.feedbackElement.classList.remove('visible');
+            
+            // Reset button styles for next question
+            document.querySelectorAll('.answer-btn').forEach(btn => {
+                btn.classList.remove('correct', 'wrong', 'neutral');
+                btn.style.opacity = '1';
+                btn.innerHTML = btn.textContent; // Remove checkmarks/crosses
+            });
         }
-    }, 1500);
+    }, 2000); // Increased timeout to allow better visual feedback
 }
 
 function generateFallbackProblem() {
@@ -1019,106 +1109,169 @@ document.getElementById('open-cookie-settings')?.addEventListener('click', funct
     document.getElementById('consent-modal').classList.remove('hidden');
 });
 
-// Ad functionality for horizontal ad
+// Add this to the DOMContentLoaded section in cmzscript.min.js
 document.addEventListener('DOMContentLoaded', function() {
-  const adContainer = document.getElementById('googleAdContainer');
-  const closeAdBtn = document.getElementById('closeAdBtn');
+    const consentBanner = document.getElementById('consent-banner');
+    const consentModal = document.getElementById('consent-modal');
+    const acceptAllBtn = document.getElementById('accept-all');
+    const settingsBtn = document.getElementById('settings-btn');
+    const rejectAllBtn = document.getElementById('reject-all');
+    const saveBtn = document.getElementById('save-preferences');
+    const closeBtn = document.getElementById('modal-close');
+    const consentForm = document.getElementById('consent-form');
   
-  // Check if user previously closed the ad
-  const adClosed = localStorage.getItem('adClosed');
+    // Check if consent was already given - FIXED: Check localStorage properly
+    const existingConsent = localStorage.getItem('cookieConsent');
+    if (!existingConsent) {
+      setTimeout(() => {
+        consentBanner?.classList.remove('hidden');
+      }, 1000);
+    }
   
-  if (adClosed) {
-    adContainer.classList.add('hidden');
-  } else {
-    // Only load ad if container is visible
-    loadAdWhenVisible();
-  }
-  
-  // Close ad button functionality
-  if (closeAdBtn) {
-    closeAdBtn.addEventListener('click', function() {
-      adContainer.classList.add('hidden');
-      localStorage.setItem('adClosed', 'true');
-      
-      // Optional: Send event to analytics
-      if (typeof gtag === 'function') {
-        gtag('event', 'ad_closed', {
-          'event_category': 'ad_interaction'
-        });
-      }
+    // Button handlers with null checks
+    acceptAllBtn?.addEventListener('click', () => {
+      setConsent({ necessary: true, analytics: true, marketing: true });
+      consentBanner?.classList.add('hidden');
     });
-  }
   
-  // Function to load ad only when container is visible
-  function loadAdWhenVisible() {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          // Container is visible, load the ad
-          loadGoogleAd();
-          observer.disconnect(); // Stop observing after loading
-        }
-      });
-    }, { threshold: 0.1 }); // Trigger when at least 10% visible
-    
-    observer.observe(adContainer);
-  }
+    settingsBtn?.addEventListener('click', () => {
+      consentModal?.classList.remove('hidden');
+    });
   
-  // Function to properly load Google Ad
-  function loadGoogleAd() {
-    // Check if ad script is already loaded
-    if (typeof adsbygoogle !== 'undefined') {
-      try {
-        // Force ad reload with proper dimensions
-        (adsbygoogle = window.adsbygoogle || []).push({});
-        
-        // Add a small delay to ensure container is properly sized
-        setTimeout(() => {
-          if (typeof adsbygoogle !== 'undefined') {
-            (adsbygoogle = window.adsbygoogle || []).push({});
-          }
-        }, 500);
-      } catch (error) {
-        console.log('Ad loading error:', error);
+    rejectAllBtn?.addEventListener('click', () => {
+      setConsent({ necessary: true, analytics: false, marketing: false });
+      consentBanner?.classList.add('hidden');
+    });
+  
+    saveBtn?.addEventListener('click', () => {
+      const formData = new FormData(consentForm);
+      const consent = {
+        necessary: true, // Always true
+        analytics: formData.get('analytics') === 'on',
+        marketing: formData.get('marketing') === 'on'
+      };
+      setConsent(consent);
+      consentModal?.classList.add('hidden');
+      consentBanner?.classList.add('hidden');
+    });
+  
+    closeBtn?.addEventListener('click', () => {
+      consentModal?.classList.add('hidden');
+    });
+  
+    function setConsent(consent) {
+      localStorage.setItem('cookieConsent', JSON.stringify(consent));
+      console.log('Consent set:', consent);
+      
+      // Implement your cookie setting logic here
+      if (consent.analytics) {
+        loadAnalytics();
       }
     }
-  }
   
-  // Optional: Show ad again after a certain time (e.g., 24 hours)
-  function resetAdPreference() {
-    localStorage.removeItem('adClosed');
-    adContainer.classList.remove('hidden');
-    loadGoogleAd();
-  }
-  
-  // Uncomment the line below if you want ads to reappear after 24 hours
-  setTimeout(resetAdPreference, 24 * 60 * 60 * 1000);
+    function loadAnalytics() {
+        console.log('Loading analytics...');
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-SHMYVQ4TGH');
+    }
 });
 
-// Add this function to manually trigger ad refresh if needed
-function refreshAd() {
-  if (typeof adsbygoogle !== 'undefined' && !localStorage.getItem('adClosed')) {
-    try {
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    } catch (error) {
-      console.log('Ad refresh error:', error);
-    }
-  }
+function hideAds() {
+    if (elements.leftAd) elements.leftAd.style.display = 'none';
+    if (elements.rightAd) elements.rightAd.style.display = 'none';
+    if (elements.bottomAd) elements.bottomAd.style.display = 'none';
 }
 
-// Call this when the game ends to potentially show ads
-function showAdAfterGame() {
-  const adClosed = localStorage.getItem('adClosed');
-  if (!adClosed) {
-    const adContainer = document.getElementById('googleAdContainer');
-    adContainer.classList.remove('hidden');
+function showAds() {
+    const leftAdClosed = localStorage.getItem('leftAdClosed');
+    const rightAdClosed = localStorage.getItem('rightAdClosed');
+    const bottomAdClosed = localStorage.getItem('bottomAdClosed');
     
-    // Refresh the ad after a short delay to ensure proper rendering
-    setTimeout(refreshAd, 100);
-  }
+    // Desktop ads (768px and above)
+    if (window.innerWidth > 768) {
+        // Show vertical side ads on desktop
+        if (!leftAdClosed && elements.leftAd) {
+            elements.leftAd.style.display = 'block';
+            refreshAd('left');
+        }
+        if (!rightAdClosed && elements.rightAd) {
+            elements.rightAd.style.display = 'block';
+            refreshAd('right');
+        }
+        // Hide bottom ad on desktop
+        if (elements.bottomAd) {
+            elements.bottomAd.style.display = 'none';
+        }
+    } else {
+        // Mobile devices - show bottom ad only
+        if (!bottomAdClosed && elements.bottomAd) {
+            elements.bottomAd.style.display = 'block';
+            refreshAd('bottom');
+        }
+        // Hide side ads on mobile
+        if (elements.leftAd) {
+            elements.leftAd.style.display = 'none';
+        }
+        if (elements.rightAd) {
+            elements.rightAd.style.display = 'none';
+        }
+    }
 }
 
-// Add to your JavaScript
+function refreshAd(position) {
+    setTimeout(() => {
+        if (typeof adsbygoogle !== 'undefined') {
+            try {
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            } catch (error) {
+                console.log(`Ad refresh error (${position}):`, error);
+            }
+        }
+    }, 100);
+}
+
+// Ad close button handlers
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.close-ad-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const adType = this.getAttribute('data-ad');
+            const adContainer = document.getElementById(`${adType}AdContainer`);
+            
+            if (adContainer) {
+                adContainer.style.display = 'none';
+                localStorage.setItem(`${adType}AdClosed`, 'true');
+                
+                if (typeof gtag === 'function') {
+                    gtag('event', 'ad_closed', {
+                        'event_category': 'ad_interaction',
+                        'ad_position': adType
+                    });
+                }
+            }
+        });
+    });
+    
+    // Handle window resize to adjust ads
+    window.addEventListener('resize', function() {
+        if (!document.body.classList.contains('game-active')) {
+            showAds();
+        }
+    });
+    
+    // Reset ad preferences after 24 hours
+    setTimeout(() => {
+        localStorage.removeItem('leftAdClosed');
+        localStorage.removeItem('rightAdClosed');
+        localStorage.removeItem('bottomAdClosed');
+        if (!document.body.classList.contains('game-active')) {
+            showAds();
+        }
+    }, 24 * 60 * 60 * 1000);
+});
+
+// Cookie consent functionality
 document.addEventListener('DOMContentLoaded', function() {
     const consentBanner = document.getElementById('consent-banner');
     const consentModal = document.getElementById('consent-modal');
@@ -1131,51 +1284,60 @@ document.addEventListener('DOMContentLoaded', function() {
   
     // Check if consent was already given
     if (!localStorage.getItem('cookieConsent')) {
-      setTimeout(() => {
-        consentBanner.classList.remove('hidden');
-      }, 1000);
+        setTimeout(() => {
+            if (consentBanner) consentBanner.classList.remove('hidden');
+        }, 1000);
     }
   
-    // Button handlers
-    acceptAllBtn.addEventListener('click', () => {
-      setConsent({ necessary: true, analytics: true, marketing: true });
-      consentBanner.classList.add('hidden');
-    });
+    // Button handlers with null checks
+    if (acceptAllBtn) {
+        acceptAllBtn.addEventListener('click', () => {
+            setConsent({ necessary: true, analytics: true, marketing: true });
+            if (consentBanner) consentBanner.classList.add('hidden');
+        });
+    }
   
-    settingsBtn.addEventListener('click', () => {
-      consentModal.classList.remove('hidden');
-    });
+    if (settingsBtn) {
+        settingsBtn.addEventListener('click', () => {
+            if (consentModal) consentModal.classList.remove('hidden');
+        });
+    }
   
-    rejectAllBtn.addEventListener('click', () => {
-      setConsent({ necessary: true, analytics: false, marketing: false });
-      consentBanner.classList.add('hidden');
-    });
+    if (rejectAllBtn) {
+        rejectAllBtn.addEventListener('click', () => {
+            setConsent({ necessary: true, analytics: false, marketing: false });
+            if (consentBanner) consentBanner.classList.add('hidden');
+        });
+    }
   
-    saveBtn.addEventListener('click', () => {
-      const formData = new FormData(consentForm);
-      const consent = {
-        necessary: true, // Always true
-        analytics: formData.get('analytics') === 'on',
-        marketing: formData.get('marketing') === 'on'
-      };
-      setConsent(consent);
-      consentModal.classList.add('hidden');
-      consentBanner.classList.add('hidden');
-    });
+    if (saveBtn) {
+        saveBtn.addEventListener('click', () => {
+            const formData = new FormData(consentForm);
+            const consent = {
+                necessary: true, // Always true
+                analytics: formData.get('analytics') === 'on',
+                marketing: formData.get('marketing') === 'on'
+            };
+            setConsent(consent);
+            if (consentModal) consentModal.classList.add('hidden');
+            if (consentBanner) consentBanner.classList.add('hidden');
+        });
+    }
   
-    closeBtn.addEventListener('click', () => {
-      consentModal.classList.add('hidden');
-    });
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            if (consentModal) consentModal.classList.add('hidden');
+        });
+    }
   
     function setConsent(consent) {
-      localStorage.setItem('cookieConsent', JSON.stringify(consent));
-      // Implement your cookie setting logic here
-      console.log('Consent set:', consent);
-      
-      // Example: Load Google Analytics only if consented
-      if (consent.analytics) {
-        loadAnalytics();
-      }
+        localStorage.setItem('cookieConsent', JSON.stringify(consent));
+        console.log('Consent set:', consent);
+        
+        // Implement your cookie setting logic here
+        if (consent.analytics) {
+            loadAnalytics();
+        }
     }
   
     function loadAnalytics() {

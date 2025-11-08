@@ -1,8 +1,8 @@
 /* ================== GLOBAL STYLES ================== */
 body[data-theme="light"],
-body:not([data-theme]) { /* Fallback for when no theme is set */
-    min-height: 85vh; /* Add this to ensure consistent height */
-    margin: 2rem auto; /* Adjust margin for better spacing */
+body:not([data-theme]) {
+    min-height: 85vh;
+    margin: 2rem auto;
     font-family: 'Bubblegum Sans';
     display: flex;
     justify-content: center;
@@ -13,7 +13,7 @@ body:not([data-theme]) { /* Fallback for when no theme is set */
     background-size: 400% 400%;
     margin: 0;
     color: #2d3436;
-    overflow-x: hidden; /* Prevent horizontal scrolling */  
+    overflow-x: hidden;
 }
 
 @keyframes rainbowBackground {
@@ -23,18 +23,168 @@ body:not([data-theme]) { /* Fallback for when no theme is set */
 }
 
 .main-container {
-    margin: 0 auto; /* Center the container */
+    margin: 0 auto;
     width: 90%;
     max-width: 800px;
-    position: relative; /* Add this */
+    position: relative;
     text-align: center;
     padding: 1rem 2rem;
     background: linear-gradient(135deg, #4682b4, #e6e6fa);
     border-radius: 20px;
     box-shadow: 0 0 30px rgba(255, 255, 255, 0.8), 
-                0 0 20px rgba(30, 144, 255, 0.6), /* Vibrant blue shadow */
-                0 0 10px rgba(70, 130, 180, 0.4); /* Steel blue shadow */
-    border: 3px solid #1e90ff; /* Vibrant blue border */
+                0 0 20px rgba(30, 144, 255, 0.6),
+                0 0 10px rgba(70, 130, 180, 0.4);
+    border: 3px solid #1e90ff;
+}
+
+/* ================== VERTICAL AD CONTAINERS (DESKTOP) ================== */
+.ad-container-vertical {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 160px;
+    height: 600px;
+    background: linear-gradient(135deg, #4682b4, #e6e6fa);
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(30, 144, 255, 0.6);
+    z-index: 100;
+    overflow: hidden;
+    border: 2px solid #1e90ff;
+    transition: all 0.3s ease;
+}
+
+.ad-left {
+    left: 10px;
+}
+
+.ad-right {
+    right: 10px;
+}
+
+.ad-container-vertical .ad-content {
+    position: relative;
+    padding: 10px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ad-container-vertical .close-ad-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 101;
+    transition: background 0.2s ease;
+}
+
+.ad-container-vertical .close-ad-btn:hover {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.ad-container-vertical ins.adsbygoogle {
+    display: block !important;
+    width: 160px !important;
+    height: 600px !important;
+}
+
+/* ================== BOTTOM AD CONTAINER (MOBILE) ================== */
+.ad-container-bottom {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 100%;
+    background: linear-gradient(135deg, #4682b4, #e6e6fa);
+    border-radius: 12px 12px 0 0;
+    box-shadow: 0 -4px 15px rgba(30, 144, 255, 0.6);
+    z-index: 100;
+    overflow: hidden;
+    border: 2px solid #1e90ff;
+    border-bottom: none;
+    transition: all 0.3s ease;
+    display: none;
+}
+
+.ad-container-bottom .ad-content {
+    position: relative;
+    padding: 15px;
+    min-height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ad-container-bottom .close-ad-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 101;
+    transition: background 0.2s ease;
+}
+
+.ad-container-bottom .close-ad-btn:hover {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.ad-container-bottom ins.adsbygoogle {
+    display: block !important;
+    width: 100% !important;
+    height: 90px !important;
+}
+
+/* Hide ads during game */
+.game-active .ad-container-vertical,
+.game-active .ad-container-bottom {
+    display: none !important;
+}
+
+/* ================== MOBILE AD HIDING ================== */
+@media (max-width: 768px) {
+    .ad-container-vertical {
+        display: none !important;
+    }
+    
+    .ad-container-bottom {
+        display: block !important;
+    }
+}
+
+@media (min-width: 769px) {
+    .ad-container-bottom {
+        display: none !important;
+    }
+    
+    .ad-container-vertical {
+        display: block !important;
+    }
+}
+
+/* Ensure ads are hidden during game on all devices */
+.game-active .ad-container-vertical,
+.game-active .ad-container-bottom {
+    display: none !important;
 }
 
 /* ================== HEADER & TITLE ================== */
@@ -48,18 +198,18 @@ h1 {
     text-shadow: none;
     letter-spacing: normal;
     animation: bounce 2s infinite;
-    justify-content: center; /* Ensure horizontal centering */
-    width: 100%; /* Take full width */
+    justify-content: center;
+    width: 100%;
 }
 
 .site-logo {
-    width: 300px; /* Adjust based on your logo dimensions */
-    height: 80px; /* Adjust based on your logo dimensions */
+    width: 300px;
+    height: 80px;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
     background-image: url('/images/cmz-logo-light.webp');
-    margin: 0 auto; /* Add this to center the logo */
+    margin: 0 auto;
 }
 
 @keyframes bounce {
@@ -79,13 +229,13 @@ h1 {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 0.5em; /* Adjust spacing as needed */
+    gap: 0.5em;
 }
 
 .tagline span {
-    color: #004c97 !important; /* Vibrant blue */
+    color: #004c97 !important;
     font-weight: bold;
-    text-shadow: 1px 1px 0 rgba(230, 230, 250, 0.6); /* Lavender shadow */
+    text-shadow: 1px 1px 0 rgba(230, 230, 250, 0.6);
 }
 
 .tagline.reappear {
@@ -97,6 +247,7 @@ h1 {
     50% { transform: scale(1.05); }
     100% { transform: scale(1); opacity: 1; }
 }
+
 /* ================== PERFORMANCE METER ================== */
 .performance-meter {
     width: 100%;
@@ -112,7 +263,7 @@ h1 {
 .performance-bar {
     height: 100%;
     width: 50%;
-    background: linear-gradient(90deg, #1e90ff, #e6e6fa); /* Vibrant blue to lavender */
+    background: linear-gradient(90deg, #1e90ff, #e6e6fa);
     border-radius: 15px;
     transition: width 0.5s ease, background-color 0.5s ease;
     position: relative;
@@ -154,8 +305,8 @@ h1 {
     background: rgba(0, 0, 0, 0.9);
     padding: 2rem;
     border-radius: 20px;
-    border: 3px solid #1e90ff; /* Vibrant blue border */
-    box-shadow: 0 0 30px rgba(30, 144, 255, 0.7); /* Vibrant blue shadow */
+    border: 3px solid #1e90ff;
+    box-shadow: 0 0 30px rgba(30, 144, 255, 0.7);
     text-align: center;
     animation: pulseBonus 1.5s infinite;
     max-width: 90%;
@@ -171,8 +322,8 @@ h1 {
     font-size: 2rem;
     font-weight: bold;
     margin-bottom: 1rem;
-    color: #e6e6fa; /* Lavender */
-    text-shadow: 0 0 15px rgba(230, 230, 250, 0.9); /* Lavender shadow */
+    color: #e6e6fa;
+    text-shadow: 0 0 15px rgba(230, 230, 250, 0.9);
 }
 
 .bonus-round-text {
@@ -198,6 +349,11 @@ h1 {
     100% { box-shadow: 0 0 30px rgba(30, 144, 255, 0.7); }
 }
 
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
 /* ================== GAME ACTIVE STATES ================== */
 .game-container.active ~ h1 {
     font-size: 1.5em;
@@ -208,12 +364,10 @@ h1 {
     display: none !important;
 }
 
-/* Hide instruction when game is active */
 .game-container.active ~ .instruction {
     display: none !important;
 }
 
-/* Adjust size when game is active */
 .game-container.active ~ h1.site-logo {
     height: 60px;
     width: 225px;
@@ -255,7 +409,7 @@ h1 {
 }
 
 .level-btn {
-    background: linear-gradient(145deg, #1e90ff, #e6e6fa, #87ceeb); /* Vibrant blue to lavender to sky blue */
+    background: linear-gradient(145deg, #1e90ff, #e6e6fa, #87ceeb);
     color: #2d3436;
     border: 2px solid rgba(255,255,255,0.5);
     padding: 1.2rem;
@@ -309,12 +463,12 @@ h1 {
 }
 
 .level-btn.active {
-    background: linear-gradient(145deg, #1e90ff, #4682b4); /* Vibrant blue to steel blue */
+    background: linear-gradient(145deg, #1e90ff, #4682b4);
     color: white;
-    border: 2px solid #1e90ff; /* Vibrant blue border */
+    border: 2px solid #1e90ff;
     animation: pulseActive 2s infinite;
     box-shadow: 
-        0 0 20px rgba(30, 144, 255, 0.5), /* Vibrant blue shadow */
+        0 0 20px rgba(30, 144, 255, 0.5),
         0 8px 16px rgba(0,0,0,0.15);
 }
 
@@ -325,7 +479,7 @@ h1 {
 }
 
 #startBtn, #backBtn, .game-over button {
-    background: linear-gradient(145deg, #1e90ff, #4682b4); /* Vibrant blue to steel blue */
+    background: linear-gradient(145deg, #1e90ff, #4682b4);
     color: white;
     padding: 18px 36px;
     border: none;
@@ -394,7 +548,7 @@ h1 {
 }
 
 #pauseBtn.paused {
-    background: #e6e6fa; /* Lavender */
+    background: #e6e6fa;
 }
 
 .mute-btn:hover, #pauseBtn:hover {
@@ -423,7 +577,7 @@ h1 {
 #themeToggleBtn {
     position: fixed;
     top: 15px;
-    right: 15px; /* Align with mute-btn (previously 120px) */
+    right: 15px;
     width: 40px;
     height: 40px;
     border-radius: 20px;
@@ -468,9 +622,9 @@ h1 {
     flex-direction: column;
     gap: 15px;
     margin-top: 0.5rem;
-    border: 3px dashed #1e90ff; /* Vibrant blue border */
+    border: 3px dashed #1e90ff;
     background-color: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 0 20px rgba(30, 144, 255, 0.5); /* Vibrant blue shadow */
+    box-shadow: 0 0 20px rgba(30, 144, 255, 0.5);
 }
 
 body:has(.game-container:not(.hidden)) h1 {
@@ -485,7 +639,7 @@ body:has(.game-container:not(.hidden)) h1 {
     gap: 15px;
     padding: 12px 20px;
     margin-bottom: 20px;
-    background: linear-gradient(90deg, #1e90ff, #e6e6fa); /* Vibrant blue to lavender */
+    background: linear-gradient(90deg, #1e90ff, #e6e6fa);
     color: white;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -499,8 +653,8 @@ body:has(.game-container:not(.hidden)) h1 {
     padding: 25px;
     line-height: 1.3;
     word-wrap: break-word;
-    color: #1e90ff; /* Vibrant blue */
-    text-shadow: 2px 2px 0 #e6e6fa; /* Lavender shadow */
+    color: #1e90ff;
+    text-shadow: 2px 2px 0 #e6e6fa;
 }
 
 .emoji-visual {
@@ -508,11 +662,6 @@ body:has(.game-container:not(.hidden)) h1 {
     font-size: 0.6em;
     line-height: 1.2;
     animation: float 2s ease-in-out infinite;
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
 }
 
 .answers-grid {
@@ -523,24 +672,26 @@ body:has(.game-container:not(.hidden)) h1 {
 }
 
 .answer-btn {
-    background: linear-gradient(145deg, #1e90ff, #4682b4); /* Vibrant blue to steel blue */
+    background: linear-gradient(145deg, #1e90ff, #4682b4);
     color: white;
     padding: 1.8rem;
     font-size: 1.6rem;
     border: 2px solid rgba(255,255,255,0.3);
     border-radius: 15px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
 }
 
 .answer-btn:hover {
-    background: linear-gradient(145deg, #4682b4, #2a52be); /* Steel blue to darker blue */
+    background: linear-gradient(145deg, #4682b4, #2a52be);
 }
 
 .answer-btn.correct {
-    background: linear-gradient(145deg, #1e90ff, #e6e6fa) !important; /* Vibrant blue to lavender */
-    animation: celebrate 0.5s ease;
-    box-shadow: 0 0 0 3px rgba(30, 144, 255, 0.5) !important; /* Vibrant blue shadow */
+    background: linear-gradient(135deg, #00b894, #00a085) !important;
+    color: white !important;
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 184, 148, 0.4);
+    border: 2px solid #00b894;
 }
 
 @keyframes celebrate {
@@ -550,10 +701,28 @@ body:has(.game-container:not(.hidden)) h1 {
 }
 
 .answer-btn.wrong {
-    background: #d63031 !important; /* Keep red for error */
-    animation: none !important;
-    transform: none !important;
-    box-shadow: 0 0 0 3px rgba(214,48,49,0.5) !important;
+    background: linear-gradient(135deg, #ff7675, #e17055) !important;
+    color: white !important;
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(255, 118, 117, 0.4);
+    border: 2px solid #ff7675;
+}
+
+.answer-btn.neutral {
+    background: linear-gradient(135deg, #b2bec3, #636e72) !important;
+    color: #dfe6e9 !important;
+    border: 2px solid #b2bec3;
+}
+
+.answer-btn.correct,
+.answer-btn.wrong {
+    animation: pulse 0.5s ease;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1.05); }
 }
 
 /* Show buttons when game is active */
@@ -619,17 +788,17 @@ body:has(.game-container:not(.hidden)) h1 {
 }
 
 .consent-btn.accept {
-    background: #1e90ff; /* Vibrant blue */
+    background: #1e90ff;
     color: white;
 }
 
 .consent-btn.settings {
-    background: #4682b4; /* Steel blue */
+    background: #4682b4;
     color: white;
 }
 
 .consent-btn.reject {
-    background: #d63031; /* Keep red */
+    background: #d63031;
     color: white;
 }
 
@@ -678,7 +847,7 @@ body:has(.game-container:not(.hidden)) h1 {
 
 .save-btn {
     padding: 0.5rem 1rem;
-    background: #1e90ff; /* Vibrant blue */
+    background: #1e90ff;
     color: white;
     border: none;
     border-radius: 4px;
@@ -715,22 +884,22 @@ body:has(.game-container:not(.hidden)) h1 {
 }
 
 #answerFeedback.correct {
-    background: #1e90ff; /* Vibrant blue */
+    background: #1e90ff;
     color: white;
 }
 
 #answerFeedback.wrong {
-    background: #d63031; /* Keep red */
+    background: #d63031;
     color: white;
 }
 
 #feedback strong {
-    color: #e6e6fa; /* Lavender */
+    color: #e6e6fa;
     margin: 0 5px;
 }
 
 .streak-feedback {
-    color: #87ceeb; /* Sky blue */
+    color: #87ceeb;
     font-weight: bold;
     margin-top: 8px;
     animation: streak-pop 0.3s ease;
@@ -753,23 +922,23 @@ body:has(.game-container:not(.hidden)) h1 {
 }
 
 .game-over h2 {
-    color: #e6e6fa; /* Lavender */
+    color: #e6e6fa;
 }
 
 .final-score {
     font-size: 2em;
-    color: #1e90ff; /* Vibrant blue */
+    color: #1e90ff;
     margin: 1rem 0;
 }
 
 .performance-message {
     font-size: 1.5em;
     margin: 1rem 0;
-    color: #4682b4; /* Steel blue */
+    color: #4682b4;
 }
 
 .performance-message .empty-state {
-    color: #d63031; /* Keep red */
+    color: #d63031;
     font-size: 1.1em;
 }
 
@@ -787,7 +956,7 @@ body:has(.game-container:not(.hidden)) h1 {
 }
 
 .feedback-form-container h2 {
-    color: #1e90ff; /* Vibrant blue */
+    color: #1e90ff;
     margin-bottom: 1.5rem;
     text-align: center;
 }
@@ -817,7 +986,6 @@ body:has(.game-container:not(.hidden)) h1 {
     transition: opacity 0.3s ease;
 }
 
-.form-group input:focus,
 .form-group textarea:focus {
     border-color: #1e90ff; /* Vibrant blue */
     outline: none;
@@ -1208,6 +1376,35 @@ body[data-theme="dark"] {
 [data-theme="dark"] .close-feedback-btn:hover {
     color: #fff;
     background-color: #3498db;
+}
+
+/* ================== DARK MODE AD CONTAINER STYLES ================== */
+[data-theme="dark"] .ad-container-vertical {
+    background: linear-gradient(135deg, #2c3e50, #34495e);
+    border: 2px solid #3498db;
+    box-shadow: 0 0 20px rgba(52, 152, 219, 0.4);
+}
+
+[data-theme="dark"] .ad-container-bottom {
+    background: linear-gradient(135deg, #2c3e50, #34495e);
+    border: 2px solid #3498db;
+    border-bottom: none;
+    box-shadow: 0 -4px 15px rgba(52, 152, 219, 0.4);
+}
+
+[data-theme="dark"] .ad-container-vertical .close-ad-btn,
+[data-theme="dark"] .ad-container-bottom .close-ad-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ecf0f1;
+}
+
+[data-theme="dark"] .ad-container-vertical .close-ad-btn:hover,
+[data-theme="dark"] .ad-container-bottom .close-ad-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .ad-content {
+    color: #ecf0f1;
 }
 
 /* ================== RESPONSIVE DESIGN ================== */
