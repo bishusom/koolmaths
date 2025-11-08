@@ -134,26 +134,28 @@ body:not([data-theme]) {
     position: absolute;
     top: 5px;
     right: 5px;
-    width: 28px;
-    height: 28px;
-    border: none;
-    background: rgba(0, 0, 0, 0.7);
+    width: 30px;
+    height: 30px;
+    border: 2px solid white;
+    background: #ff4444;
     color: white;
     border-radius: 50%;
     cursor: pointer;
-    font-size: 18px;
-    display: flex;
+    font-size: 20px;
+    display: flex !important;
     align-items: center;
     justify-content: center;
-    z-index: 9999;
-    transition: background 0.2s ease;
+    z-index: 99999;
+    transition: all 0.2s ease;
     font-weight: bold;
     line-height: 1;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .ad-container-bottom .close-ad-btn:hover {
-    background: rgba(0, 0, 0, 0.9);
-    transform: scale(1.1);
+    background: #cc0000;
+    transform: scale(1.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 .ad-container-bottom ins.adsbygoogle {
@@ -180,12 +182,15 @@ body:not([data-theme]) {
     }
     
     .ad-container-bottom .close-ad-btn {
-        width: 32px;
-        height: 32px;
-        font-size: 20px;
-        background: rgba(0, 0, 0, 0.8);
-        top: 8px;
-        right: 8px;
+        width: 36px;
+        height: 36px;
+        font-size: 22px;
+        background: #ff4444;
+        border: 2px solid white;
+        top: 10px;
+        right: 10px;
+        display: flex !important;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
     }
 }
 
