@@ -104,6 +104,8 @@ body:not([data-theme]) {
     bottom: 0;
     left: 0;
     right: 0;
+    min-height: 90px !important;
+    height: auto !important;
     width: 100%;
     max-width: 100%;
     background: linear-gradient(135deg, #4682b4, #e6e6fa);
@@ -121,6 +123,8 @@ body:not([data-theme]) {
     position: relative;
     padding: 15px;
     min-height: 90px;
+    min-width: 320px !important;
+    width: 100% !important;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -150,6 +154,7 @@ body:not([data-theme]) {
 
 .ad-container-bottom ins.adsbygoogle {
     display: block !important;
+    min-width: 320px !important;
     width: 100% !important;
     height: 90px !important;
 }
