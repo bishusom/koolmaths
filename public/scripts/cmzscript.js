@@ -1229,7 +1229,7 @@ function refreshAd(position) {
                 console.log(`Ad refresh error (${position}):`, error);
             }
         }
-    }, 100);
+    }, 300);
 }
 
 // Ad close button handlers
