@@ -1194,11 +1194,12 @@ function showAds() {
         // Show vertical side ads on desktop
         if (!leftAdClosed && elements.leftAd) {
             elements.leftAd.style.display = 'block';
-            refreshAd('left');
+            // Wait for display to take effect before loading ad
+            requestAnimationFrame(() => refreshAd('left'));
         }
         if (!rightAdClosed && elements.rightAd) {
             elements.rightAd.style.display = 'block';
-            refreshAd('right');
+            requestAnimationFrame(() => refreshAd('right'));
         }
         // Hide bottom ad on desktop
         if (elements.bottomAd) {
@@ -1208,7 +1209,7 @@ function showAds() {
         // Mobile devices - show bottom ad only
         if (!bottomAdClosed && elements.bottomAd) {
             elements.bottomAd.style.display = 'block';
-            refreshAd('bottom');
+            requestAnimationFrame(() => refreshAd('bottom'));
         }
         // Hide side ads on mobile
         if (elements.leftAd) {
@@ -1221,7 +1222,20 @@ function showAds() {
 }
 
 function refreshAd(position) {
+    // Wait longer and check if container is visible before pushing ad
     setTimeout(() => {
+        const container = document.getElementById(`${position}AdContainer`);
+        if (!container || container.style.display === 'none') {
+            return; // Don't load ad if container is hidden
+        }
+        
+        // Check if container has width
+        const rect = container.getBoundingClientRect();
+        if (rect.width === 0) {
+            console.log(`Ad container (${position}) has no width yet, skipping`);
+            return;
+        }
+        
         if (typeof adsbygoogle !== 'undefined') {
             try {
                 (adsbygoogle = window.adsbygoogle || []).push({});
@@ -1229,7 +1243,7 @@ function refreshAd(position) {
                 console.log(`Ad refresh error (${position}):`, error);
             }
         }
-    }, 300);
+    }, 300); // Increased timeout to allow container to render
 }
 
 // Ad close button handlers
