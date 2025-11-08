@@ -114,7 +114,7 @@ body:not([data-theme]) {
     border: 2px solid #1e90ff;
     border-bottom: none;
     transition: all 0.3s ease;
-    display: none;
+    display: none !important;
 }
 
 .ad-container-bottom .ad-content {
